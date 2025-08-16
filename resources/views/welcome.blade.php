@@ -271,10 +271,11 @@
                 </div>
 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-600 hover:text-gray-400 transition-colors">Fitur</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-400 transition-colors">Keamanan</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-400 transition-colors">Harga</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-400 transition-colors">Kontak</a>
+                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Fitur</a>
+                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Keamanan</a>
+                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Harga</a>
+                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Kontak</a>
+                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-400 transition-colors">Login</a>
                 </div>
             </div>
         </nav>

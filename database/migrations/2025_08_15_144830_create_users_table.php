@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->enum('super_admin', 'mahasiswa', 'admin_jurusan', 'kaprodi', 'kajur')->default('mahasiswa');
+            $table->enum('role', ['super_admin', 'mahasiswa', 'admin_jurusan', 'kaprodi', 'kajur'])->default('mahasiswa');
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->boolean('is_suspend')->default(false);
             $table->string('nim_nip')->unique()->nullable();
 
             // Foreign keys (nullable karena Super Admin mungkin tidak terikat)
