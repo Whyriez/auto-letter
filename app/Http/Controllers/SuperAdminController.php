@@ -10,10 +10,41 @@ use Illuminate\Validation\Rule;
 
 class SuperAdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::all();
-        return view('admin.super.index', compact('user'));
+        $query = User::orderBy('created_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        if ($request->filled('status')) {
+            // Asumsikan status adalah enum: 'active' = 0 (aktif), 'inactive' = 1 (suspend)
+            $statusMap = [
+                'active' => 0,   // aktif
+                'inactive' => 1, // suspend
+            ];
+            if (isset($statusMap[$request->status])) {
+                $query->where('is_suspend', $statusMap[$request->status]);
+            }
+        }
+
+        $users = $query->paginate(5)->withQueryString();
+
+        $totalMahasiswa = User::where('role', 'mahasiswa')->count();
+        $totalActiveUsers = User::where('status', 'active')->count();
+        $totalInactiveUsers = User::where('status', 'inactive')->count();
+        $totalSuspendedUsers = User::where('is_suspend', 1)->count();
+
+        return view('admin.super.index', compact('users', 'totalMahasiswa', 'totalActiveUsers', 'totalInactiveUsers', 'totalSuspendedUsers'));
     }
 
 
@@ -141,7 +172,8 @@ class SuperAdminController extends Controller
         }
     }
 
-    public function updateRole(Request $request, $id){
+    public function updateRole(Request $request, $id)
+    {
         // Validasi untuk memastikan role yang dikirim adalah salah satu dari opsi yang valid
         $validated = $request->validate([
             'role' => ['required', Rule::in(['super_admin', 'admin_jurusan', 'kaprodi', 'kajur', 'mahasiswa'])],
@@ -154,7 +186,6 @@ class SuperAdminController extends Controller
 
             // Kirim respons sukses dalam format JSON
             return response()->json(['message' => 'Role for ' . $user->name . ' has been changed successfully!']);
-
         } catch (\Exception $e) {
             // Kirim respons error jika gagal
             return response()->json(['message' => 'Failed to change role.'], 500);

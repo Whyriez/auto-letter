@@ -103,7 +103,7 @@
                     </div>
 
                     @if (session('flash.error'))
-                       <div class="bg-red-100 text-red-500 px-4 py-3 rounded relative"><p class="text-xs text-center">{{ session('flash.error') }}</p></div>
+                       <div class="bg-red-100 text-red-500 px-4 py-3 rounded relative"><p class="text-sm text-center">{{ session('flash.error') }}</p></div>
                     @endif
 
                     <!-- Login Button -->

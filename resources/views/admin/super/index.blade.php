@@ -37,22 +37,21 @@
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
-                                </path>
+                                    d="M17 20h5v-1a6 6 0 00-9-5.197M9 20H4v-1a6 6 0 019-5.197M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
                             </svg>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-gray-900">1,247</p>
-                            <p class="text-sm text-gray-600">Total Users</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $totalMahasiswa }}</p>
+                            <p class="text-sm text-gray-600">Total Mahasiswa</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,12 +60,12 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-gray-900">1,189</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $totalActiveUsers }}</p>
                             <p class="text-sm text-gray-600">Active Users</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,23 +74,23 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-gray-900">23</p>
-                            <p class="text-sm text-gray-600">Pending Approval</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $totalInactiveUsers }}</p>
+                            <p class="text-sm text-gray-600">Inactive Users</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728">
-                                </path>
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                                <line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="16" y1="8" x2="8" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-gray-900">35</p>
-                            <p class="text-sm text-gray-600">Suspended</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $totalSuspendedUsers }}</p>
+                            <p class="text-sm text-gray-600">Suspended Users</p>
                         </div>
                     </div>
                 </div>
@@ -113,45 +112,53 @@
 
             <!-- Filters and Search -->
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
-                <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                    <div class="flex flex-col sm:flex-row gap-4 flex-1">
-                        <div class="relative">
-                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            <input type="text" placeholder="Search users..."
-                                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
+                <form method="GET" action="{{ route('super_admin.dashboard') }}">
+                    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                        <div class="flex flex-col sm:flex-row gap-4 flex-1">
+                            <div class="relative">
+                                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <input type="text" placeholder="Search users..." name="search"
+                                    value="{{ request('search') }}"
+                                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
+                            </div>
+                            <select name="role"
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                <option value="">All Roles</option>
+                                <option value="super_admin" {{ request('role') == 'super_admin' ? 'selected' : '' }}>Super
+                                    Admin</option>
+                                <option value="admin_jurusan" {{ request('role') == 'admin_jurusan' ? 'selected' : '' }}>
+                                    Admin Jurusan</option>
+                                <option value="kaprodi" {{ request('role') == 'kaprodi' ? 'selected' : '' }}>Kaprodi
+                                </option>
+                                <option value="kajur" {{ request('role') == 'kajur' ? 'selected' : '' }}>Kajur</option>
+                                <option value="mahasiswa" {{ request('role') == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa
+                                </option>
+                            </select>
+                            <select name="status"
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                <option value="">All Status</option>
+                                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active
+                                </option>
+                                <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive
+                                </option>
+                            </select>
+                            <div class="flex gap-2">
+                                <button type="submit"
+                                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                                    Filter
+                                </button>
+                                <a href="{{ route('super_admin.dashboard') }}" type="button"
+                                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors">
+                                    Clear
+                                </a>
+                            </div>
                         </div>
-                        <select
-                            class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                            <option value="">All Roles</option>
-                            <option value="super-admin">Super Admin</option>
-                            <option value="department-admin">Department Admin</option>
-                            <option value="staff">Staff</option>
-                            <option value="student">Student</option>
-                        </select>
-                        <select
-                            class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="pending">Pending</option>
-                            <option value="suspended">Suspended</option>
-                        </select>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="showDemo()"
-                            class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors">
-                            Export Users
-                        </button>
-                        <button onclick="showDemo()"
-                            class="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-medium transition-colors">
-                            Bulk Actions
-                        </button>
-                    </div>
-                </div>
+                </form>
             </div>
 
             <!-- Users Table -->
@@ -185,7 +192,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse ($user as $u)
+                            @forelse ($users as $u)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <input type="checkbox"
@@ -276,20 +283,22 @@
 
                 <!-- Mobile Cards -->
                 <div class="mobile-cards p-4 space-y-4">
-                    @forelse ($user as $u)
+                    @forelse ($users as $u)
                         <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
                             <div class="flex items-start justify-between mb-3">
                                 <div class="flex items-center">
                                     <input type="checkbox"
                                         class="rounded border-gray-300 text-red-600 focus:ring-red-500 mr-3">
-                                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                    <div
+                                        class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
                                         <span class="text-purple-600 font-semibold text-sm">
                                             {{ collect(explode(' ', $u->name))->map(fn($word) => strtoupper(Str::substr($word, 0, 1)))->implode('') }}
                                         </span>
                                     </div>
                                     <div>
                                         <div class="text-sm font-medium text-gray-900">{{ $u->name }}</div>
-                                        <div class="text-xs text-gray-500">{{ '@' . (Str::slug($u->name, '') ?? '') }}</div>
+                                        <div class="text-xs text-gray-500">{{ '@' . (Str::slug($u->name, '') ?? '') }}
+                                        </div>
                                     </div>
                                 </div>
                                 <span class="status-active px-2 py-1 rounded-full text-xs font-medium">
@@ -303,8 +312,7 @@
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-600">Role:</span>
-                                    <select
-                                        onchange="handleRoleChange(this, {{ $u->id }}, '{{ $u->role }}')"
+                                    <select onchange="handleRoleChange(this, {{ $u->id }}, '{{ $u->role }}')"
                                         class="role-dropdown text-xs px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 bg-white">
                                         <option value="super_admin" {{ $u->role == 'super_admin' ? 'selected' : '' }}>
                                             Super Admin</option>
@@ -329,8 +337,8 @@
                                 <button onclick="openDeleteModal('{{ route('super_admin.delete_user', $u->id) }}')"
                                     class="flex-1 text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Delete</button>
                                 @if ($u->is_suspend)
-                                    <form action="{{ route('super_admin.toggle_suspend', $u->id) }}"
-                                        method="POST" class="flex-1 inline-block m-0 p-0">
+                                    <form action="{{ route('super_admin.toggle_suspend', $u->id) }}" method="POST"
+                                        class="flex-1 inline-block m-0 p-0">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="is_suspend" value="0">
@@ -340,8 +348,8 @@
                                         </button>
                                     </form>
                                 @else
-                                    <form action="{{ route('super_admin.toggle_suspend', $u->id) }}"
-                                        method="POST" class="flex-1 inline-block m-0 p-0">
+                                    <form action="{{ route('super_admin.toggle_suspend', $u->id) }}" method="POST"
+                                        class="flex-1 inline-block m-0 p-0">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="is_suspend" value="1">
@@ -359,7 +367,7 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
+                {{-- <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
                     <div class="flex items-center justify-between">
                         <div class="text-sm text-gray-700">
                             Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span
@@ -379,6 +387,32 @@
                                 class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">Next</button>
                         </div>
                     </div>
+                </div> --}}
+                <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
+
+                    {{-- Cek jika ada data untuk ditampilkan --}}
+                    @if ($users->hasPages())
+                        <div class="flex items-center justify-between">
+
+                            {{-- Teks "Showing..." yang dinamis --}}
+                            <div class="text-sm text-gray-700">
+                                Showing
+                                <span class="font-medium">{{ $users->firstItem() }}</span>
+                                to
+                                <span class="font-medium">{{ $users->lastItem() }}</span>
+                                of
+                                <span class="font-medium">{{ $users->total() }}</span>
+                                results
+                            </div>
+
+                            {{-- Link paginasi dinamis dari Laravel --}}
+                            <div>
+                                {{ $users->links() }}
+                            </div>
+
+                        </div>
+                    @endif
+
                 </div>
             </div>
         </main>

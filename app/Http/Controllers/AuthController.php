@@ -15,33 +15,37 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function login_process(Request $request)
     {
-        // 1. Validasi input dari form
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // 2. Menyiapkan data kredensial untuk login
         $credentials = $request->only('email', 'password');
-
-        // 3. Menyiapkan opsi "Remember Me"
-        // Menggunakan $request->boolean('remember') untuk mendapatkan nilai true/false
         $remember = $request->boolean('remember');
 
-        // 4. Mencoba melakukan autentikasi
         if (Auth::attempt($credentials, $remember)) {
-            // Jika berhasil, regenerate session untuk keamanan
-            $request->session()->regenerate();
-
-            // 5. Ambil data user yang sedang login
             $user = Auth::user();
 
-            // 6. Arahkan berdasarkan role user
+            if ($user->status === 'inactive') {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->with('flash.error', 'Your account has been deactivated.');
+            }
+
+            if ($user->is_suspend) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->with('flash.error', 'Your account has been suspended.');
+            }
+
+            $request->session()->regenerate();
+
             switch ($user->role) {
                 case 'super_admin':
                     return redirect()->route('super_admin.dashboard');
@@ -54,14 +58,12 @@ class AuthController extends Controller
                 case 'mahasiswa':
                     return redirect()->route('mahasiswa.dashboard');
                 default:
-                    // Jika role tidak dikenali, arahkan ke halaman login
-                    return redirect('/login');
+                    Auth::logout();
+                    return redirect('/login')->with('flash.error', 'Invalid role.');
             }
         }
 
-        // 7. Jika autentikasi gagal
-        // Kembalikan ke halaman login dengan pesan error
-        return back()->with('flash.error', 'Email or Password is Incorrect');
+        return back()->with('flash.error', ' email or password is incorrect.');
     }
 
     /**
