@@ -13,11 +13,17 @@ return new class extends Migration
     {
         Schema::create('letter_templates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('jurusan_id')->constrained('jurusans')->onDelete('cascade');
-            $table->string('title');
-            $table->boolean('requires_kaprodi')->default(false);
-            $table->boolean('requires_ketua_jurusan')->default(false);
-            $table->boolean('is_active')->default(true);
+            $table->string('kategori');
+            $table->string('nama_surat');
+            $table->string('kode_seri');
+            $table->string('kode_unit');
+            $table->string('kode_arsip');
+            $table->string('tujuan_nama');
+            $table->string('tujuan_lokasi');
+            $table->text('konten');
+            $table->unsignedBigInteger('requires_kaprodi')->nullable();
+            $table->unsignedBigInteger('requires_ketua_jurusan')->nullable();
+            $table->enum('status', ['Draft', 'Active', 'Archived'])->default('Draft');
             $table->timestamps();
         });
     }

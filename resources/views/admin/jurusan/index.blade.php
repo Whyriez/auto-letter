@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutoLetter - Admin Template Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -43,6 +44,12 @@
 
         .status-archived {
             @apply bg-gray-100 text-gray-800;
+        }
+
+        .desktop-table {
+            width: 100%;
+            overflow-x: auto;
+            /* supaya kalau tabelnya panjang bisa di-scroll */
         }
 
         /* Mobile card styles */
@@ -113,15 +120,7 @@
                 </svg>
                 Template Management
             </a>
-            <a href="#" onclick="showDemo()"
-                class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg mb-1 transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
-                    </path>
-                </svg>
-                User Management
-            </a>
+
             <a href="#" onclick="showDemo()"
                 class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg mb-1 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -274,44 +273,75 @@
 
             <!-- Filters and Search -->
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
-                <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                <form method="GET" action="{{ route('surat.index') }}"
+                    class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                     <div class="flex flex-col sm:flex-row gap-4 flex-1">
+                        <!-- Search -->
                         <div class="relative">
                             <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
-                            <input type="text" placeholder="Search templates..."
+                            <input type="text" name="search" placeholder="Search templates..."
+                                value="{{ request('search') }}"
                                 class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
                         </div>
-                        <select
+
+                        <!-- Filter kategori -->
+                        <select name="kategori"
                             class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                             <option value="">All Categories</option>
-                            <option value="academic">Academic Letters</option>
-                            <option value="administrative">Administrative</option>
-                            <option value="recommendation">Recommendation</option>
-                            <option value="certification">Certification</option>
+                            <option value="akademik" {{ request('kategori') == 'akademik' ? 'selected' : '' }}>Akademik
+                            </option>
+                            <option value="administrasi" {{ request('kategori') == 'administrasi' ? 'selected' : '' }}>
+                                Administrasi</option>
+                            <option value="rekomendasi" {{ request('kategori') == 'rekomendasi' ? 'selected' : '' }}>
+                                Rekomendasi</option>
                         </select>
-                        <select
+
+                        <!-- Filter status -->
+                        <select name="status"
                             class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                             <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="draft">Draft</option>
-                            <option value="archived">Archived</option>
+                            <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active
+                            </option>
+                            <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                            <option value="archived" {{ request('status') == 'archived' ? 'selected' : '' }}>Archived
+                            </option>
                         </select>
+
+                        <button type="submit"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                            Filter
+                        </button>
                     </div>
-                    <button onclick="showDemo()"
-                        class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors">
-                        Export Templates
-                    </button>
-                </div>
+                </form>
             </div>
+
+
+            @if (session('success'))
+                <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+                    <p class="font-semibold mb-2">⚠️ Ada kesalahan input:</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
 
             <!-- Templates Table -->
             <div class="bg-white rounded-xl card-shadow overflow-hidden">
                 <div class="px-4 sm:px-6 py-4 border-b border-gray-200 bg-red-50">
-                    <h3 class="text-lg font-semibold text-red-900">Letter Templates</h3>
+                    <h3 class="text-lg font-semibold text-red-900">Template Surat</h3>
                     <p class="text-sm text-red-700 mt-1">Manage and organize your department's letter templates</p>
                 </div>
 
@@ -322,347 +352,173 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Template Name</th>
+                                    Nama Surat</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Category</th>
+                                    Kategori</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Last Modified</th>
+                                    Terakhir diubah</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Status</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Usage Count</th>
+                                    Total Penggunaan</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                    Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
+                            @forelse($templates as $template)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                                <svg class="w-5 h-5 text-blue-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ $template->nama_surat }}</div>
+                                                <div class="text-sm text-gray-500">
+                                                    {{ Str::limit(strip_tags($template->konten), 40) }}</div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900">Surat Aktif Kuliah</div>
-                                            <div class="text-sm text-gray-500">Academic enrollment letter</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Academic Letters</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 20, 2023</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        class="status-active px-2 py-1 rounded-full text-xs font-medium">Active</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">45</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <button onclick="editTemplate('Surat Aktif Kuliah')"
-                                        class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">Edit</button>
-                                    <button onclick="duplicateTemplate('Surat Aktif Kuliah')"
-                                        class="text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-3 py-1 rounded-lg transition-colors">Duplicate</button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900">Izin Penelitian</div>
-                                            <div class="text-sm text-gray-500">Research permission letter</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Administrative</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 18, 2023</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        class="status-active px-2 py-1 rounded-full text-xs font-medium">Active</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">32</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <button onclick="editTemplate('Izin Penelitian')"
-                                        class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">Edit</button>
-                                    <button onclick="duplicateTemplate('Izin Penelitian')"
-                                        class="text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-3 py-1 rounded-lg transition-colors">Duplicate</button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900">Surat Rekomendasi</div>
-                                            <div class="text-sm text-gray-500">Letter of recommendation</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Recommendation</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 15, 2023</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        class="status-active px-2 py-1 rounded-full text-xs font-medium">Active</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">67</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <button onclick="editTemplate('Surat Rekomendasi')"
-                                        class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">Edit</button>
-                                    <button onclick="duplicateTemplate('Surat Rekomendasi')"
-                                        class="text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-3 py-1 rounded-lg transition-colors">Duplicate</button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
-                                            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900">Surat Keterangan</div>
-                                            <div class="text-sm text-gray-500">Certificate letter</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Certification</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 12, 2023</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="status-draft px-2 py-1 rounded-full text-xs font-medium">Draft</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <button onclick="editTemplate('Surat Keterangan')"
-                                        class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">Edit</button>
-                                    <button onclick="duplicateTemplate('Surat Keterangan')"
-                                        class="text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-3 py-1 rounded-lg transition-colors">Duplicate</button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
-                                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900">Surat Magang</div>
-                                            <div class="text-sm text-gray-500">Internship letter</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Academic Letters</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 10, 2023</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        class="status-active px-2 py-1 rounded-full text-xs font-medium">Active</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">28</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <button onclick="editTemplate('Surat Magang')"
-                                        class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">Edit</button>
-                                    <button onclick="duplicateTemplate('Surat Magang')"
-                                        class="text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-3 py-1 rounded-lg transition-colors">Duplicate</button>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ ucfirst($template->kategori) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $template->updated_at->format('M d, Y') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 py-1 rounded-full text-xs font-medium
+                    {{ $template->status === 'active' ? 'status-active' : ($template->status === 'draft' ? 'status-draft' : 'status-archived') }}">
+                                            {{ ucfirst($template->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $template->letter_requests_count }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                        <button onclick="editTemplate({{ $template }})"
+                                            class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">
+                                            Edit
+                                        </button>
+
+                                        <button onclick="duplicateTemplate('{{ $template->id }}')"
+                                            class="text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-3 py-1 rounded-lg transition-colors">Duplicate</button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                        Belum ada template surat.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Mobile Cards -->
                 <div class="mobile-cards p-4 space-y-4">
-                    <!-- Card 1 -->
-                    <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                        </path>
-                                    </svg>
+                    @forelse($templates as $template)
+                        <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">{{ $template->nama_surat }}
+                                        </div>
+                                        <div class="text-xs text-gray-500">{{ ucfirst($template->kategori) }}</div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div class="text-sm font-medium text-gray-900">Surat Aktif Kuliah</div>
-                                    <div class="text-xs text-gray-500">Academic enrollment letter</div>
+                                <span
+                                    class="px-2 py-1 rounded-full text-xs font-medium
+                    {{ $template->status === 'active' ? 'status-active' : ($template->status === 'draft' ? 'status-draft' : 'status-archived') }}">
+                                    {{ ucfirst($template->status) }}
+                                </span>
+                            </div>
+                            <div class="space-y-2 text-sm mb-4">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Kategori:</span>
+                                    <span class="text-gray-900 font-medium">{{ ucfirst($template->kategori) }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Terakhir Diubah:</span>
+                                    <span class="text-gray-900">{{ $template->updated_at->format('M d, Y') }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Total Penggunaan:</span>
+                                    <span class="text-gray-900">{{ $template->letter_requests_count }} times</span>
                                 </div>
                             </div>
-                            <span class="status-active px-2 py-1 rounded-full text-xs font-medium">Active</span>
-                        </div>
-                        <div class="space-y-2 text-sm mb-4">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Category:</span>
-                                <span class="text-gray-900 font-medium">Academic Letters</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Last Modified:</span>
-                                <span class="text-gray-900">Dec 20, 2023</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Usage Count:</span>
-                                <span class="text-gray-900">45 times</span>
-                            </div>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editTemplate('Surat Aktif Kuliah')"
-                                class="flex-1 text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Edit</button>
-                            <button onclick="duplicateTemplate('Surat Aktif Kuliah')"
-                                class="flex-1 text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Duplicate</button>
-                        </div>
-                    </div>
+                            <div class="flex space-x-2">
+                                <button onclick="editTemplate({{ $template }})"
+                                    class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">
+                                    Edit
+                                </button>
 
-                    <!-- Card 2 -->
-                    <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-medium text-gray-900">Izin Penelitian</div>
-                                    <div class="text-xs text-gray-500">Research permission letter</div>
-                                </div>
-                            </div>
-                            <span class="status-active px-2 py-1 rounded-full text-xs font-medium">Active</span>
-                        </div>
-                        <div class="space-y-2 text-sm mb-4">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Category:</span>
-                                <span class="text-gray-900 font-medium">Administrative</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Last Modified:</span>
-                                <span class="text-gray-900">Dec 18, 2023</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Usage Count:</span>
-                                <span class="text-gray-900">32 times</span>
+                                <button onclick="duplicateTemplate('{{ $template->id }}')"
+                                    class="flex-1 text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Duplicate</button>
                             </div>
                         </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editTemplate('Izin Penelitian')"
-                                class="flex-1 text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Edit</button>
-                            <button onclick="duplicateTemplate('Izin Penelitian')"
-                                class="flex-1 text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Duplicate</button>
-                        </div>
-                    </div>
-
-                    <!-- Card 3 -->
-                    <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-medium text-gray-900">Surat Rekomendasi</div>
-                                    <div class="text-xs text-gray-500">Letter of recommendation</div>
-                                </div>
-                            </div>
-                            <span class="status-active px-2 py-1 rounded-full text-xs font-medium">Active</span>
-                        </div>
-                        <div class="space-y-2 text-sm mb-4">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Category:</span>
-                                <span class="text-gray-900 font-medium">Recommendation</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Last Modified:</span>
-                                <span class="text-gray-900">Dec 15, 2023</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Usage Count:</span>
-                                <span class="text-gray-900">67 times</span>
-                            </div>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editTemplate('Surat Rekomendasi')"
-                                class="flex-1 text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Edit</button>
-                            <button onclick="duplicateTemplate('Surat Rekomendasi')"
-                                class="flex-1 text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Duplicate</button>
-                        </div>
-                    </div>
+                    @empty
+                        <p class="text-center text-gray-500">Belum ada template surat.</p>
+                    @endforelse
                 </div>
 
                 <!-- Pagination -->
                 <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
                     <div class="flex items-center justify-between">
                         <div class="text-sm text-gray-700">
-                            Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span
-                                class="font-medium">15</span> results
+                            Showing
+                            <span class="font-medium">{{ $templates->firstItem() }}</span>
+                            to
+                            <span class="font-medium">{{ $templates->lastItem() }}</span>
+                            of
+                            <span class="font-medium">{{ $templates->total() }}</span>
+                            results
                         </div>
-                        <div class="flex space-x-2">
-                            <button
-                                class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
-                                disabled>Previous</button>
-                            <button
-                                class="px-3 py-1 text-sm text-white bg-red-600 border border-red-600 rounded-lg">1</button>
-                            <button
-                                class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
-                            <button
-                                class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">3</button>
-                            <button
-                                class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">Next</button>
+                        <div>
+                            {{ $templates->appends(request()->query())->links('pagination::tailwind') }}
+
                         </div>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
 
-    <!-- Template Modal -->
+
+
+
     <div id="template-modal"
         class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden items-center justify-center z-50 px-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <!-- Modal Header -->
-            <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h2 id="modal-title" class="text-xl font-semibold text-gray-900">Create New Template</h2>
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+
+            <!-- Modal Header - Fixed at top -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
+                <h2 id="modal-title" class="text-xl font-semibold text-gray-900">Buat Template Surat Baru</h2>
                 <button onclick="closeTemplateModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -671,88 +527,168 @@
                 </button>
             </div>
 
-            <!-- Modal Body -->
-            <form class="p-6 space-y-6" onsubmit="handleTemplateSubmit(event)">
-                <!-- Template Name -->
-                <div>
-                    <label for="template-name" class="block text-sm font-medium text-gray-700 mb-2">
-                        Template Name <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="template-name" name="template-name" required
-                        placeholder="Enter template name..."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
+            <!-- Form with flex layout -->
+            <form method="POST" action="{{ route('letter-templates.store') }}"
+                onsubmit="document.querySelector('#isi_konten').value = quill.root.innerHTML;"
+                class="flex-1 flex flex-col overflow-hidden">
+                @csrf
+                <!-- Scrollable Content Area -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-6">
+
+                    <!-- Template Name -->
+                    <div>
+                        <label for="template-name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Nama Surat <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="template-name" name="template_name" required
+                            placeholder="Enter template name..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
+                    </div>
+
+                    <!-- Category -->
+                    <div>
+                        <label for="template-category" class="block text-sm font-medium text-gray-700 mb-2">
+                            Ketegori <span class="text-red-500">*</span>
+                        </label>
+                        <select id="template-category" name="template_category" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900">
+                            <option value="">-- Pilih Kategori --</option>
+                            <option value="akademik">Akademik</option>
+                            <option value="administrasi">Administrasi</option>
+                            <option value="rekomendasi">Rekomendasi</option>
+                        </select>
+                    </div>
+
+                    <!-- Header Content -->
+
+                    <div>
+                        <label for="kode_seri" class="block text-md font-bold text-gray-700">
+                            Nomor Surat
+                        </label>
+                        <label for="kode_seri" class="block text-sm font-medium text-gray-700 mb-2">
+                            Kode Seri (Contoh: B) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="kode_seri" name="kode_seri" required
+                            placeholder="Masukkan kode seri..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
+                    </div>
+
+                    <div>
+                        <label for="kode_unit" class="block text-sm font-medium text-gray-700 mb-2">
+                            Kode Unit (Contoh: UN47.B5.5) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="kode_unit" name="kode_unit" required
+                            placeholder="Masukkan kode unit..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
+                    </div>
+
+                    <div>
+                        <label for="kode_arsip" class="block text-sm font-medium text-gray-700 mb-2">
+                            Kode Arsip (Contoh: PK.01.06) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="kode_arsip" name="kode_arsip" required
+                            placeholder="Masukkan kode arsip..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
+                    </div>
+
+                    <!-- Header Content -->
+                    <div>
+                        <label for="tujuan_nama" class="block text-sm font-medium text-gray-700 mb-2">
+                            Tujuan Nama (Contoh: Koordinator Fakultas Teknik) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="tujuan_nama" name="tujuan_nama" required
+                            placeholder="Masukkan nama tujuan..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
+                    </div>
+
+                    <div>
+                        <label for=tujuan_tempat" class="block text-sm font-medium text-gray-700 mb-2">
+                            Tujuan Tempat (Contoh: Gorontalo) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="tujuan_tempat" name="tujuan_tempat" required
+                            placeholder="Masukkan tempat tujuan..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
+                    </div>
+
+                    <!-- Body Content -->
+                    <div>
+                        <label for="isi_konten" class="block text-sm font-medium text-gray-700 mb-2">
+                            Isi Konten <span class="text-red-500">*</span>
+                        </label>
+
+                        {{-- <textarea id="isi_konten" name="isi_konten"></textarea> --}}
+                        <div id="editor">
+
+                         
+                        </div>
+                        <textarea id="isi_konten" name="konten" hidden></textarea>
+
+                        @verbatim
+                            <div
+                                class="mt-2 text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded-lg p-3 leading-relaxed">
+                                <p class="font-medium mb-1">📌 Gunakan placeholder berikut untuk konten dinamis:</p>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $nama_mhs }}</code> → Nama
+                                        Mahasiswa</li>
+                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $nim }}</code> → NIM
+                                        Mahasiswa</li>
+                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $nama_dsn }}</code> → Nama
+                                        Dosen
+                                    </li>
+                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $nip }}</code> → NIP
+                                        Dosen
+                                    </li>
+
+                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $jabatan }}</code> → Jabatan
+                                    </li>
+                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $array_mhs }}</code> → Banyak
+                                        Mahasiswa</li>
+                                </ul>
+                            </div>
+                        @endverbatim
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Penerusan Surat
+                        </label>
+                        <div class="flex flex-col gap-2 text-sm text-gray-700">
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="requires_kaprodi" value="1"
+                                    class="h-4 w-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                                <span class="ml-2">Kirim ke Ketua Program Studi</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="requires_ketua_jurusan" value="1"
+                                    class="h-4 w-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                                <span class="ml-2">Kirim ke Ketua Jurusan</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Template Status -->
+                    <div>
+                        <label for="template-status" class="block text-sm font-medium text-gray-700 mb-2">
+                            Status <span class="text-red-500">*</span>
+                        </label>
+                        <select id="template-status" name="status" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900">
+                            <option value="draft">Draft</option>
+                            <option value="active">Active</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Category -->
-                <div>
-                    <label for="template-category" class="block text-sm font-medium text-gray-700 mb-2">
-                        Category <span class="text-red-500">*</span>
-                    </label>
-                    <select id="template-category" name="template-category" required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900">
-                        <option value="">-- Select Category --</option>
-                        <option value="academic">Academic Letters</option>
-                        <option value="administrative">Administrative</option>
-                        <option value="recommendation">Recommendation</option>
-                        <option value="certification">Certification</option>
-                    </select>
-                </div>
-
-                <!-- Header Content -->
-                <div>
-                    <label for="header-content" class="block text-sm font-medium text-gray-700 mb-2">
-                        Header Content <span class="text-red-500">*</span>
-                    </label>
-                    <textarea id="header-content" name="header-content" rows="4" required
-                        placeholder="Enter the header content for the letter template..."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500 resize-none"></textarea>
-                    <p class="text-xs text-gray-500 mt-1">Include letterhead, department info, and contact details</p>
-                </div>
-
-                <!-- Body Content -->
-                <div>
-                    <label for="body-content" class="block text-sm font-medium text-gray-700 mb-2">
-                        Body Content <span class="text-red-500">*</span>
-                    </label>
-                    <textarea id="body-content" name="body-content" rows="8" required
-                        placeholder="Enter the main body content of the letter template..."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500 resize-none"></textarea>
-                    <p class="text-xs text-gray-500 mt-1">Use placeholders like {{ student_name }},
-                        {{ nim }}, {{ program }} for dynamic content</p>
-                </div>
-
-                <!-- Footer Content -->
-                <div>
-                    <label for="footer-content" class="block text-sm font-medium text-gray-700 mb-2">
-                        Footer Content
-                    </label>
-                    <textarea id="footer-content" name="footer-content" rows="3"
-                        placeholder="Enter footer content (signatures, stamps, etc.)..."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500 resize-none"></textarea>
-                </div>
-
-                <!-- Template Status -->
-                <div>
-                    <label for="template-status" class="block text-sm font-medium text-gray-700 mb-2">
-                        Status <span class="text-red-500">*</span>
-                    </label>
-                    <select id="template-status" name="template-status" required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900">
-                        <option value="draft">Draft</option>
-                        <option value="active">Active</option>
-                        <option value="archived">Archived</option>
-                    </select>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                <!-- Action Buttons - Fixed at bottom, inside form -->
+                <div class="flex flex-col sm:flex-row gap-3 p-6 border-t border-gray-200 flex-shrink-0 bg-white">
                     <button type="button" onclick="closeTemplateModal()"
                         class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-200">
                         Cancel
                     </button>
                     <button type="submit"
                         class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-200">
-                        <span id="submit-text">Create Template</span>
+                        <span id="submit-text">Buat Template</span>
                     </button>
                 </div>
             </form>
@@ -780,6 +716,18 @@
         </div>
     </div>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        document.querySelector('form').onsubmit = function() {
+            document.querySelector('#isi_konten').value = quill.root.innerHTML;
+        };
+    </script>
+
     <script>
         // Mobile menu functionality
         const menuButton = document.getElementById('menu-button');
@@ -802,26 +750,49 @@
         mobileOverlay.addEventListener('click', closeSidebarFunc);
 
         // Template modal functionality
-        function openTemplateModal(templateName = null) {
+        function openTemplateModal(template = null) {
             const modal = document.getElementById('template-modal');
             const modalTitle = document.getElementById('modal-title');
             const submitText = document.getElementById('submit-text');
+            const form = document.querySelector('#template-modal form');
 
-            if (templateName) {
-                modalTitle.textContent = `Edit Template: ${templateName}`;
+            if (template) {
+                // mode edit
+                modalTitle.textContent = `Edit Template: ${template.nama_surat}`;
                 submitText.textContent = 'Update Template';
-                // Pre-fill form with existing data (in real app, this would come from API)
-                document.getElementById('template-name').value = templateName;
+
+                // isi form sesuai data template
+                document.getElementById('template-name').value = template.nama_surat;
+                document.getElementById('template-category').value = template.kategori;
+                document.getElementById('kode_seri').value = template.kode_seri;
+                document.getElementById('kode_unit').value = template.kode_unit;
+                document.getElementById('kode_arsip').value = template.kode_arsip;
+                document.getElementById('tujuan_nama').value = template.tujuan_nama;
+                document.getElementById('tujuan_tempat').value = template.tujuan_lokasi;
+                document.getElementById('isi_konten').value = template.konten;
+                document.getElementById('template-status').value = (template.status ?? '').toLowerCase();
+
+                document.querySelector('[name="requires_kaprodi"]').checked = template.requires_kaprodi == 1;
+                document.querySelector('[name="requires_ketua_jurusan"]').checked = template.requires_ketua_jurusan == 1;
+
+
+                quill.root.innerHTML = template.konten ?? '';
+
+                // ubah form action ke route update
+                form.action = `/letter-templates/${template.id}`;
+                form.insertAdjacentHTML("beforeend", `<input type="hidden" name="_method" value="PUT">`);
             } else {
-                modalTitle.textContent = 'Create New Template';
+                // mode create
+                modalTitle.textContent = 'Buat Template Surat Baru';
                 submitText.textContent = 'Create Template';
-                // Reset form
-                document.querySelector('#template-modal form').reset();
+                form.action = `{{ route('letter-templates.store') }}`;
+                form.reset();
             }
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }
+
 
         function closeTemplateModal() {
             document.getElementById('template-modal').classList.add('hidden');
@@ -838,9 +809,10 @@
         }
 
         // Action functions
-        function editTemplate(templateName) {
-            openTemplateModal(templateName);
+        function editTemplate(template) {
+            openTemplateModal(template);
         }
+
 
         function duplicateTemplate(templateName) {
             showSuccessMessage(`Template "${templateName}" has been duplicated!`, 'blue');
@@ -910,4 +882,5 @@
         });
     </script>
 </body>
+
 </html>

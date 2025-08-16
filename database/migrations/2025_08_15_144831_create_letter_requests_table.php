@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Mahasiswa
             $table->foreignId('letter_template_id')->constrained('letter_templates')->onDelete('cascade');
-            $table->json('request_data')->nullable();
-            $table->enum('status', ['pending', 'processing', 'rejected', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'rejected', 'completed'])->default('pending');
             $table->string('unique_code')->unique();
             $table->string('final_document_path')->nullable();
             $table->string('blockchain_hash')->nullable()->index();
