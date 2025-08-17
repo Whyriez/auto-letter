@@ -124,7 +124,7 @@
 
         try {
             // 1. Minta data user ke server menggunakan ID
-            const response = await fetch(`/dashboard/admin/users/${userId}`);
+            const response = await fetch(`/dashboard/users/${userId}`);
             // Jika respons tidak sukses (misal: user tidak ditemukan), lempar error
             if (!response.ok) {
                 throw new Error('User data not found.');
@@ -139,7 +139,7 @@
             document.getElementById('edit-user-status').value = user.status ?? '';
 
             if (form) {
-                form.action = `/dashboard/admin/users/${user.id}`;
+                form.action = `/dashboard/users/${user.id}`;
             }
 
         } catch (error) {

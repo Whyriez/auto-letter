@@ -164,6 +164,13 @@
                 </svg>
                 User Management
             </a>
+
+            <a href="#" onclick="openLogoutModal()" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg mb-1 transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+                Logout
+            </a>
             {{-- <a href="#" onclick="showDemo()" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg mb-1 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -194,10 +201,12 @@
         <div class="absolute bottom-0 w-full p-4 border-t border-gray-200">
             <div class="flex items-center">
                 <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
-                    <span class="text-red-600 font-semibold text-sm">SA</span>
+                    <span class="text-red-600 font-semibold text-sm">
+                        {{ collect(explode(' ', Auth::user()->name))->map(fn($word) => Str::upper(Str::substr($word, 0, 1)))->implode('') }}
+                    </span>
                 </div>
                 <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-900">Super Admin</p>
+                    <p class="text-sm font-medium text-gray-900">{{ Str::title(Auth::user()->name) }}</p>
                     <p class="text-xs text-gray-500">System Administrator</p>
                 </div>
             </div>
@@ -227,6 +236,9 @@
             </div>
         </div>
     </div>
+    {{-- confirm logout modal --}}
+    <x-admin.super.confirm-logout-modal />
+
     <script src="{{ asset('js/Super Admin/formValidateUser.js') }}"></script>
     <script src="{{ asset('js/Super Admin/handlerUserSubmit.js') }}"></script>
 

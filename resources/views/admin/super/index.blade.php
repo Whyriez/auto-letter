@@ -434,7 +434,7 @@
 
         try {
             // Kirim data ke server menggunakan Fetch API
-            const response = await fetch(`/dashboard/admin/users/${userId}/update-role`, {
+            const response = await fetch(`/dashboard/users/${userId}/update-role`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

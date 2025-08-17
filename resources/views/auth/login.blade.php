@@ -102,6 +102,13 @@
                         </label>
                     </div>
 
+                    @if (session('flash.success'))
+                        <div class="bg-green-100 text-green-600 px-4 py-3 rounded relative">
+                            <p class="text-sm text-center">{{ session('flash.success') }}</p>
+                        </div>
+                        
+                    @endif
+
                     @if (session('flash.error'))
                        <div class="bg-red-100 text-red-500 px-4 py-3 rounded relative"><p class="text-sm text-center">{{ session('flash.error') }}</p></div>
                     @endif

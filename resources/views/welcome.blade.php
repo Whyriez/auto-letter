@@ -275,7 +275,11 @@
                     <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Keamanan</a>
                     <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Harga</a>
                     <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Kontak</a>
-                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-400 transition-colors">Login</a>
+                    @if (Auth::check())
+                        <a href="/dashboard" class="text-gray-600 hover:text-red-400 transition-colors">Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-400 transition-colors">Login</a>
+                    @endif
                 </div>
             </div>
         </nav>
