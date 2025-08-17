@@ -11,20 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('letter_templates', function (Blueprint $table) {
+         Schema::create('letter_templates', function (Blueprint $table) {
             $table->id();
-            $table->string('kategori');
+            $table->unsignedBigInteger('letter_type_id');
             $table->string('nama_surat');
             $table->string('kode_seri');
             $table->string('kode_unit');
             $table->string('kode_arsip');
+            $table->string('perihal');
             $table->string('tujuan_nama');
             $table->string('tujuan_lokasi');
             $table->text('konten');
-            $table->unsignedBigInteger('requires_kaprodi')->nullable();
-            $table->unsignedBigInteger('requires_ketua_jurusan')->nullable();
+            $table->unsignedBigInteger('forward_to');
             $table->enum('status', ['Draft', 'Active', 'Archived'])->default('Draft');
             $table->timestamps();
+
+            $table->foreign('forward_to')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('letter_type_id')->references('id')->on('letter_types')->onDelete('cascade');
         });
     }
 

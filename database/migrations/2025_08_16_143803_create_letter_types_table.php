@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nomor_surat_counters', function (Blueprint $table) {
+        Schema::create('letter_types', function (Blueprint $table) {
             $table->id();
-            $table->string('tahun');
-            $table->integer('nomor_terakhir')->unique();
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nomor_surat_counters');
+        Schema::dropIfExists('letter_types');
     }
 };

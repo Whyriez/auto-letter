@@ -7,6 +7,7 @@
     <title>AutoLetter - Admin Template Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -112,13 +113,24 @@
                 </svg>
                 Dashboard
             </a>
-            <a href="#" class="flex items-center px-3 py-2 text-red-600 bg-red-50 rounded-lg mb-1 font-medium">
+            <a href="{{ route('letter-templates.index') }}"
+                class="flex items-center px-3 py-2 text-red-600 bg-red-50 rounded-lg mb-1 font-medium">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                     </path>
                 </svg>
                 Template Management
+            </a>
+
+            <a href="{{ route('letter-types.index') }}"
+                class="flex items-center px-3 py-2 text-red-600 bg-red-50 rounded-lg mb-1 font-medium">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                    </path>
+                </svg>
+                Jenis Surat
             </a>
 
             <a href="#" onclick="showDemo()"
@@ -291,13 +303,14 @@
                         <!-- Filter kategori -->
                         <select name="kategori"
                             class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                            <option value="">All Categories</option>
-                            <option value="akademik" {{ request('kategori') == 'akademik' ? 'selected' : '' }}>Akademik
-                            </option>
-                            <option value="administrasi" {{ request('kategori') == 'administrasi' ? 'selected' : '' }}>
-                                Administrasi</option>
-                            <option value="rekomendasi" {{ request('kategori') == 'rekomendasi' ? 'selected' : '' }}>
-                                Rekomendasi</option>
+                            <option value="">Semua Kategori</option>
+                            {{-- Loop untuk menampilkan data dari database --}}
+                            @foreach ($letterTypes as $type)
+                                <option value="{{ $type->id }}"
+                                    {{ request('kategori') == $type->name ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
                         </select>
 
                         <!-- Filter status -->
@@ -394,7 +407,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ ucfirst($template->kategori) }}
+                                        {{ ucfirst($template->letterType->name) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $template->updated_at->format('M d, Y') }}
@@ -415,8 +428,11 @@
                                             Edit
                                         </button>
 
-                                        <button onclick="duplicateTemplate('{{ $template->id }}')"
-                                            class="text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-3 py-1 rounded-lg transition-colors">Duplicate</button>
+                                        <button
+                                            onclick="duplicateTemplate({{ $template->id }}, '{{ $template->nama_surat }}')"
+                                            class="text-blue-600 hover:text-blue-900 ml-2">
+                                            Duplikat
+                                        </button>
                                     </td>
                                 </tr>
                             @empty
@@ -448,7 +464,8 @@
                                     <div>
                                         <div class="text-sm font-medium text-gray-900">{{ $template->nama_surat }}
                                         </div>
-                                        <div class="text-xs text-gray-500">{{ ucfirst($template->kategori) }}</div>
+                                        <div class="text-xs text-gray-500">{{ ucfirst($template->letter_type_id) }}
+                                        </div>
                                     </div>
                                 </div>
                                 <span
@@ -477,8 +494,11 @@
                                     Edit
                                 </button>
 
-                                <button onclick="duplicateTemplate('{{ $template->id }}')"
-                                    class="flex-1 text-purple-600 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">Duplicate</button>
+                                <button
+                                    onclick="duplicateTemplate({{ $template->id }}, '{{ $template->nama_surat }}')"
+                                    class="text-blue-600 hover:text-blue-900 ml-2">
+                                    Duplikat
+                                </button>
                             </div>
                         </div>
                     @empty
@@ -548,14 +568,17 @@
                     <!-- Category -->
                     <div>
                         <label for="template-category" class="block text-sm font-medium text-gray-700 mb-2">
-                            Ketegori <span class="text-red-500">*</span>
+                            Jenis Surat <span class="text-red-500">*</span>
                         </label>
                         <select id="template-category" name="template_category" required
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900">
                             <option value="">-- Pilih Kategori --</option>
-                            <option value="akademik">Akademik</option>
-                            <option value="administrasi">Administrasi</option>
-                            <option value="rekomendasi">Rekomendasi</option>
+                            {{-- Loop untuk menampilkan data dari database --}}
+                            @foreach ($letterTypes as $type)
+                                <option value="{{ $type->id }}">
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -591,6 +614,15 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
                     </div>
 
+                    <div>
+                        <label for="tujuan_nama" class="block text-sm font-medium text-gray-700 mb-2">
+                            Perihal (Contoh: Rekomendasi Magang) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="perihal" name="perihal" required
+                            placeholder="Masukkan perihal..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 text-gray-900 placeholder-gray-500">
+                    </div>
+
                     <!-- Header Content -->
                     <div>
                         <label for="tujuan_nama" class="block text-sm font-medium text-gray-700 mb-2">
@@ -619,7 +651,7 @@
                         {{-- <textarea id="isi_konten" name="isi_konten"></textarea> --}}
                         <div id="editor">
 
-                         
+
                         </div>
                         <textarea id="isi_konten" name="konten" hidden></textarea>
 
@@ -627,44 +659,138 @@
                             <div
                                 class="mt-2 text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded-lg p-3 leading-relaxed">
                                 <p class="font-medium mb-1">📌 Gunakan placeholder berikut untuk konten dinamis:</p>
-                                <ul class="list-disc list-inside space-y-1">
-                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $nama_mhs }}</code> → Nama
-                                        Mahasiswa</li>
-                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $nim }}</code> → NIM
-                                        Mahasiswa</li>
-                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $nama_dsn }}</code> → Nama
-                                        Dosen
-                                    </li>
-                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $nip }}</code> → NIP
-                                        Dosen
-                                    </li>
+                                <ul class="list-disc list-inside space-y-2 text-gray-700">
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ SPASI_PENYELARAS }}</code>
+        <p class="mt-1">
+            Placeholder ini digunakan untuk menyelaraskan teks seperti tabel.
+            <br>
+            <span class="font-semibold text-gray-800">Contoh Penggunaan:</span><br>
+            <span class="font-mono text-xs">
+                Nama {{ SPASI_PENYELARAS }} {{ $nama_dsn }}<br>
+                Jabatan {{ SPASI_PENYELARAS }} {{ $jabatan }}
+            </span>
+            <br><br>
+            <span class="font-semibold text-gray-800">Hasil:</span><br>
+            <table style="width:100%; border-collapse: collapse; font-size: 0.75rem;">
+                <tr>
+                    <td style="width:15%; padding: 0;">Nama</td>
+                    <td style="padding: 0;">: [Nama Dosen]</td>
+                </tr>
+                <tr>
+                    <td style="width:15%; padding: 0;">Jabatan</td>
+                    <td style="padding: 0;">: [Jabatan Dosen]</td>
+                </tr>
+            </table>
+        </p>
+    </li>
 
-                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $jabatan }}</code> → Jabatan
-                                    </li>
-                                    <li><code class="bg-gray-100 px-1 py-0.5 rounded">{{ $array_mhs }}</code> → Banyak
-                                        Mahasiswa</li>
-                                </ul>
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $nama_mhs }}</code>
+        <span class="font-semibold text-gray-800">→ Nama Mahasiswa Utama</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
+            <span class="font-mono text-xs">[Nama Mahasiswa]</span>
+        </p>
+    </li>
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $nim }}</code>
+        <span class="font-semibold text-gray-800">→ NIM Mahasiswa Utama</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
+            <span class="font-mono text-xs">[NIM Mahasiswa]</span>
+        </p>
+    </li>
+
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $nama_dsn }}</code>
+        <span class="font-semibold text-gray-800">→ Nama Penanda Tangan (Dosen)</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
+            <span class="font-mono text-xs">[Nama Dosen]</span>
+        </p>
+    </li>
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $nip }}</code>
+        <span class="font-semibold text-gray-800">→ NIP Penanda Tangan (Dosen)</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
+            <span class="font-mono text-xs">[NIP Dosen]</span>
+        </p>
+    </li>
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $jabatan }}</code>
+        <span class="font-semibold text-gray-800">→ Jabatan Penanda Tangan (Dosen)</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
+            <span class="font-mono text-xs">[Jabatan Dosen]</span>
+        </p>
+    </li>
+
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $lokasi }}</code>
+        <span class="font-semibold text-gray-800">→ Lokasi Tujuan</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
+            <span class="font-mono text-xs">[Lokasi Tujuan]</span>
+        </p>
+    </li>
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $waktu }}</code>
+        <span class="font-semibold text-gray-800">→ Waktu (Hari, Bulan, Tanggal, Jam)</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
+            <span class="font-mono text-xs">[Waktu]</span>
+        </p>
+    </li>
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $mata_kuliah }}</code>
+        <span class="font-semibold text-gray-800">→ Mata Kuliah</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
+            <span class="font-mono text-xs">[Mata Kuliah]</span>
+        </p>
+    </li>
+
+    <li>
+        <code class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $array_mhs }}</code>
+        <span class="font-semibold text-gray-800">→ Daftar Mahasiswa Tambahan</span>
+        <p class="mt-1">
+            <span class="font-semibold text-gray-800">Hasil:</span><br>
+            <table style="width:100%; border-collapse: collapse; font-size: 0.75rem;">
+                <tr>
+                    <td style="width:5%; padding: 0;">1.</td>
+                    <td style="width:50%; padding: 0;">[Nama Mahasiswa]</td>
+                    <td style="width:45%; padding: 0;">NIM. [NIM Mahasiswa]</td>
+                </tr>
+                <tr>
+                    <td style="width:5%; padding: 0;">2.</td>
+                    <td style="width:50%; padding: 0;">[Nama Mahasiswa]</td>
+                    <td style="width:45%; padding: 0;">NIM. [NIM Mahasiswa]</td>
+                </tr>
+            </table>
+        </p>
+    </li>
+</ul>
                             </div>
                         @endverbatim
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="forward_to" class="block text-sm font-medium text-gray-700 mb-2">
                             Penerusan Surat
                         </label>
-                        <div class="flex flex-col gap-2 text-sm text-gray-700">
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" name="requires_kaprodi" value="1"
-                                    class="h-4 w-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
-                                <span class="ml-2">Kirim ke Ketua Program Studi</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" name="requires_ketua_jurusan" value="1"
-                                    class="h-4 w-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
-                                <span class="ml-2">Kirim ke Ketua Jurusan</span>
-                            </label>
-                        </div>
+                        <select id="forward_to" name="forward_to"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900">
+                            <option value="">-- Pilih Penerima --</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}">
+                                    {{ ucfirst($user->role) }} - {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
+
 
                     <!-- Template Status -->
                     <div>
@@ -763,19 +889,17 @@
 
                 // isi form sesuai data template
                 document.getElementById('template-name').value = template.nama_surat;
-                document.getElementById('template-category').value = template.kategori;
+                document.getElementById('template-category').value = template.letter_type_id;
                 document.getElementById('kode_seri').value = template.kode_seri;
                 document.getElementById('kode_unit').value = template.kode_unit;
                 document.getElementById('kode_arsip').value = template.kode_arsip;
+                document.getElementById('perihal').value = template.perihal;
                 document.getElementById('tujuan_nama').value = template.tujuan_nama;
                 document.getElementById('tujuan_tempat').value = template.tujuan_lokasi;
                 document.getElementById('isi_konten').value = template.konten;
                 document.getElementById('template-status').value = (template.status ?? '').toLowerCase();
 
-                document.querySelector('[name="requires_kaprodi"]').checked = template.requires_kaprodi == 1;
-                document.querySelector('[name="requires_ketua_jurusan"]').checked = template.requires_ketua_jurusan == 1;
-
-
+                const ara = document.getElementById('forward_to').value = template.forward_to;
                 quill.root.innerHTML = template.konten ?? '';
 
                 // ubah form action ke route update
@@ -814,8 +938,25 @@
         }
 
 
-        function duplicateTemplate(templateName) {
-            showSuccessMessage(`Template "${templateName}" has been duplicated!`, 'blue');
+        function duplicateTemplate(templateId, templateName) {
+            // Buat form dinamis untuk mengirim POST request
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/letter-templates/${templateId}/duplicate`;
+
+            // Tambahkan CSRF token untuk keamanan
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            form.appendChild(csrfToken);
+            document.body.appendChild(form);
+
+            // Tampilkan konfirmasi
+            if (confirm(`Apakah Anda yakin ingin menduplikasi template "${templateName}"?`)) {
+                form.submit();
+            }
         }
 
         function showSuccessMessage(message, color = 'green') {

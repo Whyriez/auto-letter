@@ -14,11 +14,15 @@ class LetterRequests extends Model
     protected $fillable = [
         'user_id',
         'letter_template_id',
+        'nomor_surat',
         'status',
         'unique_code',
+        'additional_students',
         'final_document_path',
         'blockchain_hash',
         'blockchain_tx_id',
+        'notes',
+        'needed_at',
     ];
 
     public function user(): BelongsTo
@@ -33,4 +37,10 @@ class LetterRequests extends Model
     {
         return $this->belongsTo(LetterTemplate::class);
     }
+
+    protected $casts = [
+        'additional_students' => 'array',
+        'request_details' => 'array',
+        'needed_at' => 'date', // Opsional, tapi disarankan
+    ];
 }

@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NomorSuratCounter extends Model
+class LetterTypes extends Model
 {
     use HasFactory;
-    protected $table = 'nomor_surat_counters';
-
+    protected $table = 'letter_types';
     protected $fillable = [
-        'tahun',
-        'nomor_terakhir',
-        'letter_template_id'
+        'id',
+        'name'
     ];
 }

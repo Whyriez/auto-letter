@@ -11,16 +11,16 @@ class LetterTemplate extends Model
     use HasFactory;
     protected $table = 'letter_templates';
     protected $fillable = [
-        'kategori',
+        'letter_type_id',
         'nama_surat',
         'kode_seri',
         'kode_unit',
         'kode_arsip',
+        'perihal',
         'tujuan_nama',
         'tujuan_lokasi',
         'konten',
-        'requires_kaprodi',
-        'requires_ketua_jurusan',
+        'forward_to',
         'status',
         'created_at',
         'updated_at',
@@ -29,5 +29,15 @@ class LetterTemplate extends Model
     public function letterRequests(): HasMany
     {
         return $this->hasMany(LetterRequests::class);
+    }
+
+    public function LetterTemplate()
+    {
+        return $this->belongsTo(LetterTypes::class, 'letter_type_id');
+    }
+
+    public function letterType()
+    {
+        return $this->belongsTo(LetterTypes::class, 'letter_type_id');
     }
 }
