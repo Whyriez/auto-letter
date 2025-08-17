@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ForceSignatureQr;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
+            'force.signature' => ForceSignatureQr::class
+        ]);
+
+        $middleware->web(append: [
+            ForceSignatureQr::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

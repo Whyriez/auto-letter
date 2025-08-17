@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.layout')
-@section('title', 'Super Admin | Dashboard')
-@section('kajur-dashboard', 'active')
+@section('title', 'Kaprodi | Dashboard')
+@section('kaprodi-dashboard', 'active')
 
 
 

@@ -27,6 +27,8 @@ class User extends Authenticatable
         'nim_nip',
         'jurusan',
         'prodi',
+        'signature_image_path',
+
     ];
 
     /**

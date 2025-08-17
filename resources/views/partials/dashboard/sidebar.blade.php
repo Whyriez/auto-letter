@@ -20,15 +20,15 @@
      </div>
 
      <nav class="mt-6 px-3">
+         {{-- ! super admin  --}}
          @if (Auth::user()->role === 'super_admin')
              <a href="{{ route('super_admin.dashboard') }}"
-                 class="flex items-center px-3 py-2 rounded-lg mb-1 transition-colors 
+                 class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors 
           text-gray-700 hover:bg-gray-100 @yield('dashboard')">
-                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z" />
+                         d="M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z" />
                  </svg>
                  Dashboard
              </a>
@@ -43,30 +43,71 @@
              </a>
          @endif
 
-
-         {{-- ! Kajur --}}
-         @if (Auth::user()->role === 'kajur')
+         {{-- ! admin jurusan --}}
+         @if (Auth::user()->role === 'admin_jurusan')
              <a href="#"
-                 class="flex items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('kajur-dashboard')">
-                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('admin-jurusan-dashboard')">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m0-4a4 4 0 118 0 4 4 0 01-8 0z" />
+                         d="M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z" />
                  </svg>
-                 Approval Dashboard
+                 Dashboard
              </a>
          @endif
 
-         {{--! Mahasiswa --}}
-         <a href="#"
-             class="flex items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('mahasiswa-dashboard')">
-             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                     d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m0-4a4 4 0 118 0 4 4 0 01-8 0z" />
-             </svg>
-             Dashboard
-         </a>
+         {{-- !kaprodi --}}
+         @if (Auth::user()->role === 'kaprodi')
+             <a href="{{ route('kaprodi.dashboard') }}"
+                 class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('kaprodi-dashboard')">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z" />
+                 </svg>
+                 Dashboard
+             </a>
+         @endif
 
+         {{-- ! Kajur --}}
+         @if (Auth::user()->role === 'kajur')
+             <a href="{{ route('kajur.dashboard') }}"
+                 class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('kajur-dashboard')">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z" />
+                 </svg>
+                 Dashboard
+             </a>
+         @endif
 
+         {{-- ! Mahasiswa --}}
+         @if (Auth::user()->role === 'mahasiswa')
+             <a href="{{ route('mahasiswa.dashboard') }}"
+                 class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('mahasiswa-dashboard')">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z" />
+                 </svg>
+                 Dashboard
+             </a>
+         @endif
+
+         @if (!in_array(Auth::user()->role, ['super_admin', 'admin_jurusan']))
+             <a href="{{ route('dashboard.setting') }}"
+                 class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('profile-settings')">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                     stroke-width="2" class="w-5 h-5">
+                     <path stroke-linecap="round" stroke-linejoin="round"
+                         d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.01c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.01 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.01 2.573c.94 1.543-.827 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.01c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.01c-1.543.94-3.31-.827-2.37-2.37a1.724 1.724 0 00-1.01-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.01-2.573c-.94-1.543.827-3.31 2.37-2.37.966.59 2.142.17 2.573-1.01z" />
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                 </svg>
+
+                 Setting Profile
+             </a>
+         @endif
 
          <a href="#" onclick="openLogoutModal()"
              class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg mb-1 transition-colors">

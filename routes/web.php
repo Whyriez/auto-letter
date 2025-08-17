@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\SuratEditorController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,6 +49,11 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::patch('/dashboard/users/{id}/toggle-suspend', [SuperAdminController::class, 'toggleSuspend'])->name('super_admin.toggle_suspend');
     Route::patch('/dashboard/users/{id}/update-role', [SuperAdminController::class, 'updateRole'])->name('super_admin.update_role');
 });
+
+// ? update profile
+Route::get('/dashboard/settings', [UserController::class, 'edit_profile'])->name('dashboard.setting');
+Route::put('/dashboard/settings/update', [UserController::class, 'update_profile'])->name('dashboard.setting.update');
+Route::delete('/dashboard/settings/delete-qr', [UserController::class, 'destroyQr'])->name('profile.ttd_qr.destroy');
 
 // Auth Controller
 Route::middleware(['guest'])->group(function () {

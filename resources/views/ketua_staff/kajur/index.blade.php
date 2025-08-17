@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.layout')
-@section('title', 'Super Admin | Dashboard')
+@section('title', 'Kajur | Dashboard')
 @section('kajur-dashboard', 'active')
 
 
