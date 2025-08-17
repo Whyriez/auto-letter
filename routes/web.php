@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\SuratEditorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -47,11 +48,10 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::patch('/dashboard/users/{id}/update-role', [SuperAdminController::class, 'updateRole'])->name('super_admin.update_role');
 });
 
-
 // Auth Controller
 Route::middleware(['guest'])->group(function () {
-Route::get('/login', [AuthController::class, 'index'])->name('login');
-Route::post('/login', [AuthController::class, 'login_process'])->name('login.process');
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
+    Route::post('/login', [AuthController::class, 'login_process'])->name('login.process');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
