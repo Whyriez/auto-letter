@@ -7,20 +7,20 @@
                     </path>
                 </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Delete Confirmation</h3>
-            <p class="text-gray-600 text-sm mb-4">Are you sure you want to delete this data? This action cannot be
-                undone.</p>
-            <form action="{{ route('super_admin.dashboard') }}" method="POST" id="delete-form">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Konfirmasi Penghapusan</h3>
+            <p class="text-gray-600 text-sm mb-4">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat
+                dibatalkan.</p>
+            <form action="{{ route('super_admin.users') }}" method="POST" id="delete-form">
                 @csrf
                 @method('DELETE')
                 <div class="flex gap-2">
                     <button onclick="closeDeleteModal()" type="button"
                         class="w-full bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors border border-gray-300">
-                        Cancel
+                        Batal
                     </button>
                     <button type="submit"
                         class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                        Delete
+                        Hapus
                     </button>
                 </div>
             </form>

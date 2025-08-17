@@ -1,12 +1,12 @@
 
 function handleUserSubmit(event) {
 
-    const submitButton = document.getElementById('user-submit-button'); // Pastikan tombol submit Anda punya ID ini
+    const submitButton = document.getElementById('user-submit-button'); // Pastikan tombol submit Anda memiliki ID ini
 
     if (submitButton) {
-        submitButton.querySelector('span').textContent = 'Creating...';
+        submitButton.querySelector('span').textContent = 'Membuat...';
         submitButton.disabled = true;
     }
 
-    // Form akan otomatis submit ke URL di atribut 'action'-nya setelah ini.
+    // Form akan otomatis dikirim ke URL di atribut 'action' nya setelah ini.
 }

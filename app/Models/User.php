@@ -23,7 +23,10 @@ class User extends Authenticatable
         'password',
         'role',
         'status',
-        'is_suspend'
+        'is_suspend',
+        'nim_nip',
+        'jurusan',
+        'prodi',
     ];
 
     /**

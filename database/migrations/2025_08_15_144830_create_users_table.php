@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('nim_nip')->unique()->nullable();
 
             // Foreign keys (nullable karena Super Admin mungkin tidak terikat)
-            $table->foreignId('prodi_id')->nullable()->constrained('prodis')->nullOnDelete();
-            $table->foreignId('jurusan_id')->nullable()->constrained('jurusans')->nullOnDelete();
+            $table->string('prodi')->nullable();
+            $table->string('jurusan')->nullable();
 
             $table->string('signature_image_path')->nullable();
             $table->rememberToken();

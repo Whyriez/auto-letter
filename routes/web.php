@@ -40,6 +40,7 @@ Route::middleware(['auth', 'role:admin_jurusan'])->group(function () {
 //? Super Admin
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/dashboard', [SuperAdminController::class, 'index'])->name('super_admin.dashboard');
+    Route::get('/dashboard/users', [SuperAdminController::class, 'user'])->name('super_admin.users');
     Route::post('/dashboard/submit-new-user', [SuperAdminController::class, 'submit_new_user'])->name('super_admin.submit_new_user');
     Route::get('/dashboard/users/{id}', [SuperAdminController::class, 'show_user'])->name('super_admin.show_user');
     Route::put('/dashboard/users/{id}', [SuperAdminController::class, 'update_user'])->name('super_admin.update_user');
