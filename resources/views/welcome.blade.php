@@ -271,14 +271,37 @@
                 </div>
 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Fitur</a>
-                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Keamanan</a>
+                    <a href="/" class="text-gray-600 hover:text-red-400 transition-colors">Home</a>
+                    {{-- <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Keamanan</a>
                     <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Harga</a>
-                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Kontak</a>
+                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Kontak</a> --}}
                     @if (Auth::check())
-                        <a href="/dashboard" class="text-gray-600 hover:text-red-400 transition-colors">Dashboard</a>
+                        @php
+                            $dashboardRoute = 'dashboard'; // Default route jika tidak ada yang cocok
+
+                            switch (Auth::user()->role) {
+                                case 'super_admin':
+                                    $dashboardRoute = 'super_admin.dashboard';
+                                    break;
+                                case 'admin_jurusan':
+                                    $dashboardRoute = 'admin_jurusan.dashboard';
+                                    break;
+                                case 'kajur':
+                                    $dashboardRoute = 'kajur.index';
+                                    break;
+                                case 'kaprodi':
+                                    $dashboardRoute = 'kaprodi.index';
+                                    break;
+                                case 'mahasiswa':
+                                    $dashboardRoute = 'mahasiswa.index';
+                                    break;
+                            }
+                        @endphp
+                        <a href="{{ route($dashboardRoute) }}"
+                            class="text-gray-600 hover:text-red-400 transition-colors">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-400 transition-colors">Login</a>
+                        <a href="{{ route('login') }}"
+                            class="text-gray-600 hover:text-red-400 transition-colors">Login</a>
                     @endif
                 </div>
             </div>
