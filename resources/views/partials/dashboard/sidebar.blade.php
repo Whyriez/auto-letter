@@ -45,7 +45,7 @@
 
          {{-- ! admin jurusan --}}
          @if (Auth::user()->role === 'admin_jurusan')
-             <a href="#"
+             <a href="{{ route('admin_jurusan.dashboard') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('admin-jurusan-dashboard')">
                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
@@ -54,11 +54,31 @@
                  </svg>
                  Dashboard
              </a>
+
+             <a href="{{ route('template-surat.index') }}"
+                 class="flex items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('template-surat')">
+                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                     </path>
+                 </svg>
+                 Template Surat
+             </a>
+
+             <a href="{{ route('jenis-surat.index') }}"
+                 class="flex items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('jenis-surat')">
+                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                     </path>
+                 </svg>
+                 Jenis Surat
+             </a>
          @endif
 
          {{-- !kaprodi --}}
          @if (Auth::user()->role === 'kaprodi')
-             <a href="{{ route('kaprodi.dashboard') }}"
+             <a href="{{ route('kaprodi.index') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('kaprodi-dashboard')">
                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
@@ -71,7 +91,7 @@
 
          {{-- ! Kajur --}}
          @if (Auth::user()->role === 'kajur')
-             <a href="{{ route('kajur.dashboard') }}"
+             <a href="{{ route('kajur.index') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('kajur-dashboard')">
                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
@@ -84,7 +104,7 @@
 
          {{-- ! Mahasiswa --}}
          @if (Auth::user()->role === 'mahasiswa')
-             <a href="{{ route('mahasiswa.dashboard') }}"
+             <a href="{{ route('mahasiswa.index') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('mahasiswa-dashboard')">
                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
@@ -130,7 +150,36 @@
              </div>
              <div class="flex-1">
                  <p class="text-sm font-medium text-gray-900">{{ Str::title(Auth::user()->name) }}</p>
-                 <p class="text-xs text-gray-500">System Administrator</p>
+                 <p class="text-xs text-gray-500">
+                     @php
+                         $role = Auth::user()->role;
+                         $jurusan = Auth::user()->jurusan;
+                         $prodi = Auth::user()->prodi;
+                         $name = Auth::user()->name;
+                         $nim = Auth::user()->nim_nip;
+
+                         switch ($role) {
+                             case 'super_admin':
+                                 echo 'Super Admin';
+                                 break;
+                             case 'mahasiswa':
+                                 echo 'Mahasiswa';
+                                 break;
+                             case 'admin_jurusan':
+                                 echo 'Admin Jurusan';
+                                 break;
+                             case 'kajur':
+                                 echo 'Ketua Jurusan ' . $jurusan;
+                                 break;
+                             case 'kaprodi':
+                                 echo 'Ketua Program Studi ' . $prodi;
+                                 break;
+                             default:
+                                 echo Str::title($role);
+                                 break;
+                         }
+                     @endphp
+                 </p>
              </div>
          </div>
      </div>

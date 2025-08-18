@@ -7,6 +7,7 @@
     <title>AutoLetter - @yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -64,6 +65,12 @@
 
         .role-student {
             @apply bg-gray-100 text-gray-800;
+        }
+
+        .desktop-table {
+            width: 100%;
+            overflow-x: auto;
+            /* supaya kalau tabelnya panjang bisa di-scroll */
         }
 
         /* Mobile card styles */
@@ -156,6 +163,7 @@
 
     <script src="{{ asset('js/Super Admin/formValidateUser.js') }}"></script>
     <script src="{{ asset('js/Super Admin/handlerUserSubmit.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
     <script>
         // Mobile menu functionality
@@ -259,6 +267,9 @@
             }
         });
     </script>
+
+    @stack('scriptsSurat')
+    @stack('scriptsMahasiswa')
 </body>
 
 </html>

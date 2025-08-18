@@ -1,9 +1,16 @@
 <?php
 
+use App\Http\Controllers\AdminJurusanController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\KajurController;
+use App\Http\Controllers\KaprodiController;
+use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\SuratController;
 use App\Http\Controllers\SuratEditorController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,30 +19,27 @@ Route::get('/', function () {
 
 //? Mahasiswa
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
-    Route::get('/mahasiswa', function () {
-        return view('mahasiswa.index');
-    })->name('mahasiswa.dashboard');
+    Route::resource('mahasiswa', MahasiswaController::class)->names('mahasiswa');
 });
 
 //? Kaprodi
 Route::middleware(['auth', 'role:kaprodi'])->group(function () {
-    Route::get('/kaprodi', function () {
-        return view('ketua_staff.kaprodi.index');
-    })->name('kaprodi.dashboard');
+    Route::resource('kaprodi', KaprodiController::class)->names('kaprodi');
+    Route::get('/kaprodi/approveAndExportPdf/{id}', [KaprodiController::class, 'approveAndExportPdf'])->name('kaprodi.approveAndExportPdf');
 });
 
 //? Kajur
 Route::middleware(['auth', 'role:kajur'])->group(function () {
-    Route::get('/kajur', function () {
-        return view('ketua_staff.kajur.index');
-    })->name('kajur.dashboard');
+    Route::resource('kajur', KajurController::class)->names('kajur');
+    Route::get('/kajur/approveAndExportPdf/{id}', [KajurController::class, 'approveAndExportPdf'])->name('kajur.approveAndExportPdf');
 });
 
 //? Admin Jurusan
 Route::middleware(['auth', 'role:admin_jurusan'])->group(function () {
-    Route::get('/admin_jurusan', function () {
-        return view('admin.jurusan.index');
-    })->name('admin_jurusan.dashboard');
+    Route::get('/admin-jurusan', [AdminJurusanController::class, 'index'])->name('admin_jurusan.dashboard');
+    Route::resource('template-surat', SuratController::class)->names('template-surat');
+    Route::post('template-surat/{template}/duplicate', [SuratController::class, 'duplicate'])->name('template-surat.duplicate');
+    Route::resource('jenis-surat', JenisSuratController::class)->names('jenis-surat');
 });
 
 //? Super Admin
@@ -59,6 +63,8 @@ Route::delete('/dashboard/settings/delete-qr', [UserController::class, 'destroyQ
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'login_process'])->name('login.process');
+
+    Route::get('/verify/{unique_code}', [VerificationController::class, 'verify'])->name('verify.check');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

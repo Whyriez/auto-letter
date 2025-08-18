@@ -52,11 +52,11 @@ class AuthController extends Controller
                 case 'admin_jurusan':
                     return redirect()->route('admin_jurusan.dashboard');
                 case 'kajur':
-                    return redirect()->route('kajur.dashboard');
+                    return redirect()->route('kajur.index');
                 case 'kaprodi':
-                    return redirect()->route('kaprodi.dashboard');
+                    return redirect()->route('kaprodi.index');
                 case 'mahasiswa':
-                    return redirect()->route('mahasiswa.dashboard');
+                    return redirect()->route('mahasiswa.index');
                 default:
                     Auth::logout();
                     return redirect('/login')->with('flash.error', 'Invalid role.');

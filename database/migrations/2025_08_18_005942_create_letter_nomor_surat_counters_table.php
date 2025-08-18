@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jurusans', function (Blueprint $table) {
+        Schema::create('nomor_surat_counters', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('letter_template_id')->constrained('letter_templates')->onDelete('cascade');
+            $table->integer('tahun');
+            $table->integer('nomor_terakhir')->default(0);
+            $table->unique(['letter_template_id', 'tahun']);
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jurusans');
+        Schema::dropIfExists('letter_nomor_surat_counters');
     }
 };

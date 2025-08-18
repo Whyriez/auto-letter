@@ -14,26 +14,27 @@
             <!-- Welcome Section -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Dashboard Super Admin</h2>
-                <p class="text-gray-600">teseting</p>
+                <p class="text-gray-600">Hallo, {{ Auth::user()->name }}</p>
             </div>
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
+                <div class="bg-white rounded-xl p-6 card-shadow">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-1a6 6 0 00-9-5.197M9 20H4v-1a6 6 0 019-5.197M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
                             </svg>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-gray-900">123</p>
-                            <p class="text-sm text-gray-600">Total Mahasiswa</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $totalTemplates }}</p>
+                            <p class="text-sm text-gray-600">Total Template</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
+                <div class="bg-white rounded-xl p-6 card-shadow">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,45 +43,41 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-gray-900">123</p>
-                            <p class="text-sm text-gray-600">Pengguna Aktif</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $activeTemplates }}</p>
+                            <p class="text-sm text-gray-600">Template Aktif</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
+                <div class="bg-white rounded-xl p-6 card-shadow">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                </path>
                             </svg>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-gray-900">12</p>
-                            <p class="text-sm text-gray-600">Pengguna Tidak Aktif</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $draftTemplates }}</p>
+                            <p class="text-sm text-gray-600">Template Draf</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
+                <div class="bg-white rounded-xl p-6 card-shadow">
                     <div class="flex items-center">
-                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
-                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
-                                <line x1="8" y1="8" x2="16" y2="16" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" />
-                                <line x1="16" y1="8" x2="8" y2="16" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" />
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-gray-900">123</p>
-                            <p class="text-sm text-gray-600">Pengguna Diblokir</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $timesUsed }}</p>
+                            <p class="text-sm text-gray-600">Total Surat yang Digunakan</p>
                         </div>
                     </div>
                 </div>
             </div>
-
-
 
         </main>
     </div>
