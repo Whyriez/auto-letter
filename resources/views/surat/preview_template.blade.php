@@ -100,13 +100,8 @@
                             <p style="font-weight: 600; margin-bottom: 1rem;">[Nama Program Studi/Jurusan]</p>
                         @endif
 
-                        @if ($signature_base64)
-                            <img src="{{ $signature_base64 }}" alt="Signature"
-                                style="width: 135px; height: auto; margin-bottom: 0.5rem;">
-                        @else
-                            <p>Tanda tangan tidak ditemukan</p>
-                        @endif
-                        <p style="margin-top: 0.5rem; color: #6b7280;">Tanda Tangan Digital</p>
+                        <img src="data:image/png;base64, {!! base64_encode(QrCode::size(120)->generate($verificationUrl)) !!}">
+                        <p style="margin-top: 0.5rem; color: #6b7280;">Dummy Tanda Tangan Digital</p>
 
                         <p style="font-weight: bold; margin-bottom: 0;">
                             {{ $signer->name }}

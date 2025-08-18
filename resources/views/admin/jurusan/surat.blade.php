@@ -101,7 +101,7 @@
             <div class="bg-white rounded-xl card-shadow overflow-hidden">
                 <div class="px-4 sm:px-6 py-4 border-b border-gray-200 bg-red-50">
                     <h3 class="text-lg font-semibold text-red-900">Template Surat</h3>
-                    <p class="text-sm text-red-700 mt-1">Manage and organize your department's letter templates</p>
+                    <p class="text-sm text-red-700 mt-1">Kelola dan atur templat surat departemen Anda</p>
                 </div>
 
                 <!-- Desktop Table -->

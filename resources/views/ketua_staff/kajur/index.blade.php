@@ -157,12 +157,11 @@
                                         {{ \Carbon\Carbon::parse($request->needed_at)->format('M d, Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                        <button onclick="viewDetails('{{ $request->id }}')"
+                                        <a href="{{ route('kajur.preview', ['id' => $request->id]) }}" target="_blank"
                                             class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">
                                             Lihat Detail
-                                        </button>
+                                        </a>
                                         <a href="{{ route('kajur.approveAndExportPdf', ['id' => $request->id]) }}"
-                                            
                                             class="text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-lg transition-colors">
                                             Setujui
                                         </a>
@@ -215,10 +214,10 @@
                                 </div>
                             </div>
                             <div class="flex space-x-2">
-                                <button onclick="viewDetails('{{ $request->id }}')"
+                                <a href="{{ route('kajur.preview', ['id' => $request->id]) }}" target="_blank"
                                     class="flex-1 text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                                     Lihat Detail
-                                </button>
+                                </a>
                                 <a href="{{ route('kajur.approveAndExportPdf', ['id' => $request->id]) }}"
                                     target="_blank"
                                     class="flex-1 text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
@@ -237,21 +236,12 @@
                 <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
                     <div class="flex items-center justify-between">
                         <div class="text-sm text-gray-700">
-                            Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span
-                                class="font-medium">12</span> results
+                            Menampilkan <span class="font-medium">{{ $pendingRequests->firstItem() }}</span>
+                            hingga <span class="font-medium">{{ $pendingRequests->lastItem() }}</span>
+                            dari <span class="font-medium">{{ $pendingRequests->total() }}</span> hasil
                         </div>
                         <div class="flex space-x-2">
-                            <button
-                                class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
-                                disabled>Previous</button>
-                            <button
-                                class="px-3 py-1 text-sm text-white bg-red-600 border border-red-600 rounded-lg">1</button>
-                            <button
-                                class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
-                            <button
-                                class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">3</button>
-                            <button
-                                class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">Next</button>
+                            {{ $pendingRequests->links('pagination::tailwind') }}
                         </div>
                     </div>
                 </div>

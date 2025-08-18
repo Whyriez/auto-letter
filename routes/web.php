@@ -26,12 +26,14 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
 Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::resource('kaprodi', KaprodiController::class)->names('kaprodi');
     Route::get('/kaprodi/approveAndExportPdf/{id}', [KaprodiController::class, 'approveAndExportPdf'])->name('kaprodi.approveAndExportPdf');
+    Route::get('/preview-surat/{id}', [KaprodiController::class, 'previewSurat'])->name('kaprodi.preview');
 });
 
 //? Kajur
 Route::middleware(['auth', 'role:kajur'])->group(function () {
     Route::resource('kajur', KajurController::class)->names('kajur');
     Route::get('/kajur/approveAndExportPdf/{id}', [KajurController::class, 'approveAndExportPdf'])->name('kajur.approveAndExportPdf');
+    Route::get('/preview-surat/{id}', [KajurController::class, 'previewSurat'])->name('kajur.preview');
 });
 
 //? Admin Jurusan
