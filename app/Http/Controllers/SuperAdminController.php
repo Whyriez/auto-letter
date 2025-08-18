@@ -11,8 +11,9 @@ use Illuminate\Validation\Rule;
 class SuperAdminController extends Controller
 {
 
-    public function index(Request $request){
-              $totalMahasiswa = User::where('role', 'mahasiswa')->count();
+    public function index(Request $request)
+    {
+        $totalMahasiswa = User::where('role', 'mahasiswa')->count();
         $totalActiveUsers = User::where('status', 'active')->count();
         $totalInactiveUsers = User::where('status', 'inactive')->count();
         $totalSuspendedUsers = User::where('is_suspend', 1)->count();
@@ -51,7 +52,7 @@ class SuperAdminController extends Controller
 
         $users = $query->paginate(10)->withQueryString();
 
-  
+
 
         return view('admin.super.users', compact('users'));
     }
