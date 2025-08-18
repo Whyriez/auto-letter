@@ -12,7 +12,11 @@ class SuperAdminController extends Controller
 {
 
     public function index(Request $request){
-        return view('admin.super.index');
+              $totalMahasiswa = User::where('role', 'mahasiswa')->count();
+        $totalActiveUsers = User::where('status', 'active')->count();
+        $totalInactiveUsers = User::where('status', 'inactive')->count();
+        $totalSuspendedUsers = User::where('is_suspend', 1)->count();
+        return view('admin.super.index', compact('totalMahasiswa', 'totalActiveUsers', 'totalInactiveUsers', 'totalSuspendedUsers'));
     }
     public function user(Request $request)
     {
@@ -47,12 +51,9 @@ class SuperAdminController extends Controller
 
         $users = $query->paginate(10)->withQueryString();
 
-        $totalMahasiswa = User::where('role', 'mahasiswa')->count();
-        $totalActiveUsers = User::where('status', 'active')->count();
-        $totalInactiveUsers = User::where('status', 'inactive')->count();
-        $totalSuspendedUsers = User::where('is_suspend', 1)->count();
+  
 
-        return view('admin.super.users', compact('users', 'totalMahasiswa', 'totalActiveUsers', 'totalInactiveUsers', 'totalSuspendedUsers'));
+        return view('admin.super.users', compact('users'));
     }
 
 
