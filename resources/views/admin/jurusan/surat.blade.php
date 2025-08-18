@@ -269,21 +269,350 @@
     <x-admin.jurusan.add-update-modal :letterTypes="$letterTypes" :users="$users" />
 
     @push('scriptsSurat')
+        @verbatim
+           <script>
+                // Daftar placeholder yang tersedia
+                const placeholders = [{
+                        key: 'SPASI_PENYELARAS',
+                        display: '{{ SPASI_PENYELARAS }}',
+                        description: 'Untuk menyelaraskan teks seperti tabel'
+                    },
+                    {
+                        key: 'nama_mhs',
+                        display: '{{ $nama_mhs }}',
+                        description: 'Nama Mahasiswa Utama'
+                    },
+                    {
+                        key: 'nim',
+                        display: '{{ $nim }}',
+                        description: 'NIM Mahasiswa Utama'
+                    },
+                    {
+                        key: 'nama_dsn',
+                        display: '{{ $nama_dsn }}',
+                        description: 'Nama Penanda Tangan (Dosen)'
+                    },
+                    {
+                        key: 'nip',
+                        display: '{{ $nip }}',
+                        description: 'NIP Penanda Tangan (Dosen)'
+                    },
+                    {
+                        key: 'jabatan',
+                        display: '{{ $jabatan }}',
+                        description: 'Jabatan Penanda Tangan (Dosen)'
+                    },
+                    {
+                        key: 'lokasi',
+                        display: '{{ $lokasi }}',
+                        description: 'Lokasi Tujuan'
+                    },
+                    {
+                        key: 'waktu',
+                        display: '{{ $waktu }}',
+                        description: 'Waktu (Hari, Bulan, Tanggal, Jam)'
+                    },
+                    {
+                        key: 'mata_kuliah',
+                        display: '{{ $mata_kuliah }}',
+                        description: 'Mata Kuliah'
+                    },
+                    {
+                        key: 'array_mhs',
+                        display: '{{ $array_mhs }}',
+                        description: 'Daftar Mahasiswa Tambahan'
+                    }
+                ];
+
+                // Konstanta untuk mencegah konflik dengan Blade
+                const TRIGGER_CHARS = '{' + '{';
+                const TRIGGER_LENGTH = 2;
+
+                // Inisialisasi Quill editor
+                const quill = new Quill('#editor', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote'],
+                            [{
+                                'list': 'ordered'
+                            }, {
+                                'list': 'bullet'
+                            }],
+                            [{
+                                'header': [1, 2, 3, 4, 5, 6, false]
+                            }],
+                            [{
+                                'font': []
+                            }],
+                            [{
+                                'align': []
+                            }],
+                            ['clean']
+                        ]
+                    }
+                });
+
+                // Buat elemen dropdown untuk autosuggest
+                const dropdown = document.createElement('div');
+                dropdown.className = 'autosuggest-dropdown';
+                dropdown.style.cssText = `
+        position: absolute;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+        min-width: 300px;
+    `;
+                document.body.appendChild(dropdown);
+
+                // Variabel untuk tracking
+                let currentRange = null;
+                let isDropdownVisible = false;
+                let selectedIndex = -1;
+                let filteredSuggestions = [];
+
+                // Fungsi untuk menampilkan dropdown
+                function showDropdown(suggestions, bounds) {
+                    filteredSuggestions = suggestions; // Simpan untuk keyboard navigation
+                    dropdown.innerHTML = '';
+                    dropdown.style.display = 'block';
+
+                    suggestions.forEach((item, index) => {
+                        const div = document.createElement('div');
+                        div.className = 'suggestion-item';
+                        div.style.cssText = `
+                padding: 8px 12px;
+                cursor: pointer;
+                border-bottom: 1px solid #f0f0f0;
+                transition: background-color 0.2s;
+            `;
+
+                        div.innerHTML = `
+                <div style="font-family: monospace; color: #e74c3c; font-weight: bold;">${item.display}</div>
+                <div style="font-size: 12px; color: #666; margin-top: 2px;">${item.description}</div>
+            `;
+
+                        // Hover effect
+                        div.addEventListener('mouseenter', () => {
+                            clearSelection();
+                            div.style.backgroundColor = '#f8f9fa';
+                            selectedIndex = index;
+                        });
+
+                        div.addEventListener('mouseleave', () => {
+                            div.style.backgroundColor = '';
+                        });
+
+                        // Click handler
+                        div.addEventListener('click', () => {
+                            insertPlaceholder(item.display);
+                        });
+
+                        dropdown.appendChild(div);
+                    });
+
+                    // Posisikan dropdown
+                    const editorBounds = quill.container.getBoundingClientRect();
+                    dropdown.style.left = (editorBounds.left + bounds.left) + 'px';
+                    dropdown.style.top = (editorBounds.top + bounds.bottom + 5) + 'px';
+
+                    isDropdownVisible = true;
+                    selectedIndex = -1;
+                }
+
+                // Fungsi untuk menyembunyikan dropdown
+                function hideDropdown() {
+                    dropdown.style.display = 'none';
+                    isDropdownVisible = false;
+                    selectedIndex = -1;
+                    filteredSuggestions = [];
+                }
+
+                // Fungsi untuk membersihkan selection
+                function clearSelection() {
+                    const items = dropdown.querySelectorAll('.suggestion-item');
+                    items.forEach(item => {
+                        item.style.backgroundColor = '';
+                    });
+                }
+
+                // Fungsi untuk highlight selection
+                function highlightSelection() {
+                    clearSelection();
+                    const items = dropdown.querySelectorAll('.suggestion-item');
+                    if (selectedIndex >= 0 && selectedIndex < items.length) {
+                        items[selectedIndex].style.backgroundColor = '#e3f2fd';
+                    }
+                }
+
+                // Fungsi untuk insert placeholder
+                function insertPlaceholder(placeholder) {
+                    if (currentRange) {
+                        const selection = quill.getSelection();
+                        const currentPos = selection ? selection.index : currentRange.index;
+                        const text = quill.getText();
+                        
+                        // Cari posisi awal {{ sebelum cursor
+                        let searchStart = Math.max(0, currentPos - 20);
+                        const textBefore = text.substring(searchStart, currentPos);
+                        const braceIndex = textBefore.lastIndexOf(TRIGGER_CHARS);
+                        
+                        if (braceIndex !== -1) {
+                            const actualBracePos = searchStart + braceIndex;
+                            const deleteLength = currentPos - actualBracePos;
+                            
+                            quill.deleteText(actualBracePos, deleteLength);
+                            quill.insertText(actualBracePos, placeholder);
+                            quill.setSelection(actualBracePos + placeholder.length);
+                        }
+                    }
+                    hideDropdown();
+                    quill.focus();
+                }
+
+                // Event listener untuk text change
+                const textChangeHandler = function() {
+                    const selection = quill.getSelection();
+                    if (!selection) return;
+
+                    const text = quill.getText();
+                    const currentPos = selection.index;
+
+                    // Cari trigger chars sebelum posisi cursor
+                    let searchStart = Math.max(0, currentPos - 20);
+                    const textBefore = text.substring(searchStart, currentPos);
+
+                    const braceIndex = textBefore.lastIndexOf(TRIGGER_CHARS);
+
+                    if (braceIndex !== -1) {
+                        const actualBracePos = searchStart + braceIndex;
+                        const query = text.substring(actualBracePos + TRIGGER_LENGTH, currentPos).toLowerCase();
+
+                        // Filter suggestions berdasarkan query
+                        const filtered = placeholders.filter(item =>
+                            item.key.toLowerCase().includes(query) ||
+                            item.description.toLowerCase().includes(query)
+                        );
+
+                        if (filtered.length > 0) {
+                            currentRange = {
+                                index: currentPos
+                            };
+                            const bounds = quill.getBounds(currentPos);
+                            showDropdown(filtered, bounds);
+                            return;
+                        }
+                    }
+
+                    // Sembunyikan dropdown jika tidak ada match
+                    hideDropdown();
+                };
+
+                // Event listener untuk selection change
+                const selectionChangeHandler = function(range) {
+                    if (!range) {
+                        hideDropdown();
+                    }
+                };
+
+                // Daftarkan event listeners
+                quill.on('text-change', textChangeHandler);
+                quill.on('selection-change', selectionChangeHandler);
+
+                // Keyboard navigation dengan event listener langsung
+                quill.root.addEventListener('keydown', function(e) {
+                    if (!isDropdownVisible) return;
+
+                    switch (e.key) {
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            const itemsDown = dropdown.querySelectorAll('.suggestion-item');
+                            selectedIndex = Math.min(selectedIndex + 1, itemsDown.length - 1);
+                            highlightSelection();
+                            break;
+
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            selectedIndex = Math.max(selectedIndex - 1, -1);
+                            highlightSelection();
+                            break;
+
+                        case 'Enter':
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (filteredSuggestions.length > 0) {
+                                const indexToUse = selectedIndex >= 0 ? selectedIndex : 0;
+                                const placeholder = filteredSuggestions[indexToUse].display;
+                                insertPlaceholder(placeholder);
+                            }
+                            break;
+
+                        case 'Escape':
+                            e.preventDefault();
+                            hideDropdown();
+                            break;
+                    }
+                });
+
+                // Keyboard navigation dengan Quill binding (sebagai fallback)
+                quill.keyboard.addBinding({
+                    key: 'ArrowDown'
+                }, function(range, context) {
+                    if (isDropdownVisible) {
+                        return false; // Handled by keydown event listener
+                    }
+                    return true;
+                });
+
+                quill.keyboard.addBinding({
+                    key: 'ArrowUp'
+                }, function(range, context) {
+                    if (isDropdownVisible) {
+                        return false; // Handled by keydown event listener
+                    }
+                    return true;
+                });
+
+                quill.keyboard.addBinding({
+                    key: 'Enter'
+                }, function(range, context) {
+                    if (isDropdownVisible) {
+                        return false; // Handled by keydown event listener
+                    }
+                    return true;
+                });
+
+                quill.keyboard.addBinding({
+                    key: 'Escape'
+                }, function(range, context) {
+                    if (isDropdownVisible) {
+                        return false; // Handled by keydown event listener
+                    }
+                    return true;
+                });
+
+                // Click outside untuk hide dropdown
+                document.addEventListener('click', function(e) {
+                    if (!dropdown.contains(e.target) && !quill.container.contains(e.target)) {
+                        hideDropdown();
+                    }
+                });
+
+                // Form submission handler
+                document.querySelector('form').onsubmit = function() {
+                    document.querySelector('#isi_konten').value = quill.root.innerHTML;
+                };
+            </script>
+
+        @endverbatim
+
         <script>
-            const quill = new Quill('#editor', {
-                theme: 'snow'
-            });
-
-            document.querySelector('form').onsubmit = function() {
-                document.querySelector('#isi_konten').value = quill.root.innerHTML;
-            };
-        </script>
-
-        <script>
-            menuButton.addEventListener('click', openSidebar);
-            closeSidebar.addEventListener('click', closeSidebarFunc);
-            mobileOverlay.addEventListener('click', closeSidebarFunc);
-
             // Template modal functionality
             function openTemplateModal(template = null) {
                 const modal = document.getElementById('template-modal');
