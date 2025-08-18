@@ -55,8 +55,8 @@
             <!-- Login Form -->
             <div class="bg-white rounded-2xl form-shadow p-8">
                 <div class="mb-6">
-                    <h2 class="text-2xl text-center font-semibold text-gray-900 mb-2">Welcome back</h2>
-                    <p class="text-gray-600 text-sm text-center">Please sign in to your account</p>
+                    <h2 class="text-2xl text-center font-semibold text-gray-900 mb-2">Selamat Datang kembali</h2>
+                    <p class="text-gray-600 text-sm text-center">Silakan masuk ke akun Anda</p>
 
                 </div>
 
@@ -65,11 +65,11 @@
                     <!-- Email Field -->
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address
+                            Alamat Email
                         </label>
                         <input type="email" id="email" name="email" required
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200 text-gray-900 placeholder-gray-500"
-                            placeholder="Enter your email address">
+                            placeholder="Masukkan alamat email Anda">
                     </div>
 
                     <!-- Password Field -->
@@ -80,7 +80,7 @@
                         <div class="relative">
                             <input type="password" id="password" name="password" required
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200 text-gray-900 placeholder-gray-500 pr-12"
-                                placeholder="Enter your password">
+                                placeholder="Masukkan kata sandi Anda">
                             <button type="button" onclick="togglePassword()"
                                 class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors">
                                 <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor"
@@ -137,27 +137,6 @@
                 <p class="text-xs text-gray-500">
                     © 2024 AutoLetter. All rights reserved.
                 </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Demo Modal -->
-    <div id="demo-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 px-4">
-        <div class="bg-white rounded-xl p-6 max-w-sm w-full">
-            <div class="text-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Demo Login</h3>
-                <p class="text-gray-600 text-sm mb-4">This is a demo interface. In a real application, this would
-                    connect to your university's authentication system.</p>
-                <button onclick="closeModal()"
-                    class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                    Got it
-                </button>
             </div>
         </div>
     </div>
