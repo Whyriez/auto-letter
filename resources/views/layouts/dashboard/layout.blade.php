@@ -257,8 +257,10 @@
     {{-- confirm logout modal --}}
     <x-admin.super.confirm-logout-modal />
 
- 
+
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    @stack('charts')
 
     <script>
         // Mobile menu

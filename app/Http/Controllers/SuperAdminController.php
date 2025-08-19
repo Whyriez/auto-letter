@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rule;
@@ -17,7 +18,18 @@ class SuperAdminController extends Controller
         $totalActiveUsers = User::where('status', 'active')->count();
         $totalInactiveUsers = User::where('status', 'inactive')->count();
         $totalSuspendedUsers = User::where('is_suspend', 1)->count();
-        return view('admin.super.index', compact('totalMahasiswa', 'totalActiveUsers', 'totalInactiveUsers', 'totalSuspendedUsers'));
+
+        $rawRoleCounts = User::select('role', DB::raw('count(*) as count'))
+            ->groupBy('role')
+            ->pluck('count', 'role')
+            ->toArray();
+
+        $roles = ['mahasiswa', 'admin_jurusan', 'kaprodi', 'kajur'];
+        $roleCounts = collect($roles)
+            ->mapWithKeys(fn($r) => [$r => $rawRoleCounts[$r] ?? 0])
+            ->all();
+
+        return view('admin.super.index', compact('totalMahasiswa', 'totalActiveUsers', 'totalInactiveUsers', 'totalSuspendedUsers', 'roleCounts'));
     }
     public function user(Request $request)
     {
