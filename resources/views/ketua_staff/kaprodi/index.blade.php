@@ -1,8 +1,6 @@
 @extends('layouts.dashboard.layout')
-@section('title', 'Kaprodi | Dashboard')
-@section('kaprodi-dashboard', 'active')
-
-
+@section('title', 'Kajur | Dashboard')
+@section('kajur-dashboard', 'active')
 
 @section('content')
     <div class="lg:ml-64">
@@ -13,13 +11,13 @@
         <main class="p-4 sm:p-6">
             <!-- Welcome Section -->
             <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome, {{ Auth::user()->name }}!</h2>
-                <p class="text-gray-600">Review and approve pending letter requests from your department.</p>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Selamat Datang, {{ Auth::user()->name }}</h2>
+                <p class="text-gray-600">Tinjau dan setujui permintaan surat yang tertunda dari departemen Anda.</p>
             </div>
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <!-- Card 1 -->
+                <!-- Card Pending -->
                 <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
@@ -35,7 +33,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2 -->
+                <!-- Card Approved Today -->
                 <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
@@ -51,7 +49,7 @@
                     </div>
                 </div>
 
-                <!-- Card 3 -->
+                <!-- Card Total This Month -->
                 <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
@@ -69,46 +67,46 @@
                 </div>
             </div>
 
+
             <!-- Filters and Search -->
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
-                <form id="filter-form" method="GET" action="{{ route('kaprodi.index') }}">
-                    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                        <!-- kiri: search -->
-                        <div class="relative">
-                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            <input type="text" name="search" placeholder="Cari berdasarkan nama mahasiswa..."
-                                value="{{ request('search') }}"
-                                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
-                        </div>
+                <form id="filter-form" method="GET" action="{{ route('kajur.index') }}">
+                    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                        <div class="flex flex-col sm:flex-row gap-4 flex-1">
+                            <div class="relative">
+                                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <input type="text" name="search" placeholder="Cari berdasarkan nama mahasiswa..."
+                                    value="{{ request('search') }}"
+                                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
+                            </div>
+                            <div class="flex gap-2">
 
-                        <!-- kanan: select + tombol -->
-                        <div class="flex gap-2 items-center">
-                            <select name="letter_template"
-                                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                                <option value="">Semua Tipe Surat</option>
-                                @foreach ($letterTemplates as $template)
-                                    <option value="{{ $template->id }}"
-                                        {{ request('letter_template') == $template->id ? 'selected' : '' }}>
-                                        {{ $template->nama_surat }}
-                                    </option>
-                                @endforeach
-                            </select>
+                                <select name="letter_template"
+                                    class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                    <option value="">Semua Tipe Surat</option>
+                                    @foreach ($letterTemplates as $template)
+                                        <option value="{{ $template->id }}"
+                                            {{ request('letter_template') == $template->id ? 'selected' : '' }}>
+                                            {{ $template->nama_surat }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                             <button type="submit"
                                 class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
                                 Filter
                             </button>
-                            <a href="{{ route('kaprodi.index') }}"
+                            <a href="{{ route('kajur.index') }}"
                                 class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-medium transition-colors flex items-center">
                                 Reset
                             </a>
                         </div>
                     </div>
-
                 </form>
             </div>
 
@@ -133,7 +131,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Tenggat waktu</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                    Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -165,11 +163,11 @@
                                         {{ \Carbon\Carbon::parse($request->needed_at)->format('M d, Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                        <a href="{{ route('kaprodi.preview', ['id' => $request->id]) }}" target="_blank"
+                                        <a href="{{ route('kajur.preview', ['id' => $request->id]) }}" target="_blank"
                                             class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">
                                             Lihat Detail
                                         </a>
-                                        <a href="{{ route('kaprodi.approveAndExportPdf', ['id' => $request->id]) }}"
+                                        <a href="{{ route('kajur.approveAndExportPdf', ['id' => $request->id]) }}"
                                             class="text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-lg transition-colors">
                                             Setujui
                                         </a>
@@ -226,11 +224,12 @@
                                 </div>
                             </div>
                             <div class="flex space-x-2">
-                                <a href="{{ route('kaprodi.preview', ['id' => $request->id]) }}" target="_blank"
+                                <a href="{{ route('kajur.preview', ['id' => $request->id]) }}" target="_blank"
                                     class="flex-1 text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                                     Lihat Detail
                                 </a>
-                                <a href="{{ route('kaprodi.approveAndExportPdf', ['id' => $request->id]) }}"
+                                <a href="{{ route('kajur.approveAndExportPdf', ['id' => $request->id]) }}"
+                                    target="_blank"
                                     class="flex-1 text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                                     Setujui
                                 </a>

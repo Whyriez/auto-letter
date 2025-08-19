@@ -140,8 +140,6 @@
                                             <div>
                                                 <div class="text-sm font-medium text-gray-900">
                                                     {{ $template->nama_surat }}</div>
-                                                <div class="text-sm text-gray-500">
-                                                    {{ Str::limit(strip_tags($template->konten), 40) }}</div>
                                             </div>
                                         </div>
                                     </td>
