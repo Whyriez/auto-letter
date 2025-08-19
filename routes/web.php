@@ -28,13 +28,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::middleware(['role:kaprodi'])->group(function () {
         Route::resource('kaprodi', KaprodiController::class)->names('kaprodi');
         Route::get('/kaprodi/approveAndExportPdf/{id}', [KaprodiController::class, 'approveAndExportPdf'])->name('kaprodi.approveAndExportPdf');
-        Route::get('/preview-surat/{id}', [KaprodiController::class, 'previewSurat'])->name('kaprodi.preview');
+        Route::get('/preview-surat/{id}/kaprodi', [KaprodiController::class, 'previewSurat'])->name('kaprodi.preview');
+        Route::post('/kaprodi/rejected/{id}', [KaprodiController::class, 'rejected'])->name('kaprodi.rejected');
     });
 
     //? Kajur
     Route::middleware(['role:kajur'])->group(function () {
         Route::resource('kajur', KajurController::class)->names('kajur');
         Route::get('/kajur/approveAndExportPdf/{id}', [KajurController::class, 'approveAndExportPdf'])->name('kajur.approveAndExportPdf');
+        Route::post('/kajur/rejected/{id}', [KajurController::class, 'rejected'])->name('kajur.rejected');
         Route::get('/preview-surat/{id}', [KajurController::class, 'previewSurat'])->name('kajur.preview');
     });
 
