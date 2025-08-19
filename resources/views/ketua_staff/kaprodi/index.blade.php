@@ -173,7 +173,8 @@
                                             class="text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-lg transition-colors">
                                             Setujui
                                         </a>
-                                        <a href="#" data-id="{{ $request->id }}"
+                                        <a href="#"
+                                            data-url="{{ route('kaprodi.rejected', ['id' => $request->id]) }}"
                                             class="reject-btn text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-lg transition-colors">
                                             Tolak
                                         </a>
@@ -234,7 +235,7 @@
                                     class="flex-1 text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                                     Setujui
                                 </a>
-                                <a href="#" data-id="{{ $request->id }}"
+                                <a href="#" data-url="{{ route('kaprodi.rejected', ['id' => $request->id]) }}"
                                     class="reject-btn flex-1 text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                                     Tolak
                                 </a>
@@ -264,61 +265,12 @@
         </main>
     </div>
 
-    <div id="reject-modal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden items-center justify-center z-50">
-        <div
-            class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white transform -translate-y-10 transition-transform duration-300">
-            <div class="mt-3 text-center">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Tolak Permintaan Surat</h3>
-                <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500">Mohon berikan alasan yang jelas mengapa permintaan surat ini ditolak.
-                    </p>
-                </div>
-
-                <form id="reject-form" method="POST" action="">
-                    @csrf
-                    <div class="mt-4">
-                        <textarea name="notes" id="notes" rows="4"
-                            class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                            required></textarea>
-                    </div>
-
-                    <div class="items-center px-4 py-3 mt-4">
-                        <button type="submit"
-                            class="px-4 py-2 bg-red-600 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                            Tolak Surat
-                        </button>
-                        <button type="button" onclick="closeRejectModal()"
-                            class="mt-3 px-4 py-2 bg-gray-200 text-gray-700 text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
-                            Batal
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    {{-- modal rejected --}}
+    <x-rejected-form-modal />
 
     <script>
         // Fungsi untuk membuka modal penolakan
-        function openRejectModal(id) {
-            const rejectForm = document.getElementById('reject-form');
-            const rejectModal = document.getElementById('reject-modal');
 
-            // Atur action form modal dengan ID yang benar
-            rejectForm.action = `/kaprodi/rejected/${id}`;
-
-            // Tampilkan modal
-            rejectModal.classList.remove('hidden');
-            rejectModal.classList.add('flex');
-        }
-
-        // Fungsi untuk menutup modal penolakan
-        function closeRejectModal() {
-            const rejectModal = document.getElementById('reject-modal');
-            rejectModal.classList.add('hidden');
-            rejectModal.classList.remove('flex');
-            document.getElementById('reject-form').reset();
-        }
 
         document.addEventListener('DOMContentLoaded', function() {
             const rejectButtons = document.querySelectorAll('.reject-btn');
@@ -328,8 +280,8 @@
             rejectButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const letterRequestId = this.getAttribute('data-id');
-                    openRejectModal(letterRequestId);
+                    const url = this.dataset.url;
+                    openRejectModal(url);
                 });
             });
 

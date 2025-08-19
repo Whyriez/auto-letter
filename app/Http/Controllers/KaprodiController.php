@@ -214,18 +214,30 @@ class KaprodiController extends Controller
         $letterRequest = LetterRequests::findOrFail($id);
 
         if ($letterRequest->status !== 'pending') {
-            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses sebelumnya.');
+            $notification = [
+                'message' => 'Surat ini sudah disetujui atau diproses sebelumnya.',
+                'type' => 'error'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
 
         if (!$request->has('notes') || empty($request->input('notes'))) {
-            return redirect()->back()->with('error', 'Catatan penolakan tidak boleh kosong.');
+            $notification = [
+                'message' => 'Catatan penolakan tidak boleh kosong.',
+                'type' => 'error'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
 
         $letterRequest->status = 'rejected';
         $letterRequest->notes = $request->input('notes');
         $letterRequest->save();
 
-        return redirect()->back()->with('success', 'Surat berhasil ditolak dan catatan telah disimpan.');
+        $notification = [
+            'message' => 'Surat berhasil ditolak dan catatan telah disimpan.',
+            'type' => 'success'
+        ];
+        return redirect()->back()->with('notification', $notification);
     }
 
     public function previewSurat($id)
