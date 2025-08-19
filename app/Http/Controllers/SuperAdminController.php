@@ -246,25 +246,29 @@ class SuperAdminController extends Controller
         try {
             $user = User::findOrFail($id);
 
+            // Cek apakah user adalah super_admin
+            if ($user->role === 'super_admin') {
+                return back()->with('notification', [
+                    'message' => 'Super Admin tidak dapat diblokir atau disuspend.',
+                    'type' => 'error'
+                ]);
+            }
+
             // Perbarui kolom 'is_suspend' berdasarkan nilai dari form
             $user->is_suspend = $validated['is_suspend'];
             $user->save();
 
             $statusText = $user->is_suspend ? 'diblokir' : 'diaktifkan';
 
-            $notification = [
+            return back()->with('notification', [
                 'message' => 'Pengguna "' . $user->name . '" telah berhasil ' . $statusText . '!',
                 'type' => 'success'
-            ];
-
-            return back()->with('notification', $notification);
+            ]);
         } catch (\Exception $e) {
-            $notification = [
+            return back()->with('notification', [
                 'message' => 'Gagal mengubah status pengguna.',
                 'type' => 'error'
-            ];
-
-            return back()->with('notification', $notification);
+            ]);
         }
     }
 

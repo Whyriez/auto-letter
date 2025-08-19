@@ -43,50 +43,66 @@ class MahasiswaController extends Controller
             'course' => ['nullable', 'string', 'max:255'],
         ]);
 
-        // Kumpulkan data mahasiswa tambahan ke dalam array
-        $additionalStudents = [];
-        $additionalNames = $validatedData['additional_names'] ?? [];
-        $additionalNims = $validatedData['additional_nims'] ?? [];
-        foreach ($additionalNames as $key => $name) {
-            $additionalStudents[] = [
-                'name' => $name,
-                'nim' => $additionalNims[$key] ?? null,
+        try {
+            // Kumpulkan data mahasiswa tambahan ke dalam array
+            $additionalStudents = [];
+            $additionalNames = $validatedData['additional_names'] ?? [];
+            $additionalNims = $validatedData['additional_nims'] ?? [];
+            foreach ($additionalNames as $key => $name) {
+                $additionalStudents[] = [
+                    'name' => $name,
+                    'nim' => $additionalNims[$key] ?? null,
+                ];
+            }
+
+            // Kumpulkan semua detail tambahan ke dalam satu array
+            $requestDetails = [];
+            if (!empty($additionalStudents)) {
+                $requestDetails['additional_students'] = $additionalStudents;
+            }
+            if ($request->filled('location')) {
+                $requestDetails['location'] = $validatedData['location'];
+            }
+            if ($request->filled('waktu')) {
+                $requestDetails['waktu'] = $validatedData['waktu'];
+            }
+            if ($request->filled('course')) {
+                $requestDetails['course'] = $validatedData['course'];
+            }
+
+            $letterTemplate = LetterTemplate::where('id', $validatedData['letter-type'])->first();
+            if (!$letterTemplate) {
+                $notification = [
+                    'message' => 'Jenis surat tidak valid.',
+                    'type' => 'error'
+                ];
+                return redirect()->back()->with('notification', $notification);
+            }
+
+            $userId = Auth::user()->id;
+
+            // Simpan data ke database
+            $letterRequest = new LetterRequests();
+            $letterRequest->user_id = $userId;
+            $letterRequest->letter_template_id = $validatedData['letter-type'];
+            $letterRequest->status = 'pending';
+            $letterRequest->unique_code = Str::uuid();
+            $letterRequest->request_details = $requestDetails;
+            $letterRequest->notes = $validatedData['purpose'];
+            $letterRequest->needed_at = $validatedData['deadline'];
+            $letterRequest->save();
+
+            $notification = [
+                'message' => 'Permintaan surat berhasil diajukan!',
+                'type' => 'success'
             ];
+            return redirect()->route('mahasiswa.index')->with('notification', $notification);
+        } catch (\Exception $e) {
+            $notification = [
+                'message' => 'Terjadi kesalahan saat mengajukan permintaan surat.',
+                'type' => 'error'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
-
-        // Kumpulkan semua detail tambahan ke dalam satu array
-        $requestDetails = [];
-        if (!empty($additionalStudents)) {
-            $requestDetails['additional_students'] = $additionalStudents;
-        }
-        if ($request->filled('location')) {
-            $requestDetails['location'] = $validatedData['location'];
-        }
-        if ($request->filled('waktu')) {
-            $requestDetails['waktu'] = $validatedData['waktu'];
-        }
-        if ($request->filled('course')) {
-            $requestDetails['course'] = $validatedData['course'];
-        }
-
-        $letterTemplate = LetterTemplate::where('id', $validatedData['letter-type'])->first();
-        if (!$letterTemplate) {
-            return redirect()->back()->with('error', 'Jenis surat tidak valid.');
-        }
-        // $userId = $letterTemplate->forward_to;
-        $userId = Auth::user()->id;
-
-        // Menyimpan Data ke Database
-        $letterRequest = new LetterRequests();
-        $letterRequest->user_id = $userId;
-        $letterRequest->letter_template_id = $validatedData['letter-type'];
-        $letterRequest->status = 'pending';
-        $letterRequest->unique_code = Str::uuid();
-        $letterRequest->request_details = $requestDetails;
-        $letterRequest->notes = $validatedData['purpose'];
-        $letterRequest->needed_at = $validatedData['deadline'];
-        $letterRequest->save();
-
-        return redirect()->route('mahasiswa.index')->with('success', 'Permintaan surat berhasil diajukan!');
     }
 }

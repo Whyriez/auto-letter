@@ -59,3 +59,12 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+perbaikan ui
+
+<!-- -perbaikan modal semua termasuk konfrimasi delete dan konfirmasi logout -->
+<!-- -mengganti alert dengan toaster -->
+-kalau masih sempat menambahkan grafik di dashboard
+<!-- -redirect user dari halaman utama -->

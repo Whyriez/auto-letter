@@ -13,13 +13,14 @@
         <main class="p-4 sm:p-6">
             <!-- Welcome Section -->
             <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome, Dr. Chen!</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome, {{ Auth::user()->name }}!</h2>
                 <p class="text-gray-600">Review and approve pending letter requests from your department.</p>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white rounded-xl p-6 card-shadow">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +34,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +50,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,19 +72,21 @@
             <!-- Filters and Search -->
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
                 <form id="filter-form" method="GET" action="{{ route('kaprodi.index') }}">
-                    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                        <div class="flex flex-col sm:flex-row gap-4 flex-1">
-                            <div class="relative">
-                                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                                <input type="text" name="search" placeholder="Cari berdasarkan nama mahasiswa..."
-                                    value="{{ request('search') }}"
-                                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
-                            </div>
+                    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                        <!-- kiri: search -->
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <input type="text" name="search" placeholder="Cari berdasarkan nama mahasiswa..."
+                                value="{{ request('search') }}"
+                                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
+                        </div>
 
+                        <!-- kanan: select + tombol -->
+                        <div class="flex gap-2 items-center">
                             <select name="letter_template"
                                 class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                                 <option value="">Semua Tipe Surat</option>
@@ -90,11 +97,9 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
 
-                        <div class="flex gap-2">
                             <button type="submit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
                                 Filter
                             </button>
                             <a href="{{ route('kaprodi.index') }}"
@@ -103,6 +108,7 @@
                             </a>
                         </div>
                     </div>
+
                 </form>
             </div>
 

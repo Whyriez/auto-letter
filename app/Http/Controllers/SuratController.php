@@ -47,12 +47,15 @@ class SuratController extends Controller
         // Simpan template baru ke database
         $newTemplate->save();
 
-        return redirect()->back()->with('success', 'Template berhasil diduplikasi!');
+        $notification = [
+            'message' => 'Template berhasil diduplikasi!',
+            'type' => 'success',
+        ];
+        return redirect()->back()->with('notification', $notification);
     }
 
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'template_category' => 'required|string',
             'template_name'     => 'required|string',
@@ -74,7 +77,7 @@ class SuratController extends Controller
             'perihal.required'       => 'Perihal wajib diisi.',
             'tujuan_nama.required'       => 'Nama tujuan wajib diisi.',
             'tujuan_tempat.required'     => 'Tempat tujuan wajib diisi.',
-            'konten.required'            => 'Konten surat wajib diisi.',
+            'konten.required'            => 'Konten surat wajib diisi bwang.',
             'status.required'            => 'Status wajib dipilih.',
             'status.in'                  => 'Status hanya boleh draft, active, atau archived.',
             'forward_to.required'        => 'Pengirim surat wajib dipilih.',
@@ -95,9 +98,11 @@ class SuratController extends Controller
             'status'                 => $validated['status'],
         ]);
 
-
-
-        return redirect()->back()->with('success', 'Template surat berhasil ditambahkan!');
+        $notification = [
+            'message' => 'Template surat berhasil ditambahkan!',
+            'type' => 'success',
+        ];
+        return redirect()->back()->with('notification', $notification);
     }
 
     public function update(Request $request, $id)
@@ -118,6 +123,10 @@ class SuratController extends Controller
             'forward_to'    => $request->forward_to,
         ]);
 
-        return redirect()->route('template-surat.index')->with('success', 'Template berhasil diupdate');
+        $notification = [
+            'message' => 'Template berhasil diupdate!',
+            'type' => 'success',
+        ];
+        return redirect()->route('template-surat.index')->with('notification', $notification);
     }
 }

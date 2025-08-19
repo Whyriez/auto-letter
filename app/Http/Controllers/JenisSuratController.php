@@ -31,7 +31,11 @@ class JenisSuratController extends Controller
             'name' => $validated['name']
         ]);
 
-        return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil ditambahkan!');
+        $notification = [
+            'message' => 'Jenis surat berhasil ditambahkan!',
+            'type' => 'success',
+        ];
+        return redirect()->route('jenis-surat.index')->with('notification', $notification);
     }
 
     public function update(Request $request, LetterTypes $jenisSurat)
@@ -44,13 +48,21 @@ class JenisSuratController extends Controller
             'name' => $validated['name']
         ]);
 
-        return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil diperbarui!');
+        $notification = [
+            'message' => 'Jenis surat berhasil diperbarui!',
+            'type' => 'success',
+        ];
+        return redirect()->route('jenis-surat.index')->with('notification', $notification);
     }
 
     public function destroy(LetterTypes $jenisSurat)
     {
         $jenisSurat->delete();
 
-        return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil dihapus!');
+        $notification = [
+            'message' => 'Jenis surat berhasil dihapus!',
+            'type' => 'success',
+        ];
+        return redirect()->route('jenis-surat.index')->with('notification', $notification);
     }
 }

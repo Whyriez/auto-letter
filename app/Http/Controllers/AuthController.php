@@ -33,7 +33,11 @@ class AuthController extends Controller
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
 
-                return back()->with('flash.error', 'Your account has been deactivated.');
+                $notification = [
+                    'message' => 'Akun anda telah dinonaktifkan',
+                    'type' => 'error',
+                ];
+                return back()->with('notification', $notification);
             }
 
             if ($user->is_suspend) {
@@ -41,29 +45,45 @@ class AuthController extends Controller
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
 
-                return back()->with('flash.error', 'Your account has been suspended.');
+                $notification = [
+                    'message' => 'Akun anda telah disuspend, silahkan hubungi admin.',
+                    'type' => 'error',
+                ];
+                return back()->with('notification', $notification);
             }
 
             $request->session()->regenerate();
 
+            $notification = [
+                'message' => 'Login berhasil selamat datang kembali!',
+                'type' => 'success',
+            ];
             switch ($user->role) {
                 case 'super_admin':
-                    return redirect()->route('super_admin.dashboard');
+                    return redirect()->route('super_admin.dashboard')->with('notification', $notification);
                 case 'admin_jurusan':
-                    return redirect()->route('admin_jurusan.dashboard');
+                    return redirect()->route('admin_jurusan.dashboard')->with('notification', $notification);
                 case 'kajur':
-                    return redirect()->route('kajur.index');
+                    return redirect()->route('kajur.index')->with('notification', $notification);
                 case 'kaprodi':
-                    return redirect()->route('kaprodi.index');
+                    return redirect()->route('kaprodi.index')->with('notification', $notification);
                 case 'mahasiswa':
-                    return redirect()->route('mahasiswa.index');
+                    return redirect()->route('mahasiswa.index')->with('notification', $notification);
                 default:
                     Auth::logout();
-                    return redirect('/login')->with('flash.error', 'Invalid role.');
+                    $notification = [
+                        'message' => 'akun tidak ditemukan',
+                        'type' => 'error',
+                    ];
+                    return redirect('/login')->with('notification', $notification);
             }
         }
 
-        return back()->with('flash.error', ' email or password is incorrect.');
+        $notification = [
+            'message' => 'Email atau password salah.',
+            'type' => 'error',
+        ];
+        return back()->with('notification', $notification);
     }
 
     public function logout(Request $request)
@@ -72,6 +92,10 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('flash.success', 'You have been logged out successfully.');
+        $notification = [
+            'message' => 'Anda telah berhasil keluar.',
+            'type' => 'success',
+        ];
+        return redirect('/login')->with('notification', $notification);
     }
 }

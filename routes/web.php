@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::middleware(['role:kaprodi'])->group(function () {
         Route::resource('kaprodi', KaprodiController::class)->names('kaprodi');
         Route::get('/kaprodi/approveAndExportPdf/{id}', [KaprodiController::class, 'approveAndExportPdf'])->name('kaprodi.approveAndExportPdf');
-        Route::get('/preview-surat/{id}', [KaprodiController::class, 'previewSurat'])->name('kaprodi.preview');
+        Route::get('/preview-surat/{id}/kaprodi', [KaprodiController::class, 'previewSurat'])->name('kaprodi.preview');
     });
 
     //? Kajur

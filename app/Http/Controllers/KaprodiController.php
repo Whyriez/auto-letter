@@ -63,8 +63,13 @@ class KaprodiController extends Controller
         $letterRequest = LetterRequests::with(['user', 'letterTemplate.letterType'])
             ->findOrFail($id);
 
+
         if ($letterRequest->status !== 'pending') {
-            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses.');
+            $notification = [
+                'message' => 'Surat berhasil disetujui dan disimpan.',
+                'type' => 'success'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
 
         // Ambil data user penanda tangan (signer)
@@ -197,7 +202,11 @@ class KaprodiController extends Controller
         $letterRequest->blockchain_tx_id = $blockchainTxId;
         $letterRequest->save();
 
-        return redirect()->back()->with('success', 'Surat berhasil disetujui dan disimpan.');
+        $notification = [
+            'message' => 'Surat berhasil disetujui dan disimpan.',
+            'type' => 'success'
+        ];
+        return redirect()->back()->with('notification', $notification);
     }
 
     public function previewSurat($id)
@@ -207,7 +216,11 @@ class KaprodiController extends Controller
             ->findOrFail($id);
 
         if ($letterRequest->status !== 'pending') {
-            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses.');
+            $notification = [
+                'message' => 'Surat ini sudah disetujui atau diproses.',
+                'type' => 'error'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
 
         // Ambil data user penanda tangan (signer)

@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Tampilkan atau sembunyikan pesan error password (logika ini tetap sama)
         if (confirmPasswordInput.value.length > 0 && !passwordsMatch) {
-            passwordErrorMessage.textContent = 'Password and confirmation do not match.';
+            passwordErrorMessage.textContent = 'Katasandi dan konfirmasi katasandi tidak cocok.';
             passwordErrorMessage.style.display = 'block';
         } else {
             passwordErrorMessage.style.display = 'none';

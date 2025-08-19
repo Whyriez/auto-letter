@@ -1,6 +1,7 @@
-<!-- Modal: Konfirmasi Hapus -->
-<div id="confirm-delete-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4"
-    role="dialog" aria-modal="true" aria-labelledby="confirm-delete-title">
+<!-- ================= MODAL: KONFIRMASI DUPLIKASI ================= -->
+<div id="confirm-duplicate-modal"
+    class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4"
+    role="dialog" aria-modal="true" aria-labelledby="confirm-duplicate-title">
 
     <!-- Overlay (untuk animasi) -->
     <div class="absolute inset-0" data-modal-overlay></div>
@@ -8,35 +9,36 @@
     <!-- Panel -->
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" data-modal-panel>
         <div class="text-center">
-            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <!-- ikon X -->
-                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <!-- Ikon duplikat -->
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2M8 16h8a2 2 0 002-2V8m-6 8H8a2 2 0 01-2-2v-6m10 0h-6" />
                 </svg>
             </div>
-            <h3 id="confirm-delete-title" class="text-lg font-semibold text-gray-900 mb-2">Konfirmasi Penghapusan</h3>
+
+            <h3 id="confirm-duplicate-title" class="text-lg font-semibold text-gray-900 mb-2">
+                Konfirmasi Duplikasi
+            </h3>
             <p class="text-gray-600 text-sm mb-5">
-                Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
+                Anda akan menduplikasi template:
+                <span id="duplicate-template-name" class="font-semibold text-gray-800"></span>
             </p>
 
-            <form action="{{ route('super_admin.users') }}" method="POST" id="delete-form">
+            <form method="POST" id="duplicate-form" action="">
                 @csrf
-                @method('DELETE')
                 <div class="flex gap-2">
                     <button type="button" data-cancel-btn
                         class="w-full bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors border border-gray-300">
                         Batal
                     </button>
-                    <button type="submit" data-delete-btn
+                    <button type="submit" data-duplicate-btn
                         class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4 hidden animate-spin" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" aria-hidden="true">
+                        <svg class="w-4 h-4 hidden animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                             <circle cx="12" cy="12" r="9" stroke-width="2" class="opacity-25"></circle>
                             <path d="M21 12a9 9 0 00-9-9" stroke-width="2" class="opacity-75"></path>
                         </svg>
-                        <span>Hapus</span>
+                        <span>Duplikat</span>
                     </button>
                 </div>
             </form>
@@ -44,7 +46,7 @@
     </div>
 </div>
 
-<!-- Animations -->
+<!-- =============== ANIMATIONS (pakai kalau belum ada global) =============== -->
 <style>
     @keyframes overlay-in {
         from {
@@ -107,54 +109,58 @@
     }
 </style>
 
+<!-- =========================== SCRIPT =========================== -->
 <script>
-    // Open modal dengan animasi
-    function openDeleteModal(deleteUrl) {
-        const modal = document.getElementById('confirm-delete-modal');
+    // Panggil ini dari tombol:
+    // duplicateTemplate(id, nama) → openDuplicateModal(`/template-surat/${id}/duplicate`, nama)
+    function duplicateTemplate(templateId, templateName) {
+        openDuplicateModal(`/template-surat/${templateId}/duplicate`, templateName);
+    }
+
+    function openDuplicateModal(duplicateUrl, templateName) {
+        const modal = document.getElementById('confirm-duplicate-modal');
         const panel = modal.querySelector('[data-modal-panel]');
         const overlay = modal.querySelector('[data-modal-overlay]');
-        const form = document.getElementById('delete-form');
+        const form = document.getElementById('duplicate-form');
         const cancel = modal.querySelector('[data-cancel-btn]');
 
-        // set action form
-        form.action = deleteUrl;
+        // set target & nama
+        form.action = duplicateUrl;
+        document.getElementById('duplicate-template-name').textContent = `"${templateName}"`;
 
-        // tampilkan modal
+        // tampilkan
         modal.classList.remove('hidden');
         modal.classList.add('flex');
 
-        // reset state tombol delete
-        const delBtn = modal.querySelector('[data-delete-btn]');
-        const spinner = delBtn.querySelector('svg');
-        delBtn.disabled = false;
+        // reset tombol
+        const dupBtn = modal.querySelector('[data-duplicate-btn]');
+        const spinner = dupBtn.querySelector('svg');
+        dupBtn.disabled = false;
         spinner.classList.add('hidden');
-        delBtn.querySelector('span').textContent = 'Hapus';
+        dupBtn.querySelector('span').textContent = 'Duplikat';
 
-        // trigger animasi in
+        // animasi in
         overlay.classList.remove('modal-overlay-out');
         panel.classList.remove('modal-panel-out');
-        // reflow untuk menjamin animasi retrigger
-        void overlay.offsetWidth;
+        void overlay.offsetWidth; // reflow
         overlay.classList.add('modal-overlay-in');
         panel.classList.add('modal-panel-in');
 
-        // fokus ke tombol Batal untuk aksesibilitas
+        // fokus ke batal
         setTimeout(() => cancel?.focus(), 10);
     }
 
-    // Close modal dengan animasi
-    function closeDeleteModal() {
-        const modal = document.getElementById('confirm-delete-modal');
+    function closeDuplicateModal() {
+        const modal = document.getElementById('confirm-duplicate-modal');
         const panel = modal.querySelector('[data-modal-panel]');
         const overlay = modal.querySelector('[data-modal-overlay]');
 
-        // ganti ke animasi out
+        // animasi out
         overlay.classList.remove('modal-overlay-in');
         panel.classList.remove('modal-panel-in');
         overlay.classList.add('modal-overlay-out');
         panel.classList.add('modal-panel-out');
 
-        // setelah animasi selesai → sembunyikan
         const handleEnd = () => {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
@@ -165,31 +171,31 @@
         });
     }
 
-    // Klik overlay untuk menutup
-    document.getElementById('confirm-delete-modal')
+    // Klik di luar panel → tutup
+    document.getElementById('confirm-duplicate-modal')
         .addEventListener('click', (e) => {
             const panel = e.currentTarget.querySelector('[data-modal-panel]');
-            if (!panel.contains(e.target)) closeDeleteModal();
+            if (!panel.contains(e.target)) closeDuplicateModal();
         });
 
-    // Tombol Batal
-    document.querySelector('#confirm-delete-modal [data-cancel-btn]')
-        .addEventListener('click', closeDeleteModal);
+    // Tombol batal
+    document.querySelector('#confirm-duplicate-modal [data-cancel-btn]')
+        .addEventListener('click', closeDuplicateModal);
 
-    // ESC untuk menutup
+    // ESC → tutup
     document.addEventListener('keydown', (e) => {
-        const modal = document.getElementById('confirm-delete-modal');
+        const modal = document.getElementById('confirm-duplicate-modal');
         if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-            closeDeleteModal();
+            closeDuplicateModal();
         }
     });
 
-    // Proteksi double submit + feedback spinner
-    document.getElementById('delete-form').addEventListener('submit', function(e) {
-        const delBtn = this.querySelector('[data-delete-btn]');
-        const spinner = delBtn.querySelector('svg');
-        delBtn.disabled = true;
+    // Proteksi double submit + spinner
+    document.getElementById('duplicate-form').addEventListener('submit', function() {
+        const dupBtn = this.querySelector('[data-duplicate-btn]');
+        const spinner = dupBtn.querySelector('svg');
+        dupBtn.disabled = true;
         spinner.classList.remove('hidden');
-        delBtn.querySelector('span').textContent = 'Menghapus...';
+        dupBtn.querySelector('span').textContent = 'Menduplikasi...';
     });
 </script>

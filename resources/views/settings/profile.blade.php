@@ -59,12 +59,14 @@
                         <!-- Section: QR Code TTD (hanya kajur & kaprodi) -->
                         @if ($needsQRCode)
                             <div class="border-b pb-6">
-                                <div class="flex items-center gap-2 mb-4">
-                                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 6v-4h2v2h2v2h-4zm2-6h4v2h-4v-2z" />
+                                <div class="flex items-center gap-2 mb-4 ">
+                                    <svg width="25" height="25" viewBox="0 0 56 56" class="text-red-600"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                        <path
+                                            d="M8.383 21.402c1.219 0 1.875-.68 1.875-1.922v-5.53c0-2.438 1.312-3.68 3.656-3.68h5.672c1.219 0 1.898-.68 1.898-1.899 0-1.195-.68-1.875-1.898-1.875h-5.742c-4.875 0-7.36 2.414-7.36 7.242v5.743c0 1.242.68 1.921 1.899 1.921m39.234 0c1.242 0 1.899-.68 1.899-1.922v-5.742c0-4.828-2.438-7.242-7.36-7.242h-5.719c-1.242 0-1.921.68-1.921 1.875 0 1.219.68 1.899 1.921 1.899h5.672c2.297 0 3.633 1.242 3.633 3.68v5.53c0 1.243.68 1.922 1.875 1.922m-20.625 4.57v-8.179c0-.562-.445-1.031-1.031-1.031h-8.156c-.586 0-1.032.468-1.032 1.031v8.18c0 .562.446 1.008 1.032 1.008h8.156c.586 0 1.031-.446 1.031-1.008m4.055-7.171h6.14v6.14h-6.14Zm4.36 4.36v-2.556h-2.555v2.555Zm-12.235 0v-2.556h-2.578v2.555Zm-4.36 7.898h6.141v6.14h-6.14Zm20.11.796v-2.554h-2.555v2.555Zm-7.055 0v-2.554h-2.555v2.555Zm-8.695 3.54V32.84h-2.578v2.554Zm12.234 0V32.84h-2.578v2.554Zm1.031 14.109h5.72c4.921 0 7.359-2.438 7.359-7.266V36.52c0-1.243-.68-1.922-1.899-1.922s-1.875.68-1.875 1.922v5.53c0 2.438-1.336 3.68-3.633 3.68h-5.672c-1.242 0-1.921.68-1.921 1.899 0 1.195.68 1.875 1.921 1.875m-22.593 0h5.742c1.219 0 1.898-.68 1.898-1.875 0-1.219-.68-1.898-1.898-1.898h-5.672c-2.344 0-3.656-1.243-3.656-3.68V36.52c0-1.243-.68-1.922-1.875-1.922-1.242 0-1.899.68-1.899 1.922v5.718c0 4.852 2.485 7.266 7.36 7.266m18.023-10.57v-2.555h-2.555v2.555Zm7.055 0v-2.555h-2.555v2.555Zm.305-12.961v-8.18c0-.562-.446-1.031-1.032-1.031H30.04c-.586 0-1.031.468-1.031 1.031v8.18c0 .562.445 1.008 1.03 1.008h8.157c.586 0 1.032-.446 1.032-1.008M18.812 18.8h6.141v6.14h-6.14Zm8.18 19.406v-8.18c0-.562-.445-1.007-1.031-1.007h-8.156c-.586 0-1.032.445-1.032 1.007v8.18c0 .563.446 1.031 1.032 1.031h8.156c.586 0 1.031-.468 1.031-1.031" />
                                     </svg>
+
+
                                     <h3 class="text-lg font-semibold text-gray-900">TTD (QR Code)</h3>
                                 </div>
 
@@ -112,9 +114,9 @@
                             <div class="flex items-center gap-2 mb-4">
                                 <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0z" />
+                                        d="M12 11c1.657 0 3-1.567 3-3.5S13.657 4 12 4 9 5.567 9 7.5 10.343 11 12 11z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 14v7m-7-7a7 7 0 0114 0v7" />
+                                        d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
                                 </svg>
                                 <h3 class="text-lg font-semibold text-gray-900">Informasi Akun</h3>
                             </div>
@@ -179,12 +181,10 @@
                         <!-- Section: Keamanan -->
                         <div>
                             <div class="flex items-center gap-2 mb-4">
-                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 11c1.657 0 3-1.567 3-3.5S13.657 4 12 4 9 5.567 9 7.5 10.343 11 12 11z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
+                                        d="M8 10V7a4 4 0 118 0v3m-9 0h10a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2v-6a2 2 0 012-2z" />
                                 </svg>
                                 <h3 class="text-lg font-semibold text-gray-900">Keamanan Akun</h3>
                             </div>

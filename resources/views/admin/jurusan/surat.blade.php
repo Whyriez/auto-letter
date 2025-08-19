@@ -267,8 +267,9 @@
     </div>
 
     <x-admin.jurusan.add-update-modal :letterTypes="$letterTypes" :users="$users" />
+    <x-admin.jurusan.confirm-duplicate-modal />
 
-    @push('scriptsSurat')
+ @push('scriptsSurat')
         @verbatim
            <script>
                 // Daftar placeholder yang tersedia
@@ -698,4 +699,5 @@
             });
         </script>
     @endpush
+
 @endsection

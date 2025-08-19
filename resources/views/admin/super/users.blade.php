@@ -16,7 +16,7 @@
             </div>
 
             <!-- Stats Cards -->
-           
+
 
             <!-- Add New User Button -->
             <div class="mb-8">
@@ -75,7 +75,7 @@
                                 </button>
                                 <a href="{{ route('super_admin.users') }}" type="button"
                                     class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors">
-                                    Hapus
+                                    Reset
                                 </a>
                             </div>
                         </div>
@@ -96,8 +96,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <input type="checkbox"
-                                        class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                                    <input type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Nama</th>
@@ -170,8 +169,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                         <button onclick="openEditUserModal('{{ $u->id }}')"
                                             class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">Edit</button>
-                                        <button
-                                            onclick="openDeleteModal('{{ route('super_admin.delete_user', $u->id) }}')"
+                                        <button onclick="openDeleteModal('{{ route('super_admin.delete_user', $u->id) }}')"
                                             class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-lg transition-colors">Hapus</button>
                                         @if ($u->is_suspend)
                                             {{-- Form untuk mengaktifkan kembali (Unsuspend) --}}
@@ -204,7 +202,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-4">No users found.</td>
+                                    <td colspan="9" class="text-center py-4 text-gray-500">Belum ada user</td>
                                 </tr>
                             @endforelse
 

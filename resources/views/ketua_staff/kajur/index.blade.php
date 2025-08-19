@@ -16,8 +16,9 @@
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white rounded-xl p-6 card-shadow">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Card Pending -->
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,7 +32,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+
+                <!-- Card Approved Today -->
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +48,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+
+                <!-- Card Total This Month -->
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,6 +67,7 @@
                 </div>
             </div>
 
+
             <!-- Filters and Search -->
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
                 <form id="filter-form" method="GET" action="{{ route('kajur.index') }}">
@@ -77,22 +83,22 @@
                                     value="{{ request('search') }}"
                                     class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
                             </div>
+                            <div class="flex gap-2">
 
-                            <select name="letter_template"
-                                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                                <option value="">Semua Tipe Surat</option>
-                                @foreach ($letterTemplates as $template)
-                                    <option value="{{ $template->id }}"
-                                        {{ request('letter_template') == $template->id ? 'selected' : '' }}>
-                                        {{ $template->nama_surat }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                                <select name="letter_template"
+                                    class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                    <option value="">Semua Tipe Surat</option>
+                                    @foreach ($letterTemplates as $template)
+                                        <option value="{{ $template->id }}"
+                                            {{ request('letter_template') == $template->id ? 'selected' : '' }}>
+                                            {{ $template->nama_surat }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div class="flex gap-2">
                             <button type="submit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
                                 Filter
                             </button>
                             <a href="{{ route('kajur.index') }}"
