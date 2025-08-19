@@ -209,6 +209,25 @@ class KaprodiController extends Controller
         return redirect()->back()->with('notification', $notification);
     }
 
+    public function rejected(Request $request, $id)
+    {
+        $letterRequest = LetterRequests::findOrFail($id);
+
+        if ($letterRequest->status !== 'pending') {
+            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses sebelumnya.');
+        }
+
+        if (!$request->has('notes') || empty($request->input('notes'))) {
+            return redirect()->back()->with('error', 'Catatan penolakan tidak boleh kosong.');
+        }
+
+        $letterRequest->status = 'rejected';
+        $letterRequest->notes = $request->input('notes');
+        $letterRequest->save();
+
+        return redirect()->back()->with('success', 'Surat berhasil ditolak dan catatan telah disimpan.');
+    }
+
     public function previewSurat($id)
     {
         // 1. Ambil data permintaan surat yang akan diekspor

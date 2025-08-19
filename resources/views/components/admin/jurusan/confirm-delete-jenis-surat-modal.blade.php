@@ -44,74 +44,67 @@
     </div>
 </div>
 <script>
-    // Open modal hapus jenis surat
+    // Fungsi untuk membuka modal hapus jenis surat
     function openDeleteJenisSuratModal(deleteUrl) {
         const modal = document.getElementById('confirm-delete-jenis-surat');
         const form = document.getElementById('delete-jenis-surat-form');
-        const panel = modal.querySelector('[data-modal-panel]');
-        const overlay = modal.querySelector('[data-modal-overlay]');
-        const cancelBtn = modal.querySelector('[data-cancel-btn]');
 
-        // set action form
+        // Set action form
         form.action = deleteUrl;
 
+        // Tampilkan modal
         modal.classList.remove('hidden');
         modal.classList.add('flex');
-
-        // animasi masuk
-        overlay.classList.remove('modal-overlay-out');
-        panel.classList.remove('modal-panel-out');
-        void overlay.offsetWidth;
-        overlay.classList.add('modal-overlay-in');
-        panel.classList.add('modal-panel-in');
-
-        setTimeout(() => cancelBtn.focus(), 10);
     }
 
-    // Close modal hapus jenis surat
+    // Fungsi untuk menutup modal hapus jenis surat
     function closeDeleteJenisSuratModal() {
         const modal = document.getElementById('confirm-delete-jenis-surat');
-        const panel = modal.querySelector('[data-modal-panel]');
-        const overlay = modal.querySelector('[data-modal-overlay]');
 
-        overlay.classList.remove('modal-overlay-in');
-        panel.classList.remove('modal-panel-in');
-        overlay.classList.add('modal-overlay-out');
-        panel.classList.add('modal-panel-out');
-
-        panel.addEventListener('animationend', () => {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }, {
-            once: true
-        });
+        // Sembunyikan modal
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
     }
+    
+    // Tunggu hingga seluruh halaman selesai dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('confirm-delete-jenis-surat');
+        
+        // Event listener untuk tombol 'Batal' di dalam modal
+        const cancelButton = modal.querySelector('[data-cancel-btn]');
+        if (cancelButton) {
+            cancelButton.addEventListener('click', (e) => {
+                e.preventDefault(); // Mencegah tindakan default jika ada
+                closeDeleteJenisSuratModal();
+            });
+        }
 
-    // Event cancel & overlay click
-    document.querySelector('#confirm-delete-jenis-surat [data-cancel-btn]')
-        .addEventListener('click', closeDeleteJenisSuratModal);
-
-    document.getElementById('confirm-delete-jenis-surat')
-        .addEventListener('click', (e) => {
-            const panel = e.currentTarget.querySelector('[data-modal-panel]');
-            if (!panel.contains(e.target)) closeDeleteJenisSuratModal();
+        // Event listener untuk klik di luar panel modal (overlay)
+        modal.addEventListener('click', (e) => {
+            const panel = modal.querySelector('[data-modal-panel]');
+            // Jika klik terjadi di luar panel, tutup modal
+            if (!panel.contains(e.target)) {
+                closeDeleteJenisSuratModal();
+            }
         });
 
-    // ESC untuk tutup
-    document.addEventListener('keydown', (e) => {
-        const modal = document.getElementById('confirm-delete-jenis-surat');
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-            closeDeleteJenisSuratModal();
+        // Event listener untuk tombol ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeDeleteJenisSuratModal();
+            }
+        });
+        
+        // Spinner saat submit
+        const deleteForm = document.getElementById('delete-jenis-surat-form');
+        if (deleteForm) {
+            deleteForm.addEventListener('submit', function() {
+                const deleteButton = this.querySelector('[data-delete-btn]');
+                const spinner = deleteButton.querySelector('svg');
+                deleteButton.disabled = true;
+                spinner.classList.remove('hidden');
+                deleteButton.querySelector('span').textContent = 'Menghapus...';
+            });
         }
     });
-
-    // Spinner saat submit
-    document.getElementById('delete-jenis-surat-form')
-        .addEventListener('submit', function() {
-            const delBtn = this.querySelector('[data-delete-btn]');
-            const spinner = delBtn.querySelector('svg');
-            delBtn.disabled = true;
-            spinner.classList.remove('hidden');
-            delBtn.querySelector('span').textContent = 'Menghapus...';
-        });
 </script>
