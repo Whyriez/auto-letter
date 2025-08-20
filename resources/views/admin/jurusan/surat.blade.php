@@ -4,18 +4,14 @@
 
 @section('content')
     <div class="lg:ml-64">
-        <!-- Top Bar -->
         <x-dashboard.topbar :title="'Dashboard'" />
 
-        <!-- Dashboard Content -->
         <main class="p-4 sm:p-6">
-            <!-- Welcome Section -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Manajemen Template Surat</h2>
                 <p class="text-gray-600">Buat, edit, dan kelola templat surat untuk departemen Anda.</p>
             </div>
 
-            <!-- Add New Template Button -->
             <div class="mb-8">
                 <button onclick="openTemplateModal()"
                     class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-200 card-shadow">
@@ -29,12 +25,10 @@
                 </button>
             </div>
 
-            <!-- Filters and Search -->
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
                 <form method="GET" action="{{ route('template-surat.index') }}"
                     class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                     <div class="flex flex-col sm:flex-row gap-4 flex-1">
-                        <!-- Search -->
                         <div class="relative">
                             <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,11 +40,9 @@
                                 class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
                         </div>
 
-                        <!-- Filter kategori -->
                         <select name="kategori"
                             class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                             <option value="">Semua Kategori</option>
-                            {{-- Loop untuk menampilkan data dari database --}}
                             @foreach ($letterTypes as $type)
                                 <option value="{{ $type->id }}"
                                     {{ request('kategori') == $type->name ? 'selected' : '' }}>
@@ -59,7 +51,6 @@
                             @endforeach
                         </select>
 
-                        <!-- Filter status -->
                         <select name="status"
                             class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                             <option value="">Semua Status</option>
@@ -97,14 +88,12 @@
             @endif
 
 
-            <!-- Templates Table -->
             <div class="bg-white rounded-xl card-shadow overflow-hidden">
                 <div class="px-4 sm:px-6 py-4 border-b border-gray-200 bg-red-50">
                     <h3 class="text-lg font-semibold text-red-900">Template Surat</h3>
                     <p class="text-sm text-red-700 mt-1">Kelola dan atur templat surat departemen Anda</p>
                 </div>
 
-                <!-- Desktop Table -->
                 <div class="desktop-table overflow-x-auto">
                     <table class="w-full">
                         <thead class="bg-gray-50">
@@ -183,7 +172,6 @@
                     </table>
                 </div>
 
-                <!-- Mobile Cards -->
                 <div class="mobile-cards p-4 space-y-4">
                     @forelse($templates as $template)
                         <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
@@ -241,7 +229,6 @@
                     @endforelse
                 </div>
 
-                <!-- Pagination -->
                 <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
                     <div class="flex items-center justify-between">
                         <div class="text-sm text-gray-700">
@@ -270,7 +257,6 @@
  @push('scriptsSurat')
         @verbatim
            <script>
-                // Daftar placeholder yang tersedia
                 const placeholders = [{
                         key: 'SPASI_PENYELARAS',
                         display: '{{ SPASI_PENYELARAS }}',
@@ -323,11 +309,9 @@
                     }
                 ];
 
-                // Konstanta untuk mencegah konflik dengan Blade
                 const TRIGGER_CHARS = '{' + '{';
                 const TRIGGER_LENGTH = 2;
 
-                // Inisialisasi Quill editor
                 const quill = new Quill('#editor', {
                     theme: 'snow',
                     modules: {
@@ -353,7 +337,6 @@
                     }
                 });
 
-                // Buat elemen dropdown untuk autosuggest
                 const dropdown = document.createElement('div');
                 dropdown.className = 'autosuggest-dropdown';
                 dropdown.style.cssText = `
@@ -370,15 +353,13 @@
     `;
                 document.body.appendChild(dropdown);
 
-                // Variabel untuk tracking
                 let currentRange = null;
                 let isDropdownVisible = false;
                 let selectedIndex = -1;
                 let filteredSuggestions = [];
 
-                // Fungsi untuk menampilkan dropdown
                 function showDropdown(suggestions, bounds) {
-                    filteredSuggestions = suggestions; // Simpan untuk keyboard navigation
+                    filteredSuggestions = suggestions;
                     dropdown.innerHTML = '';
                     dropdown.style.display = 'block';
 
@@ -397,7 +378,6 @@
                 <div style="font-size: 12px; color: #666; margin-top: 2px;">${item.description}</div>
             `;
 
-                        // Hover effect
                         div.addEventListener('mouseenter', () => {
                             clearSelection();
                             div.style.backgroundColor = '#f8f9fa';
@@ -408,7 +388,6 @@
                             div.style.backgroundColor = '';
                         });
 
-                        // Click handler
                         div.addEventListener('click', () => {
                             insertPlaceholder(item.display);
                         });
@@ -416,7 +395,6 @@
                         dropdown.appendChild(div);
                     });
 
-                    // Posisikan dropdown
                     const editorBounds = quill.container.getBoundingClientRect();
                     dropdown.style.left = (editorBounds.left + bounds.left) + 'px';
                     dropdown.style.top = (editorBounds.top + bounds.bottom + 5) + 'px';
@@ -425,7 +403,6 @@
                     selectedIndex = -1;
                 }
 
-                // Fungsi untuk menyembunyikan dropdown
                 function hideDropdown() {
                     dropdown.style.display = 'none';
                     isDropdownVisible = false;
@@ -433,7 +410,6 @@
                     filteredSuggestions = [];
                 }
 
-                // Fungsi untuk membersihkan selection
                 function clearSelection() {
                     const items = dropdown.querySelectorAll('.suggestion-item');
                     items.forEach(item => {
@@ -441,7 +417,6 @@
                     });
                 }
 
-                // Fungsi untuk highlight selection
                 function highlightSelection() {
                     clearSelection();
                     const items = dropdown.querySelectorAll('.suggestion-item');
@@ -450,14 +425,12 @@
                     }
                 }
 
-                // Fungsi untuk insert placeholder
                 function insertPlaceholder(placeholder) {
                     if (currentRange) {
                         const selection = quill.getSelection();
                         const currentPos = selection ? selection.index : currentRange.index;
                         const text = quill.getText();
                         
-                        // Cari posisi awal {{ sebelum cursor
                         let searchStart = Math.max(0, currentPos - 20);
                         const textBefore = text.substring(searchStart, currentPos);
                         const braceIndex = textBefore.lastIndexOf(TRIGGER_CHARS);
@@ -475,7 +448,6 @@
                     quill.focus();
                 }
 
-                // Event listener untuk text change
                 const textChangeHandler = function() {
                     const selection = quill.getSelection();
                     if (!selection) return;
@@ -483,7 +455,6 @@
                     const text = quill.getText();
                     const currentPos = selection.index;
 
-                    // Cari trigger chars sebelum posisi cursor
                     let searchStart = Math.max(0, currentPos - 20);
                     const textBefore = text.substring(searchStart, currentPos);
 
@@ -493,7 +464,6 @@
                         const actualBracePos = searchStart + braceIndex;
                         const query = text.substring(actualBracePos + TRIGGER_LENGTH, currentPos).toLowerCase();
 
-                        // Filter suggestions berdasarkan query
                         const filtered = placeholders.filter(item =>
                             item.key.toLowerCase().includes(query) ||
                             item.description.toLowerCase().includes(query)
@@ -509,22 +479,18 @@
                         }
                     }
 
-                    // Sembunyikan dropdown jika tidak ada match
                     hideDropdown();
                 };
 
-                // Event listener untuk selection change
                 const selectionChangeHandler = function(range) {
                     if (!range) {
                         hideDropdown();
                     }
                 };
 
-                // Daftarkan event listeners
                 quill.on('text-change', textChangeHandler);
                 quill.on('selection-change', selectionChangeHandler);
 
-                // Keyboard navigation dengan event listener langsung
                 quill.root.addEventListener('keydown', function(e) {
                     if (!isDropdownVisible) return;
 
@@ -559,12 +525,11 @@
                     }
                 });
 
-                // Keyboard navigation dengan Quill binding (sebagai fallback)
                 quill.keyboard.addBinding({
                     key: 'ArrowDown'
                 }, function(range, context) {
                     if (isDropdownVisible) {
-                        return false; // Handled by keydown event listener
+                        return false;
                     }
                     return true;
                 });
@@ -573,7 +538,7 @@
                     key: 'ArrowUp'
                 }, function(range, context) {
                     if (isDropdownVisible) {
-                        return false; // Handled by keydown event listener
+                        return false; 
                     }
                     return true;
                 });
@@ -582,7 +547,7 @@
                     key: 'Enter'
                 }, function(range, context) {
                     if (isDropdownVisible) {
-                        return false; // Handled by keydown event listener
+                        return false;
                     }
                     return true;
                 });
@@ -591,19 +556,17 @@
                     key: 'Escape'
                 }, function(range, context) {
                     if (isDropdownVisible) {
-                        return false; // Handled by keydown event listener
+                        return false;
                     }
                     return true;
                 });
 
-                // Click outside untuk hide dropdown
                 document.addEventListener('click', function(e) {
                     if (!dropdown.contains(e.target) && !quill.container.contains(e.target)) {
                         hideDropdown();
                     }
                 });
 
-                // Form submission handler
                 document.querySelector('form').onsubmit = function() {
                     document.querySelector('#isi_konten').value = quill.root.innerHTML;
                 };
@@ -612,7 +575,6 @@
         @endverbatim
 
         <script>
-            // Template modal functionality
             function openTemplateModal(template = null) {
                 const modal = document.getElementById('template-modal');
                 const modalTitle = document.getElementById('modal-title');
@@ -620,11 +582,9 @@
                 const form = document.querySelector('#template-modal form');
 
                 if (template) {
-                    // mode edit
                     modalTitle.textContent = `Edit Template: ${template.nama_surat}`;
                     submitText.textContent = 'Update Template';
 
-                    // isi form sesuai data template
                     document.getElementById('template-name').value = template.nama_surat;
                     document.getElementById('template-category').value = template.letter_type_id;
                     document.getElementById('kode_seri').value = template.kode_seri;
@@ -639,11 +599,9 @@
                     const ara = document.getElementById('forward_to').value = template.forward_to;
                     quill.root.innerHTML = template.konten ?? '';
 
-                    // ubah form action ke route update
                     form.action = `/template-surat/${template.id}`;
                     form.insertAdjacentHTML("beforeend", `<input type="hidden" name="_method" value="PUT">`);
                 } else {
-                    // mode create
                     modalTitle.textContent = 'Buat Template Surat Baru';
                     submitText.textContent = 'Buat Template';
                     form.action = `{{ route('template-surat.store') }}`;
@@ -658,23 +616,19 @@
             function closeTemplateModal() {
                 document.getElementById('template-modal').classList.add('hidden');
                 document.getElementById('template-modal').classList.remove('flex');
-                // Reset form
                 document.querySelector('#template-modal form').reset();
             }
 
-            // Action functions
             function editTemplate(template) {
                 openTemplateModal(template);
             }
 
 
             function duplicateTemplate(templateId, templateName) {
-                // Buat form dinamis untuk mengirim POST request
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = `/template-surat/${templateId}/duplicate`;
 
-                // Tambahkan CSRF token untuk keamanan
                 const csrfToken = document.createElement('input');
                 csrfToken.type = 'hidden';
                 csrfToken.name = '_token';
@@ -683,13 +637,11 @@
                 form.appendChild(csrfToken);
                 document.body.appendChild(form);
 
-                // Tampilkan konfirmasi
                 if (confirm(`Apakah Anda yakin ingin menduplikasi template "${templateName}"?`)) {
                     form.submit();
                 }
             }
 
-            // Close modals when clicking outside
             document.getElementById('template-modal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeTemplateModal();

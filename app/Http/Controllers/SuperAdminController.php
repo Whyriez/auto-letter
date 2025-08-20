@@ -52,10 +52,9 @@ class SuperAdminController extends Controller
         }
 
         if ($request->filled('status')) {
-            // Asumsikan status adalah enum: 'active' = 0 (aktif), 'inactive' = 1 (suspend)
             $statusMap = [
-                'active' => 0,   // aktif
-                'inactive' => 1, // suspend
+                'active' => 0,  
+                'inactive' => 1,
             ];
             if (isset($statusMap[$request->status])) {
                 $query->where('is_suspend', $statusMap[$request->status]);
@@ -64,8 +63,6 @@ class SuperAdminController extends Controller
 
         $users = $query->paginate(10)->withQueryString();
 
-
-
         return view('admin.super.users', compact('users'));
     }
 
@@ -73,8 +70,6 @@ class SuperAdminController extends Controller
 
     public function submit_new_user(Request $request)
     {
-        // 1. Validasi dasar untuk semua field yang mungkin diisi.
-        // Aturan 'nullable' digunakan agar validasi tidak gagal jika field dikosongkan.
         $validatedData = $request->validate([
             'user-name' => ['required', 'string', 'max:255'],
             'user-email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
@@ -91,10 +86,7 @@ class SuperAdminController extends Controller
         ]);
 
         try {
-            // 2. Persiapan Data Final berdasarkan Role (Logika Bisnis)
             $role = $validatedData['user-role'];
-
-            // Mulai dengan data yang selalu ada
             $userData = [
                 'name' => $validatedData['user-name'],
                 'email' => $validatedData['user-email'],
@@ -103,11 +95,9 @@ class SuperAdminController extends Controller
                 'password' => Hash::make($validatedData['password']),
             ];
 
-            // Terapkan aturan berdasarkan role
             switch ($role) {
                 case 'mahasiswa':
                 case 'kaprodi':
-                    // Semua field identitas wajib ada, ambil dari data tervalidasi
                     $userData['nim_nip'] = $validatedData['nim_nip'];
                     $userData['jurusan'] = $validatedData['jurusan'];
                     $userData['prodi'] = $validatedData['prodi'];
@@ -115,22 +105,19 @@ class SuperAdminController extends Controller
 
                 case 'kajur':
                 case 'admin_jurusan':
-                    // NIP dan Jurusan wajib, tapi Prodi HARUS NULL
                     $userData['nim_nip'] = $validatedData['nim_nip'];
                     $userData['jurusan'] = $validatedData['jurusan'];
-                    $userData['prodi'] = null; // Paksa jadi NULL
+                    $userData['prodi'] = null; 
                     break;
 
                 case 'super_admin':
                 default:
-                    // Untuk Super Admin atau role lain, semua field identitas HARUS NULL
                     $userData['nim_nip'] = null;
                     $userData['jurusan'] = null;
                     $userData['prodi'] = null;
                     break;
             }
 
-            // 3. Buat user dengan data yang sudah bersih
             $user = User::create($userData);
 
             $notification = [
@@ -159,7 +146,6 @@ class SuperAdminController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Validasi dasar
         $validatedData = $request->validate([
             'user-name'   => ['required', 'string', 'max:255'],
             'user-email'  => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
@@ -178,7 +164,6 @@ class SuperAdminController extends Controller
         try {
             $role = $validatedData['user-role'];
 
-            // Data umum
             $updateData = [
                 'name'   => $validatedData['user-name'],
                 'email'  => $validatedData['user-email'],
@@ -186,12 +171,10 @@ class SuperAdminController extends Controller
                 'status' => $validatedData['user-status'],
             ];
 
-            // Password hanya diupdate kalau diisi
             if (!empty($validatedData['password'])) {
                 $updateData['password'] = Hash::make($validatedData['password']);
             }
 
-            // Aturan berdasarkan role
             switch ($role) {
                 case 'mahasiswa':
                 case 'kaprodi':
@@ -204,7 +187,7 @@ class SuperAdminController extends Controller
                 case 'admin_jurusan':
                     $updateData['nim_nip'] = $validatedData['nim_nip'];
                     $updateData['jurusan'] = $validatedData['jurusan'];
-                    $updateData['prodi']   = null; // prodi harus null
+                    $updateData['prodi']   = null; 
                     break;
 
                 case 'super_admin':
@@ -250,7 +233,6 @@ class SuperAdminController extends Controller
 
     public function toggleSuspend(Request $request, $id)
     {
-        // Validasi input untuk memastikan nilainya hanya 0 atau 1
         $validated = $request->validate([
             'is_suspend' => ['required', Rule::in([0, 1])],
         ]);
@@ -258,7 +240,6 @@ class SuperAdminController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            // Cek apakah user adalah super_admin
             if ($user->role === 'super_admin') {
                 return back()->with('notification', [
                     'message' => 'Super Admin tidak dapat diblokir atau disuspend.',
@@ -266,7 +247,6 @@ class SuperAdminController extends Controller
                 ]);
             }
 
-            // Perbarui kolom 'is_suspend' berdasarkan nilai dari form
             $user->is_suspend = $validated['is_suspend'];
             $user->save();
 
@@ -286,7 +266,6 @@ class SuperAdminController extends Controller
 
     public function updateRole(Request $request, $id)
     {
-        // Validasi untuk memastikan role yang dikirim adalah salah satu dari opsi yang valid
         $validated = $request->validate([
             'role' => ['required', Rule::in(['super_admin', 'admin_jurusan', 'kaprodi', 'kajur', 'mahasiswa'])],
         ]);
@@ -296,10 +275,8 @@ class SuperAdminController extends Controller
             $user->role = $validated['role'];
             $user->save();
 
-            // Kirim respons sukses dalam format JSON
             return response()->json(['message' => 'Peran untuk ' . $user->name . ' telah berhasil diubah!']);
         } catch (\Exception $e) {
-            // Kirim respons error jika gagal
             return response()->json(['message' => 'Gagal mengubah peran.'], 500);
         }
     }

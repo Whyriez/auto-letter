@@ -1,7 +1,6 @@
 <div id="edit-user-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 px-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
 
-        {{-- HEADER (fixed) --}}
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-red-50 flex-shrink-0">
             <div class="flex items-center gap-3">
                 <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,14 +21,12 @@
             </button>
         </div>
 
-        {{-- FORM (scrollable) --}}
         <form class="flex-1 overflow-y-auto px-6 py-6 space-y-6" onsubmit="handleEditFormSubmit(event)"
             id="edit-user-form" method="POST" action="">
             @csrf
             @method('PUT')
             <input type="hidden" id="edit-user-id" name="user_id">
 
-            {{-- Informasi Pribadi --}}
             <section class="border border-gray-200 rounded-xl p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +42,6 @@
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </section>
 
-            {{-- Informasi Kontak --}}
             <section class="border border-gray-200 rounded-xl p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -65,7 +61,6 @@
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </section>
 
-            {{-- Akses Sistem --}}
             <section class="border border-gray-200 rounded-xl p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -104,7 +99,6 @@
                 </div>
             </section>
 
-            {{-- Informasi Akademik (dinamis) --}}
             <section id="edit-nim-nip-container" class="border border-gray-200 rounded-xl p-4 hidden">
                 <div class="flex items-center gap-2 mb-3">
                     <!-- academic-cap (valid) -->
@@ -146,7 +140,6 @@
                 </div>
             </section>
 
-            {{-- Kata Sandi --}}
             <section class="border border-gray-200 rounded-xl p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -157,7 +150,6 @@
                     <h3 class="text-sm font-semibold text-gray-900">Kata Sandi</h3>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- password -->
                     <div class="relative">
                         <label for="edit-user-password" class="block text-sm font-medium text-gray-700 mb-2">
                             Kata Sandi
@@ -169,7 +161,6 @@
                             <button type="button" id="edit-toggle-pass"
                                 class="absolute right-4 top-1/2 -translate-y-1/2 translate-x-1/2 text-gray-400 hover:text-gray-600"
                                 aria-label="Lihat/Sembunyikan password" aria-pressed="false">
-                                <!-- eye -->
                                 <svg class="icon-eye w-5 h-5" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -177,7 +168,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <!-- eye-off -->
                                 <svg class="icon-eye-off w-5 h-5 hidden" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -190,7 +180,6 @@
                             </button>
                         </div>
                     </div>
-                    <!-- confirm -->
                     <div class="relative">
                         <label for="edit-user-password-confirmation"
                             class="block text-sm font-medium text-gray-700 mb-2">
@@ -203,7 +192,6 @@
                             <button type="button" id="edit-toggle-pass2"
                                 class="absolute right-4 top-1/2 -translate-y-1/2 translate-x-1/2 text-gray-400 hover:text-gray-600"
                                 aria-label="Lihat/Sembunyikan konfirmasi" aria-pressed="false">
-                                <!-- eye -->
                                 <svg class="icon-eye w-5 h-5" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -211,7 +199,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <!-- eye-off -->
                                 <svg class="icon-eye-off w-5 h-5 hidden" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -231,7 +218,6 @@
             </section>
         </form>
 
-        {{-- Tombol Aksi --}}
         <div class="flex flex-col sm:flex-row gap-3 px-6 py-4 border-t border-gray-200 bg-white flex-shrink-0">
             <button type="button" onclick="closeEditUserModal()"
                 class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50">
@@ -246,7 +232,6 @@
 </div>
 
 <script>
-    // Buka modal + load data
     async function openEditUserModal(userId) {
         const modal = document.getElementById('edit-user-modal');
         modal.classList.remove('hidden');
@@ -269,7 +254,7 @@
             const form = document.getElementById('edit-user-form');
             if (form) form.action = `/dashboard/users/${user.id}`;
 
-            validateForm(); // set state awal (role & password)
+            validateForm();
 
         } catch (error) {
             console.error('Gagal memuat data pengguna:', error);
@@ -278,7 +263,6 @@
         }
     }
 
-    // Tutup modal
     function closeEditUserModal() {
         const m = document.getElementById('edit-user-modal');
         m.classList.add('hidden');
@@ -286,7 +270,6 @@
         const form = m.querySelector('form');
         if (form) form.reset();
 
-        // reset state
         document.getElementById('edit-password-error-message')?.classList.add('hidden');
 
         const btn = document.getElementById('edit-user-submit-button');
@@ -294,11 +277,9 @@
         btn.classList.remove('bg-red-600', 'hover:bg-red-700');
         btn.classList.add('bg-gray-400');
 
-        // hide akademik & kosongkan prodi (sesuai add)
         document.getElementById('edit-nim-nip-container')?.classList.add('hidden');
         document.getElementById('edit-user-prodi').value = '';
 
-        // reset ikon mata ke default (eye)
         ['edit-toggle-pass', 'edit-toggle-pass2'].forEach(id => {
             const b = document.getElementById(id);
             if (!b) return;
@@ -309,12 +290,10 @@
         });
     }
 
-    // Tutup saat klik overlay
     document.getElementById('edit-user-modal').addEventListener('click', (e) => {
         if (e.target.id === 'edit-user-modal') closeEditUserModal();
     });
 
-    // Tutup dengan Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             const m = document.getElementById('edit-user-modal');
@@ -322,7 +301,6 @@
         }
     });
 
-    // Elemen form
     const editPasswordInput = document.getElementById('edit-user-password');
     const confirmInput = document.getElementById('edit-user-password-confirmation');
     const submitBtn = document.getElementById('edit-user-submit-button');
@@ -336,7 +314,6 @@
     const editProdiWrapper = document.getElementById('edit-prodi-field-wrapper');
     const editProdi = document.getElementById('edit-user-prodi');
 
-    // Validasi password (opsional; bila diisi harus cocok)
     function validatePasswords() {
         const pwd = (editPasswordInput.value || '').trim();
         const conf = (confirmInput.value || '').trim();
@@ -353,7 +330,6 @@
         return true;
     }
 
-    // Validasi role & bidang akademik (mengikuti aturan yang sama dengan tambah)
     function updateEditDependentFields() {
         const r = editRole.value;
         let valid = true;
@@ -409,7 +385,6 @@
         return valid;
     }
 
-    // Gabungkan semua validasi
     function validateForm() {
         const pwdValid = validatePasswords();
         const roleValid = updateEditDependentFields();
@@ -425,7 +400,6 @@
         }
     }
 
-    // Toggle show/hide password untuk EDIT
     (function togglePasswordEdit() {
         const pairs = [{
                 btn: document.getElementById('edit-toggle-pass'),
@@ -453,7 +427,6 @@
         });
     })();
 
-    // Listeners
     editPasswordInput.addEventListener('input', validateForm);
     confirmInput.addEventListener('input', validateForm);
     editRole.addEventListener('change', validateForm);
@@ -463,7 +436,6 @@
 
     document.addEventListener('DOMContentLoaded', validateForm);
 
-    // Handler submit
     function handleEditFormSubmit(event) {
         const btn = document.getElementById('edit-user-submit-button');
         if (btn) {

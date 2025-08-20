@@ -71,7 +71,6 @@
             @apply bg-gray-100 text-gray-800;
         }
 
-        /* Roles */
         .role-super-admin {
             @apply bg-purple-100 text-purple-800;
         }
@@ -88,7 +87,6 @@
             @apply bg-gray-100 text-gray-800;
         }
 
-        /* Responsive table/cards */
         .desktop-table {
             width: 100%;
             overflow-x: auto;
@@ -114,7 +112,6 @@
             }
         }
 
-        /* Custom dropdown */
         .role-dropdown {
             appearance: none;
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
@@ -129,31 +126,22 @@
             background-color: #fef2f2 !important;
         }
 
-        /* === TOAST MINIMAL (tanpa border kiri/kanan/atas/bawah) === */
         #toast-container {
             position: fixed;
             bottom: 1rem;
-            /* sudut kanan atas */
             right: 1rem;
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            /* stacking vertikal */
             gap: .5rem;
-            /* jarak antar toast */
             pointer-events: none;
-            /* tidak menghalangi klik */
         }
 
         .toast {
             pointer-events: auto;
-            /* biar hover bisa pause auto-hide */
             background: #fff;
-            /* putih bersih */
             border: none;
-            /* TIDAK ADA BORDER SAMA SEKALI */
             border-radius: 0.75rem;
-            /* rounded-xl */
             padding: .75rem 1rem;
             width: min(92vw, 360px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
@@ -163,7 +151,6 @@
             animation: toast-in 160ms ease-out forwards;
         }
 
-        /* kelas tipe dibiarkan untuk semantik, tapi tanpa dekorasi border */
         .toast--success {}
 
         .toast--error {}
@@ -177,16 +164,12 @@
         .toast__icon {
             flex: 0 0 auto;
             margin-top: 2px;
-            /* sejajarkan optik */
         }
 
         .toast__text {
             color: #111827;
-            /* gray-900 */
             font-size: .875rem;
-            /* text-sm */
             line-height: 1.25rem;
-            /* leading-5 */
         }
 
         @keyframes toast-in {
@@ -223,7 +206,6 @@
 
 <body class="bg-gray-50">
 
-    {{-- Toaster auto-show if ada session --}}
     @if (session('notification'))
         @php
             $notification = session('notification');
@@ -245,16 +227,12 @@
         </script>
     @endif
 
-    <!-- Mobile Menu Overlay -->
     <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden lg:hidden"></div>
 
-    <!-- Sidebar -->
     @include('partials.dashboard.sidebar')
 
-    <!-- Main Content -->
     @yield('content')
 
-    {{-- confirm logout modal --}}
     <x-admin.super.confirm-logout-modal />
 
 
@@ -263,7 +241,6 @@
     @stack('charts')
 
     <script>
-        // Mobile menu
         const menuButton = document.getElementById('menu-button');
         const sidebar = document.getElementById('sidebar');
         const mobileOverlay = document.getElementById('mobile-overlay');
@@ -290,12 +267,10 @@
             });
         }
 
-        // Versi minimalis: tanpa tombol, auto-hide, stacking rapi
         function showToast(message, {
             type = 'success',
             duration = 5000
         } = {}) {
-            // Buat container jika belum ada
             let container = document.getElementById('toast-container');
             if (!container) {
                 container = document.createElement('div');
@@ -303,7 +278,6 @@
                 document.body.appendChild(container);
             }
 
-            // Ikon minimal (stroke currentColor)
             const icon =
                 type === 'error' ?
                 `
@@ -321,7 +295,6 @@
 
             const iconColor = type === 'error' ? '#dc2626' : '#16a34a';
 
-            // Elemen toast
             const toast = document.createElement('div');
             toast.className = `toast ${type === 'error' ? 'toast--error' : 'toast--success'}`;
             toast.setAttribute('role', 'status');
@@ -333,10 +306,8 @@
       </div>
     `;
 
-            // Tambah ke container (stacking otomatis via flex column + gap)
             container.appendChild(toast);
 
-            // Auto-hide
             const remove = () => {
                 toast.style.animation = 'toast-out 140ms ease-in forwards';
                 toast.addEventListener('animationend', () => toast.remove(), {
@@ -344,7 +315,6 @@
                 });
             };
 
-            // Timer auto hide; pause jika user hover (opsional, tetap minimal)
             let remaining = duration;
             let start = Date.now();
             let timer = setTimeout(remove, remaining);
@@ -359,7 +329,6 @@
             });
         }
 
-        // Close sidebar auto when resize
         window.addEventListener('resize', function() {
             if (window.innerWidth >= 1024) {
                 closeSidebarFunc();

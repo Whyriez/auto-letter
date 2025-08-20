@@ -44,7 +44,6 @@ class MahasiswaController extends Controller
         ]);
 
         try {
-            // Kumpulkan data mahasiswa tambahan ke dalam array
             $additionalStudents = [];
             $additionalNames = $validatedData['additional_names'] ?? [];
             $additionalNims = $validatedData['additional_nims'] ?? [];
@@ -55,7 +54,6 @@ class MahasiswaController extends Controller
                 ];
             }
 
-            // Kumpulkan semua detail tambahan ke dalam satu array
             $requestDetails = [];
             if (!empty($additionalStudents)) {
                 $requestDetails['additional_students'] = $additionalStudents;
@@ -81,7 +79,6 @@ class MahasiswaController extends Controller
 
             $userId = Auth::user()->id;
 
-            // Simpan data ke database
             $letterRequest = new LetterRequests();
             $letterRequest->user_id = $userId;
             $letterRequest->letter_template_id = $validatedData['letter-type'];

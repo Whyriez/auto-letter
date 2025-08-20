@@ -6,18 +6,14 @@
 
 @section('content')
     <div class="lg:ml-64">
-        <!-- Top Bar -->
         <x-dashboard.topbar :title="'Dashboard'" />
 
-        <!-- Dashboard Content -->
         <main class="p-4 sm:p-6">
-            <!-- Welcome Section -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Dashboard Super Admin</h2>
                 <p class="text-gray-600">Hallo, {{ Auth::user()->name }}</p>
             </div>
 
-            <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 hover:-translate-y-1.5">
                     <div class="flex items-center">
@@ -80,9 +76,7 @@
                 </div>
             </div>
 
-            <!-- Charts Row -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <!-- Donut Chart: Status Pengguna -->
                 <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow card-hover">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900">Status Pengguna</h3>
@@ -90,7 +84,6 @@
                     <div id="echarts-donut-status" class="w-full h-80"></div>
                 </div>
 
-                <!-- Bar Chart (placeholder) -->
                 <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow card-hover">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900">Distribusi Role (Bar)</h3>
@@ -110,7 +103,6 @@
 @push('charts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ===== DONUT: Status Pengguna =====
             const donutEl = document.getElementById('echarts-donut-status');
             if (donutEl && window.echarts) {
                 const donutChart = echarts.init(donutEl);
@@ -150,15 +142,15 @@
                         label: {
                             show: true,
                             position: 'outside',
-                            formatter: '{b}', // hanya nama
+                            formatter: '{b}', 
                             fontSize: 11,
                             color: '#374151',
-                            distanceToLabelLine: 2 // dekati garis
+                            distanceToLabelLine: 2 
                         },
                         labelLine: {
                             show: true,
-                            length: 20, // segmen 1 (dari slice)
-                            length2: 22, // segmen mendatar
+                            length: 20, 
+                            length2: 22, 
                             smooth: 0,
                             maxSurfaceAngle: 80
                         },
@@ -204,7 +196,6 @@
 
                 const roleCounts = @json($roleCounts ?? []);
 
-                // label cantik untuk ditampilkan
                 const labelMap = {
                     mahasiswa: 'Mahasiswa',
                     admin_jurusan: 'Admin Jurusan',
@@ -216,12 +207,11 @@
                 const labels = roles.map(r => labelMap[r] ?? r);
                 const values = roles.map(r => roleCounts[r] ?? 0);
 
-                // warna per role (biar konsisten)
                 const colorMap = {
-                    mahasiswa: '#3b82f6', // blue-500
-                    admin_jurusan: '#10b981', // emerald-500
-                    kaprodi: '#f59e0b', // amber-500
-                    kajur: '#ef4444', // red-500
+                    mahasiswa: '#3b82f6', 
+                    admin_jurusan: '#10b981', 
+                    kaprodi: '#f59e0b', 
+                    kajur: '#ef4444', 
                 };
 
                 const option = {
@@ -247,12 +237,12 @@
                             lineStyle: {
                                 color: '#e5e7eb'
                             }
-                        }, // gray-200
+                        }, 
                         axisLabel: {
                             color: '#6b7280',
                             fontSize: 12,
                             interval: 0
-                        } // gray-500
+                        } 
                     },
                     yAxis: {
                         type: 'value',
@@ -260,7 +250,7 @@
                             lineStyle: {
                                 color: '#f1f5f9'
                             }
-                        }, // slate-100
+                        }, 
                         axisLabel: {
                             color: '#6b7280',
                             fontSize: 12
@@ -286,7 +276,7 @@
                             value: v,
                             itemStyle: {
                                 color: colorMap[roles[i]] ||
-                                    '#94a3b8', // slate-400 fallback
+                                    '#94a3b8',
                                 borderRadius: [6, 6, 0, 0]
                             }
                         }))

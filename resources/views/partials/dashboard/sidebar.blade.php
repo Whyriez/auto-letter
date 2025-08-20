@@ -20,7 +20,6 @@
      </div>
 
      <nav class="mt-6 px-3">
-         {{-- ! super admin  --}}
          @if (Auth::user()->role === 'super_admin')
              <a href="{{ route('super_admin.dashboard') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors 
@@ -43,7 +42,6 @@
              </a>
          @endif
 
-         {{-- ! admin jurusan --}}
          @if (Auth::user()->role === 'admin_jurusan')
              <a href="{{ route('admin_jurusan.dashboard') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('admin-jurusan-dashboard')">
@@ -76,7 +74,6 @@
              </a>
          @endif
 
-         {{-- !kaprodi --}}
          @if (Auth::user()->role === 'kaprodi')
              <a href="{{ route('kaprodi.index') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('kaprodi-dashboard')">
@@ -89,7 +86,6 @@
              </a>
          @endif
 
-         {{-- ! Kajur --}}
          @if (Auth::user()->role === 'kajur')
              <a href="{{ route('kajur.index') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('kajur-dashboard')">
@@ -102,7 +98,6 @@
              </a>
          @endif
 
-         {{-- ! Mahasiswa --}}
          @if (Auth::user()->role === 'mahasiswa')
              <a href="{{ route('mahasiswa.index') }}"
                  class="flex gap-3 items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('mahasiswa-dashboard')">

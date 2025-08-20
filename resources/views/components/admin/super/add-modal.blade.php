@@ -1,7 +1,6 @@
 <div id="user-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 px-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
 
-        {{-- HEADER (fixed) --}}
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-red-50 flex-shrink-0">
             <div class="flex items-center gap-3">
                 <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white shadow-sm">
@@ -23,12 +22,9 @@
             </button>
         </div>
 
-        {{-- FORM (scrollable) --}}
         <form id="add-user-form" class="flex-1 overflow-y-auto px-6 py-6 space-y-6" onsubmit="handleUserSubmit(event)"
             action="{{ route('super_admin.submit_new_user') }}" method="POST">
             @csrf
-
-            {{-- Informasi Pribadi --}}
             <section class="border border-gray-200 rounded-xl p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +40,6 @@
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </section>
 
-            {{-- Informasi Kontak --}}
             <section class="border border-gray-200 rounded-xl p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -63,7 +58,6 @@
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </section>
 
-            {{-- Akses Sistem --}}
             <section class="border border-gray-200 rounded-xl p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -103,7 +97,6 @@
                 </div>
             </section>
 
-            {{-- Informasi Akademik (dinamis) --}}
             <section id="nim-nip-container" class="border border-gray-200 rounded-xl p-4 hidden">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -141,7 +134,6 @@
                 </div>
             </section>
 
-            {{-- Kata Sandi --}}
             <section class="border border-gray-200 rounded-xl p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -156,7 +148,6 @@
                         <label for="user-password" class="block text-sm font-medium text-gray-700 mb-2">
                             Kata Sandi <span class="text-red-500">*</span>
                         </label>
-                        {{-- katasandi --}}
                         <div class="relative">
                             <input type="password" id="user-password" name="password" required
                                 placeholder="Minimal 6 karakter"
@@ -164,7 +155,6 @@
                             <button type="button" id="toggle-pass"
                                 class="absolute right-4 top-1/2 -translate-y-1/2 translate-x-1/2 text-gray-400 hover:text-gray-600"
                                 aria-label="Lihat/Sembunyikan password" aria-pressed="false">
-                                <!-- eye (default) -->
                                 <svg class="icon-eye w-5 h-5" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -172,23 +162,20 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <!-- eye-off -->
                                 <svg class="icon-eye-off w-5 h-5 hidden" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" aria-hidden="true">
-                                    <!-- bentuk mata -->
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7S3.732 16.057 2.458 12z" />
-                                    <!-- pupil -->
+                                 
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <!-- garis slash -->
+                         
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 3l18 18" />
                                 </svg>
                             </button>
                         </div>
                     </div>
-                    {{-- konfirmasi kata sandi --}}
                     <div class="relative">
                         <label for="user-password-confirmation" class="block text-sm font-medium text-gray-700 mb-2">
                             Konfirmasi Kata Sandi <span class="text-red-500">*</span>
@@ -200,7 +187,7 @@
                             <button type="button" id="toggle-pass2"
                                 class="absolute right-4 top-1/2 -translate-y-1/2 translate-x-1/2 text-gray-400 hover:text-gray-600"
                                 aria-label="Lihat/Sembunyikan password" aria-pressed="false">
-                                <!-- eye (default) -->
+                           
                                 <svg class="icon-eye w-5 h-5" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -208,16 +195,14 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <!-- eye-off -->
                                 <svg class="icon-eye-off w-5 h-5 hidden" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" aria-hidden="true">
-                                    <!-- bentuk mata -->
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7S3.732 16.057 2.458 12z" />
-                                    <!-- pupil -->
+                       
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <!-- garis slash -->
+                            
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 3l18 18" />
                                 </svg>
@@ -232,7 +217,6 @@
             </section>
         </form>
 
-        {{-- FOOTER (fixed) --}}
         <div class="flex flex-col sm:flex-row gap-3 px-6 py-4 border-t border-gray-200 bg-white flex-shrink-0">
             <button type="button" onclick="closeUserModal()"
                 class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50">
@@ -248,12 +232,11 @@
     </div>
 </div>
 <script>
-    // Buka/Tutup modal
     function openUserModal() {
         const m = document.getElementById('user-modal');
         m.classList.remove('hidden');
         m.classList.add('flex');
-        document.body.style.overflow = 'hidden'; // cegah scroll body
+        document.body.style.overflow = 'hidden';
     }
 
     function closeUserModal() {
@@ -261,22 +244,18 @@
         m.classList.add('hidden');
         m.classList.remove('flex');
         document.body.style.overflow = '';
-        // Reset form
         const form = m.querySelector('form');
         if (form) form.reset();
-        // Reset state
         document.getElementById('password-error-message')?.classList.add('hidden');
         document.getElementById('user-submit-button').disabled = true;
         document.getElementById('nim-nip-container')?.classList.add('hidden');
         document.getElementById('prodi-field-wrapper')?.classList.remove('hidden');
     }
 
-    // Tutup saat klik overlay
     document.getElementById('user-modal').addEventListener('click', (e) => {
         if (e.target.id === 'user-modal') closeUserModal();
     });
 
-    // Tutup dengan Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             const m = document.getElementById('user-modal');
@@ -284,7 +263,6 @@
         }
     });
 
-    // Dinamika field akademik vs role
     document.addEventListener('DOMContentLoaded', () => {
         const roleSelect = document.getElementById('user-role');
         const identityContainer = document.getElementById('nim-nip-container');
@@ -339,7 +317,6 @@
         updateDependentFields();
     });
 
-    // Validasi password (untuk ADD: wajib isi & harus cocok, baru tombol aktif)
     (function passwordValidation() {
         const pwd = document.getElementById('user-password');
         const conf = document.getElementById('user-password-confirmation');
@@ -375,7 +352,6 @@
         conf.addEventListener('input', sync);
     })();
 
-    // Toggle show/hide password
     (function togglePassword() {
         const pairs = [{
                 btn: document.getElementById('toggle-pass'),
@@ -399,17 +375,14 @@
                 const isVisible = input.type === 'text';
                 input.type = isVisible ? 'password' : 'text';
 
-                // swap ikon
                 eye.classList.toggle('hidden', !isVisible);
                 eyeOff.classList.toggle('hidden', isVisible);
 
-                // aksesibilitas
                 btn.setAttribute('aria-pressed', String(!isVisible));
             });
         });
     })();
 
-    // Handler submit (UX: ubah teks + disable)
     function handleUserSubmit(e) {
         const btn = document.getElementById('user-submit-button');
         if (btn) {

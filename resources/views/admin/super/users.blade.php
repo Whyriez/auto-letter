@@ -4,21 +4,14 @@
 
 @section('content')
     <div class="lg:ml-64">
-        <!-- Top Bar -->
         <x-dashboard.topbar :title="'Manajemen Pengguna'" />
 
-        <!-- Dashboard Content -->
         <main class="p-4 sm:p-6">
-            <!-- Welcome Section -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Manajemen Pengguna Sistem</h2>
                 <p class="text-gray-600">Kelola semua pengguna sistem, peran, dan izin di seluruh platform.</p>
             </div>
 
-            <!-- Stats Cards -->
-
-
-            <!-- Add New User Button -->
             <div class="mb-8">
                 <button onclick="openUserModal()"
                     class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-200 card-shadow">
@@ -32,7 +25,6 @@
                 </button>
             </div>
 
-            <!-- Filters and Search -->
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
                 <form method="GET" action="{{ route('super_admin.users') }}">
                     <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -83,14 +75,12 @@
                 </form>
             </div>
 
-            <!-- Users Table -->
             <div class="bg-white rounded-xl card-shadow overflow-hidden">
                 <div class="px-4 sm:px-6 py-4 border-b border-gray-200 bg-red-50">
                     <h3 class="text-lg font-semibold text-red-900">Pengguna Sistem</h3>
                     <p class="text-sm text-red-700 mt-1">Mengelola akun pengguna, peran, dan izin</p>
                 </div>
 
-                <!-- Desktop Table -->
                 <div class="desktop-table overflow-x-auto w-full">
                     <table class="min-w-max w-full">
                         <thead class="bg-gray-50">
@@ -210,7 +200,6 @@
                     </table>
                 </div>
 
-                <!-- Mobile Cards -->
                 <div class="mobile-cards p-4 space-y-4">
                     @forelse ($users as $u)
                         <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
@@ -307,14 +296,10 @@
                     @endforelse
                 </div>
 
-                <!-- Pagination -->
                 <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
 
-                    {{-- Cek jika ada data untuk ditampilkan --}}
                     @if ($users->hasPages())
                         <div class="flex items-center justify-between">
-
-                            {{-- Teks "Showing..." yang dinamis --}}
                             <div class="text-sm text-gray-700">
                                 Menampilkan
                                 <span class="font-medium">{{ $users->firstItem() }}</span>
@@ -324,8 +309,6 @@
                                 <span class="font-medium">{{ $users->total() }}</span>
                                 hasil
                             </div>
-
-                            {{-- Link paginasi dinamis dari Laravel --}}
                             <div>
                                 {{ $users->links() }}
                             </div>
@@ -338,22 +321,17 @@
         </main>
     </div>
 
-    <!-- Add Modal -->
     <x-admin.super.add-modal />
 
-    {{-- Edit user modal --}}
     <x-admin.super.edit-modal />
 
-    {{-- Delete User Modal --}}
     <x-admin.super.confirm-delete-modal />
 @endsection
 <script>
-    // Role change handler
     async function handleRoleChange(selectElement, userId, oldRole) {
         const newRole = selectElement.value;
 
         try {
-            // Kirim data ke server menggunakan Fetch API
             const response = await fetch(`/dashboard/users/${userId}/update-role`, {
                 method: 'PATCH',
                 headers: {
@@ -362,7 +340,6 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
                         'content')
                 },
-                // Kirim data dalam format JSON
                 body: JSON.stringify({
                     role: newRole
                 })
@@ -371,18 +348,16 @@
             const result = await response.json();
 
             if (response.ok) {
-                // Jika berhasil, tampilkan notifikasi sukses dalam bahasa indonesia
                 showSuccessMessage(result.message, 'green');
             } else {
-                // Jika gagal, tampilkan pesan error dalam bahasa indonesia dan kembalikan dropdown ke nilai semula
                 showSuccessMessage(result.message || 'Gagal mengupdate.', 'red');
-                selectElement.value = oldRole; // Kembalikan ke role lama
+                selectElement.value = oldRole;
             }
 
         } catch (error) {
             console.error('Kesalahan saat mengupdate role:', error);
             showSuccessMessage('Tidak dapat terhubung ke server.', 'red');
-            selectElement.value = oldRole; // Kembalikan ke role lama
+            selectElement.value = oldRole;
         }
     }
 </script>

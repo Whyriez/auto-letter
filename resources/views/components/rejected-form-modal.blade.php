@@ -1,15 +1,12 @@
-<!-- Modal: Tolak Permintaan Surat -->
+
 <div id="reject-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 px-4"
     role="dialog" aria-modal="true" aria-labelledby="reject-title" aria-describedby="reject-desc">
 
-    <!-- Overlay (for animation) -->
     <div class="absolute inset-0" data-modal-overlay></div>
 
-    <!-- Panel -->
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" data-modal-panel>
         <div class="text-center">
             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <!-- exclamation icon -->
                 <svg class="w-6 h-6 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -50,7 +47,6 @@
     </div>
 </div>
 
-<!-- Animations -->
 <style>
     @keyframes overlay-in {
         from {
@@ -114,7 +110,6 @@
 </style>
 
 <script>
-    // Buka modal + set action form (opsional prefill notes)
     function openRejectModal(actionUrl, currentNotes = '') {
         const modal = document.getElementById('reject-modal');
         const form = document.getElementById('reject-form');
@@ -123,45 +118,38 @@
         const cancel = modal.querySelector('[data-cancel-btn]');
         const notes = document.getElementById('notes');
 
-        // set form action & isi notes (jika ada)
         form.action = actionUrl || '';
         notes.value = currentNotes || '';
 
-        // reset tombol submit
         const btn = modal.querySelector('[data-reject-btn]');
         const spinner = btn.querySelector('svg');
         btn.disabled = false;
         spinner.classList.add('hidden');
         btn.querySelector('span').textContent = 'Tolak Surat';
 
-        // tampilkan modal
         modal.classList.remove('hidden');
         modal.classList.add('flex');
 
         // animasi IN
         overlay.classList.remove('modal-overlay-out');
         panel.classList.remove('modal-panel-out');
-        void overlay.offsetWidth; // reflow
+        void overlay.offsetWidth; 
         overlay.classList.add('modal-overlay-in');
         panel.classList.add('modal-panel-in');
 
-        // fokuskan ke textarea biar langsung ketik
         setTimeout(() => notes.focus(), 60);
     }
 
-    // Tutup modal
     function closeRejectModal() {
         const modal = document.getElementById('reject-modal');
         const overlay = modal.querySelector('[data-modal-overlay]');
         const panel = modal.querySelector('[data-modal-panel]');
 
-        // animasi OUT
         overlay.classList.remove('modal-overlay-in');
         panel.classList.remove('modal-panel-in');
         overlay.classList.add('modal-overlay-out');
         panel.classList.add('modal-panel-out');
 
-        // sembunyikan setelah animasi selesai
         panel.addEventListener('animationend', () => {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
@@ -170,17 +158,14 @@
         });
     }
 
-    // Klik overlay untuk menutup
     document.getElementById('reject-modal').addEventListener('click', (e) => {
         const panel = e.currentTarget.querySelector('[data-modal-panel]');
         if (!panel.contains(e.target)) closeRejectModal();
     });
 
-    // Tombol batal
     document.querySelector('#reject-modal [data-cancel-btn]')
         .addEventListener('click', closeRejectModal);
 
-    // ESC untuk menutup
     document.addEventListener('keydown', (e) => {
         const modal = document.getElementById('reject-modal');
         if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
@@ -188,7 +173,6 @@
         }
     });
 
-    // Proteksi double submit + spinner
     document.getElementById('reject-form').addEventListener('submit', function() {
         const btn = this.querySelector('[data-reject-btn]');
         const spinner = btn.querySelector('svg');

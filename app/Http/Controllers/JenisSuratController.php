@@ -11,7 +11,6 @@ class JenisSuratController extends Controller
     {
         $query = LetterTypes::query();
 
-        // Filter search
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }

@@ -44,7 +44,6 @@ class SuratController extends Controller
         $newTemplate->nama_surat = $template->nama_surat . ' (Copy)';
         $newTemplate->status = 'draft';
 
-        // Simpan template baru ke database
         $newTemplate->save();
 
         $notification = [

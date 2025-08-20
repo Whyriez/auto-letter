@@ -78,9 +78,8 @@
                 <td style="width: 50%; text-align: center; vertical-align: top;">
                     <div class="signature-box">
                         <div class="text-sm">
-                            <!-- Spacer untuk menyamakan tinggi dengan teks jabatan -->
                             <div style="height: 5rem; visibility: hidden;">
-                                &nbsp; <!-- Ini adalah placeholder tak terlihat -->
+                                &nbsp; 
                             </div>
                             <img src="data:image/png;base64, {!! base64_encode(QrCode::size(120)->generate($verificationUrl)) !!}">
                             <p style="margin-top: 0.5rem; color: #6b7280;">Scan untuk Verifikasi</p>

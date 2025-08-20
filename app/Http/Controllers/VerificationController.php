@@ -10,10 +10,8 @@ class VerificationController extends Controller
 {
     public function verify($unique_code)
     {
-        // 1. Cari surat berdasarkan unique_code
         $letterRequest = LetterRequests::where('unique_code', $unique_code)->first();
 
-        // Inisialisasi status default
         $status = 'invalid';
         $message = 'Kode verifikasi tidak valid atau dokumen tidak ditemukan.';
         $documentUrl = null;
@@ -22,10 +20,8 @@ class VerificationController extends Controller
             if ($letterRequest->status === 'completed' && $letterRequest->final_document_path) {
                 $documentContent = Storage::disk('public')->get($letterRequest->final_document_path);
 
-                // 3. Hitung hash dari konten dokumen yang tersimpan
                 $calculatedHash = hash('sha256', $documentContent);
 
-                // 4. Bandingkan hash yang dihitung dengan hash di database
                 if ($calculatedHash === $letterRequest->blockchain_hash) {
                     $status = 'valid';
                     $message = 'Dokumen ini resmi dan telah disetujui.';

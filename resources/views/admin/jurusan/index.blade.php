@@ -6,18 +6,14 @@
 
 @section('content')
     <div class="lg:ml-64">
-        <!-- Top Bar -->
         <x-dashboard.topbar :title="'Dashboard'" />
 
-        <!-- Dashboard Content -->
         <main class="p-4 sm:p-6">
-            <!-- Welcome Section -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Dashboard Admin Jurusan</h2>
                 <p class="text-gray-600">Hallo, {{ Auth::user()->name }}</p>
             </div>
 
-            <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white rounded-xl p-6 card-shadow">
                     <div class="flex items-center">
@@ -79,9 +75,7 @@
                 </div>
             </div>
 
-            <!-- Charts: Admin Jurusan -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <!-- Donut: Status Template -->
                 <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900">Distribusi Status Template</h3>
@@ -90,7 +84,6 @@
                     <div id="echarts-aj-donut" class="w-full h-80"></div>
                 </div>
 
-                <!-- Bar Horizontal: Template per Jenis Surat -->
                 <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900">Template per Jenis Surat</h3>
@@ -108,7 +101,6 @@
 @push('charts')
     <script>
         (function() {
-            // ===== Donut: Status Template =====
             const elDonut = document.getElementById('echarts-aj-donut');
             if (elDonut && window.echarts) {
                 const donut = echarts.init(elDonut);
@@ -160,15 +152,15 @@
                         label: {
                             show: true,
                             position: 'outside',
-                            formatter: '{b}', // hanya nama
+                            formatter: '{b}', 
                             fontSize: 11,
                             color: '#374151',
-                            distanceToLabelLine: 2 // dekati garis
+                            distanceToLabelLine: 2 
                         },
                         labelLine: {
                             show: true,
-                            length: 20, // segmen 1 (dari slice)
-                            length2: 22, // segmen mendatar
+                            length: 20,
+                            length2: 22,
                             smooth: 0,
                             maxSurfaceAngle: 80
                         },
@@ -193,7 +185,6 @@
                 window.addEventListener('resize', () => donut.resize());
             }
 
-            // ===== Bar Horizontal: Template per Jenis Surat =====
             const elBar = document.getElementById('echarts-aj-bar');
             if (elBar && window.echarts) {
                 const bar = echarts.init(elBar);
@@ -208,16 +199,15 @@
                         },
                         formatter: (params) => {
                             const p = Array.isArray(params) ? params[0] : params;
-                            // p.name = label kategori (asli, bukan yang di-wrap oleh formatter)
                             return `${p.name}<br/>Jumlah: ${p.value}`;
                         }
                     },
                     grid: {
                         top: 12,
-                        left: 8, // kecil saja
+                        left: 8, 
                         right: 16,
                         bottom: 28,
-                        containLabel: true // ⬅️ biar label nggak kepotong
+                        containLabel: true 
                     },
                     xAxis: {
                         type: 'value',
@@ -232,14 +222,14 @@
                     },
                     yAxis: {
                         type: 'category',
-                        data: labels, // tetap pakai label asli
+                        data: labels, 
                         axisTick: {
                             show: false
                         },
                         axisLabel: {
                             color: '#374151',
                             margin: 10,
-                            formatter: (value) => wrapLabel(value, 16) // ⬅️ bungkus tiap 16 karakter
+                            formatter: (value) => wrapLabel(value, 16)
                         }
                     },
                     series: [{
@@ -267,7 +257,6 @@
                     }]
                 };
 
-                // helper: bungkus string jadi beberapa baris
                 function wrapLabel(text, max = 16) {
                     if (!text) return '';
                     const parts = String(text).match(new RegExp(`.{1,${max}}`, 'g')) || [text];

@@ -5,20 +5,15 @@
 
 
 @section('content')
-    <!-- Main Content -->
     <div class="lg:ml-64">
         <x-dashboard.topbar :title="'Dashboard'" />
 
-
-        <!-- Dashboard Content -->
         <main class="p-4 sm:p-6">
-            <!-- Welcome Section -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Selamat Datang kembali, {{ Auth::user()->name }}</h2>
                 <p class="text-gray-600">Kelola surat rekomendasi Anda dan lacak kemajuannya.</p>
             </div>
 
-            <!-- Request New Letter Button -->
             <div class="mb-8">
                 <button onclick="openLetterModal()"
                     class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-200 card-shadow">
@@ -32,7 +27,6 @@
                 </button>
             </div>
 
-            <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 <a href="#" class="bg-white rounded-xl p-6 card-shadow transition-transform duration-200 card-hover">
                     <div class="flex items-center">
@@ -89,7 +83,6 @@
                     {{ session('error') }}
                 </div>
             @endif
-            <!-- My Letter History -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-semibold text-gray-900">Riwayat Surat Saya</h3>
@@ -122,7 +115,6 @@
                             ];
                         @endphp
 
-                        {{-- bungkus berbeda: <a> saat completed, <div> selain itu --}}
                         @if ($letter->status === 'completed')
                             <a href="{{ Storage::url($letter->final_document_path) }}" target="_blank"
                                 class="group block bg-white rounded-xl border border-gray-200 p-5 card-shadow hover:bg-gray-50 hover:border-gray-300 transition-colors card-hover no-underline">
@@ -130,7 +122,6 @@
                                 <div class="bg-white rounded-xl border border-gray-200 p-5 card-shadow">
                         @endif
 
-                        {{-- header: judul + badge status --}}
                         <div class="flex items-start justify-between gap-4">
                             <div class="min-w-0">
                                 <h4 class="font-semibold text-gray-900 truncate">
@@ -150,7 +141,6 @@
                             </span>
                         </div>
 
-                        {{-- detail ringkas --}}
                         <div class="mt-4 space-y-2 text-sm">
                             <div class="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2">
                                 <span class="text-gray-500">Diajukan</span>
@@ -170,7 +160,6 @@
                             </div>
                         </div>
 
-                        {{-- hint tautan saat completed --}}
                         @if ($letter->status === 'completed')
                             <div
                                 class="mt-3 inline-flex items-center gap-1 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -198,15 +187,12 @@
         </main>
     </div>
 
-    <!-- New Letter Request Modal -->
     <div id="letter-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 px-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col overflow-hidden">
 
-            <!-- Header (fixed) -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-red-50 flex-shrink-0">
                 <div class="flex items-center gap-3">
                     <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white shadow-sm">
-                        <!-- Document Text -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -225,16 +211,12 @@
                 </button>
             </div>
 
-            <!-- Form (scrollable) -->
             <form id="letter-form" class="flex-1 overflow-y-auto px-6 py-6 space-y-6"
                 action="{{ route('mahasiswa.store') }}" method="POST">
                 @csrf
 
-                <!-- Jenis Surat -->
                 <section class="bg-white rounded-xl border border-gray-200 p-4">
                     <div class="flex items-center gap-2 mb-3">
-                        <!-- List icon -->
-                        <!-- List / Document -->
                         <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5h12M9 12h12M9 19h12M4 6h.01M4 12h.01M4 18h.01" />
@@ -256,10 +238,8 @@
                     <p class="text-xs text-gray-500 mt-2">Jenis surat menentukan field tambahan yang perlu diisi.</p>
                 </section>
 
-                <!-- Data Mahasiswa (otomatis) -->
                 <section class="bg-gray-50 rounded-xl border border-gray-200 p-4">
                     <div class="flex items-center gap-2 mb-3">
-                        <!-- User/Account icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -297,10 +277,7 @@
                     </div>
                 </section>
 
-                <!-- Field dinamis (diisi via JS sesuai jenis surat) -->
                 <section id="dynamic-fields-container" class="space-y-4"></section>
-
-                <!-- Research fields (opsional; dipertahankan untuk kompatibilitas JS) -->
                 <section id="research-fields-container" class="space-y-4 hidden">
                     <div id="location-fields-container" class="hidden">
                         <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Lokasi Tujuan</label>
@@ -322,11 +299,8 @@
                     </div>
                 </section>
 
-                <!-- Keperluan -->
                 <section class="bg-white rounded-xl border border-gray-200 p-4">
                     <div class="flex items-center gap-2 mb-3">
-                        <!-- Document Text -->
-                        <!-- Document Text -->
                         <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2
                                                        2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z" />
@@ -342,11 +316,8 @@
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900 placeholder-gray-500 resize-none"></textarea>
                 </section>
 
-                <!-- Deadline -->
                 <section class="bg-white rounded-xl border border-gray-200 p-4">
                     <div class="flex items-center gap-2 mb-3">
-                        <!-- Calendar -->
-                        <!-- Calendar -->
                         <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"
                                 stroke="currentColor" stroke-width="2" fill="none" />
@@ -366,7 +337,6 @@
                 </section>
             </form>
 
-            <!-- Footer (fixed) -->
             <div class="flex flex-col sm:flex-row gap-3 px-6 py-4 border-t border-gray-200 bg-white flex-shrink-0">
                 <button type="button" onclick="closeLetterModal()"
                     class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200">
@@ -384,11 +354,9 @@
 
     @push('scriptsMahasiswa')
         <script>
-            // Letter modal functionality
             function openLetterModal() {
                 document.getElementById('letter-modal').classList.remove('hidden');
                 document.getElementById('letter-modal').classList.add('flex');
-                // Set minimum date to today
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('deadline').setAttribute('min', today);
             }
@@ -396,11 +364,9 @@
             function closeLetterModal() {
                 document.getElementById('letter-modal').classList.add('hidden');
                 document.getElementById('letter-modal').classList.remove('flex');
-                // Reset form
                 document.querySelector('#letter-modal form').reset();
             }
 
-            // Close modals when clicking outside
             document.getElementById('letter-modal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeLetterModal();
@@ -434,7 +400,6 @@
     `;
             }
 
-            // Fungsi untuk menghapus field dinamis
             function removeDynamicFields(button) {
                 const group = button.closest('.dynamic-group');
                 if (group) {
@@ -447,11 +412,8 @@
                 const containers = document.querySelectorAll('#dynamic-fields-container .dynamic-group');
                 containers.forEach((container, index) => {
                     const newIndex = index + 1;
-                    // Perbarui data-index
                     container.setAttribute('data-index', newIndex);
-                    // Perbarui judul
                     container.querySelector('h3').textContent = `Mahasiswa Tambahan #${newIndex}`;
-                    // Perbarui label dan id input
                     container.querySelectorAll('label, input').forEach(el => {
                         const oldId = el.getAttribute('id');
                         const newId = oldId.replace(/-\d+$/, `-${newIndex}`);
@@ -463,8 +425,6 @@
                 });
             }
 
-
-            // Mendengarkan perubahan pada dropdown jenis surat
             document.getElementById('letter-type').addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
                 const selectedLetterType = selectedOption.dataset.letterType;
@@ -475,14 +435,12 @@
                 const waktuContainer = document.getElementById('waktu-fields-container');
                 const courseContainer = document.getElementById('course-fields-container');
 
-                // Kosongkan kontainer dinamis dan sembunyikan semua kontainer tambahan
                 container.innerHTML = '';
                 researchContainer.classList.add('hidden');
                 locationContainer.classList.add('hidden');
                 waktuContainer.classList.add('hidden');
                 courseContainer.classList.add('hidden');
 
-                // Cek apakah jenis surat memerlukan field dinamis "Tambah Mahasiswa"
                 if (selectedLetterType === 'Surat Rekomendasi' || selectedLetterType === 'Surat Izin Penelitian' ||
                     selectedLetterType === 'Surat Akademik') {
                     const addButton = document.createElement('button');
@@ -502,7 +460,6 @@
                     container.appendChild(addButton);
                 }
 
-                // Tampilkan field spesifik berdasarkan jenis surat
                 console.log(selectedLetterType)
                 if (selectedLetterType === 'Surat Izin Penelitian') {
                     researchContainer.classList.remove('hidden');

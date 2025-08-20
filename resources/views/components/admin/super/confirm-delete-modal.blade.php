@@ -1,15 +1,13 @@
-<!-- Modal: Konfirmasi Hapus -->
+
 <div id="confirm-delete-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4"
     role="dialog" aria-modal="true" aria-labelledby="confirm-delete-title">
 
-    <!-- Overlay (untuk animasi) -->
     <div class="absolute inset-0" data-modal-overlay></div>
 
-    <!-- Panel -->
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" data-modal-panel>
         <div class="text-center">
             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <!-- ikon X -->
+              
                 <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
@@ -44,7 +42,6 @@
     </div>
 </div>
 
-<!-- Animations -->
 <style>
     @keyframes overlay-in {
         from {
@@ -108,7 +105,6 @@
 </style>
 
 <script>
-    // Open modal dengan animasi
     function openDeleteModal(deleteUrl) {
         const modal = document.getElementById('confirm-delete-modal');
         const panel = modal.querySelector('[data-modal-panel]');
@@ -116,45 +112,36 @@
         const form = document.getElementById('delete-form');
         const cancel = modal.querySelector('[data-cancel-btn]');
 
-        // set action form
         form.action = deleteUrl;
 
-        // tampilkan modal
         modal.classList.remove('hidden');
         modal.classList.add('flex');
 
-        // reset state tombol delete
         const delBtn = modal.querySelector('[data-delete-btn]');
         const spinner = delBtn.querySelector('svg');
         delBtn.disabled = false;
         spinner.classList.add('hidden');
         delBtn.querySelector('span').textContent = 'Hapus';
 
-        // trigger animasi in
         overlay.classList.remove('modal-overlay-out');
         panel.classList.remove('modal-panel-out');
-        // reflow untuk menjamin animasi retrigger
         void overlay.offsetWidth;
         overlay.classList.add('modal-overlay-in');
         panel.classList.add('modal-panel-in');
 
-        // fokus ke tombol Batal untuk aksesibilitas
         setTimeout(() => cancel?.focus(), 10);
     }
 
-    // Close modal dengan animasi
     function closeDeleteModal() {
         const modal = document.getElementById('confirm-delete-modal');
         const panel = modal.querySelector('[data-modal-panel]');
         const overlay = modal.querySelector('[data-modal-overlay]');
 
-        // ganti ke animasi out
         overlay.classList.remove('modal-overlay-in');
         panel.classList.remove('modal-panel-in');
         overlay.classList.add('modal-overlay-out');
         panel.classList.add('modal-panel-out');
 
-        // setelah animasi selesai → sembunyikan
         const handleEnd = () => {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
@@ -165,18 +152,15 @@
         });
     }
 
-    // Klik overlay untuk menutup
     document.getElementById('confirm-delete-modal')
         .addEventListener('click', (e) => {
             const panel = e.currentTarget.querySelector('[data-modal-panel]');
             if (!panel.contains(e.target)) closeDeleteModal();
         });
 
-    // Tombol Batal
     document.querySelector('#confirm-delete-modal [data-cancel-btn]')
         .addEventListener('click', closeDeleteModal);
 
-    // ESC untuk menutup
     document.addEventListener('keydown', (e) => {
         const modal = document.getElementById('confirm-delete-modal');
         if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
@@ -184,7 +168,6 @@
         }
     });
 
-    // Proteksi double submit + feedback spinner
     document.getElementById('delete-form').addEventListener('submit', function(e) {
         const delBtn = this.querySelector('[data-delete-btn]');
         const spinner = delBtn.querySelector('svg');

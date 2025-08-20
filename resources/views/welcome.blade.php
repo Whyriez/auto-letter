@@ -32,7 +32,6 @@
             background: linear-gradient(135deg, #d32f2f 0%, #c62828 50%, #b71c1c 100%);
         }
 
-        /* Mobile menu styles */
         .mobile-menu {
             transform: translateX(100%);
             transition: transform 0.3s ease-in-out;
@@ -68,7 +67,6 @@
             transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        /* Animated background elements */
         .network-node {
             position: absolute;
             width: 4px;
@@ -250,7 +248,6 @@
             }
         }
 
-        /* Mobile responsive adjustments */
         @media (max-width: 768px) {
             .connecting-line {
                 display: none;
@@ -272,35 +269,28 @@
 </head>
 
 <body class="overflow-x-hidden">
-    <!-- Hero Section -->
     <section
         class="relative min-h-screen hero-gradient tech-bg grid-pattern flex items-center justify-center overflow-hidden">
-        <!-- Animated Background Elements -->
         <div class="absolute inset-0 overflow-hidden">
-            <!-- Network Nodes -->
             <div class="network-node" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
             <div class="network-node" style="top: 30%; left: 80%; animation-delay: 0.5s;"></div>
             <div class="network-node" style="top: 60%; left: 15%; animation-delay: 1s;"></div>
             <div class="network-node" style="top: 70%; left: 85%; animation-delay: 1.5s;"></div>
             <div class="network-node" style="top: 40%; left: 50%; animation-delay: 2s;"></div>
 
-            <!-- Network Lines -->
             <div class="network-line" style="top: 25%; left: 0; width: 300px; animation-delay: 0s;"></div>
             <div class="network-line" style="top: 45%; right: 0; width: 250px; animation-delay: 1s;"></div>
             <div class="network-line" style="top: 65%; left: 0; width: 400px; animation-delay: 2s;"></div>
 
-            <!-- Data Particles -->
             <div class="data-particle" style="top: 15%; left: 25%; animation-delay: 0s;"></div>
             <div class="data-particle" style="top: 35%; left: 70%; animation-delay: 1s;"></div>
             <div class="data-particle" style="top: 55%; left: 30%; animation-delay: 2s;"></div>
             <div class="data-particle" style="top: 75%; left: 60%; animation-delay: 3s;"></div>
         </div>
 
-        <!-- Navigation -->
         <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
             <div class="max-w-7xl mx-auto px-6 py-4">
                 <div class="flex items-center justify-between">
-                    <!-- Logo -->
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 red-gradient rounded-xl flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,7 +302,6 @@
                         <span class="text-2xl font-bold text-gray-600">AutoLetter</span>
                     </div>
 
-                    <!-- Desktop Menu -->
                     <div class="hidden md:flex items-center space-x-8">
                         <a href="/"
                             class="text-gray-600 hover:text-red-400 transition-colors font-medium">Home</a>
@@ -347,7 +336,6 @@
 
                     </div>
 
-                    <!-- Mobile Menu Button -->
                     <div class="md:hidden flex items-center">
                         <button id="mobile-menu-button" type="button" onclick="toggleMobileMenu()"
                             class="text-gray-400 hover:text-white focus:outline-none focus:text-white transition-colors">
@@ -360,7 +348,6 @@
                 </div>
             </div>
 
-            <!-- Mobile Menu -->
             <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-full h-screen bg-gray-100 z-40 md:hidden">
                 <div class="flex flex-col items-center justify-center h-full space-y-8">
                     <a href="/" class="text-gray-600 text-xl font-medium hover:text-red-400 transition-colors"
@@ -401,7 +388,6 @@
             </div>
         </nav>
 
-        <!-- Hero Content -->
         <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
             <div class="max-w-4xl mx-auto">
                 <h1 class="text-4xl md:text-7xl font-black text-gradient mb-6">
@@ -448,21 +434,10 @@
                     </svg>
                 </a>
 
-                <!--<div class="mt-16">-->
-                <!--    <p class="text-gray-500 text-sm mb-6">Dipercaya oleh universitas terkemuka</p>-->
-                <!--    <div class="flex flex-wrap justify-center items-center space-x-6 sm:space-x-12 opacity-60">-->
-                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">UI</div>-->
-                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">ITB</div>-->
-                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">UGM</div>-->
-                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">ITS</div>-->
-                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">UNPAD</div>-->
-                <!--    </div>-->
-                <!--</div>-->
             </div>
         </div>
     </section>
 
-    <!-- How It Works Section -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -475,7 +450,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative">
-                <!-- Step 1 -->
                 <div
                     class="step-card bg-white rounded-2xl p-6 md:p-8 text-center relative shadow-lg border border-gray-100">
                     <div class="step-number">1</div>
@@ -499,7 +473,6 @@
                     </p>
                 </div>
 
-                <!-- Step 2 -->
                 <div
                     class="step-card bg-white rounded-2xl p-6 md:p-8 text-center relative shadow-lg border border-gray-100">
                     <div class="step-number">2</div>
@@ -522,7 +495,6 @@
                     </p>
                 </div>
 
-                <!-- Step 3 -->
                 <div
                     class="step-card bg-white rounded-2xl p-6 md:p-8 text-center relative shadow-lg border border-gray-100">
                     <div class="step-number">3</div>
@@ -551,11 +523,9 @@
         </div>
     </section>
 
-    <!-- Blockchain Verification Feature Section -->
     <section class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Left Content -->
                 <div class="order-2 lg:order-1">
                     <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
                         Verifikasi Instan dengan QR Code
@@ -608,10 +578,8 @@
                     </button>
                 </div>
 
-                <!-- Right Visual -->
                 <div class="relative order-1 lg:order-2">
                     <div class="bg-white rounded-3xl p-6 md:p-8 shadow-2xl">
-                        <!-- Document -->
                         <div class="bg-gray-50 rounded-xl p-4 md:p-6 mb-6">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center space-x-3">
@@ -636,7 +604,6 @@
                                 <div>Semester: 6 (Enam)</div>
                             </div>
 
-                            <!-- QR Code -->
                             <div class="flex justify-center">
                                 <div
                                     class="w-20 h-20 md:w-24 md:h-24 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center">
@@ -664,7 +631,6 @@
                             </div>
                         </div>
 
-                        <!-- Smartphone -->
                         <div class="relative">
                             <div
                                 class="w-32 h-56 bg-gray-900 rounded-2xl mx-auto relative overflow-hidden scan-animation">
@@ -698,7 +664,6 @@
                         </div>
                     </div>
 
-                    <!-- Verified Badge -->
                     <div class="absolute -bottom-4 -right-4 bg-green-500 text-white rounded-full p-3 md:p-4 shadow-lg">
                         <div class="flex items-center space-x-2">
                             <svg class="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor"
@@ -714,7 +679,6 @@
         </div>
     </section>
 
-    <!-- Benefits Section -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -727,7 +691,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Benefit 1 -->
                 <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -742,7 +705,6 @@
                     </p>
                 </div>
 
-                <!-- Benefit 2 -->
                 <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -758,7 +720,6 @@
                     </p>
                 </div>
 
-                <!-- Benefit 3 -->
                 <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -773,7 +734,6 @@
                     </p>
                 </div>
 
-                <!-- Benefit 4 -->
                 <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -788,7 +748,6 @@
                     </p>
                 </div>
 
-                <!-- Benefit 5 -->
                 <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -803,7 +762,6 @@
                     </p>
                 </div>
 
-                <!-- Benefit 6 -->
                 <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -821,7 +779,6 @@
         </div>
     </section>
 
-    <!-- Final CTA Section -->
     <section id="cta-section" class="py-20 bg-gray-50">
         <div class="max-w-4xl mx-auto px-6">
             <div class="bg-white rounded-3xl p-6 md:p-12 shadow-2xl">
@@ -893,11 +850,9 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-16">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Company Info -->
                 <div class="md:col-span-2">
                     <div class="flex items-center space-x-3 mb-6">
                         <div class="w-10 h-10 red-gradient rounded-xl flex items-center justify-center">
@@ -939,7 +894,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Links -->
                 <div>
                     <h4 class="text-lg font-semibold mb-6">Produk</h4>
                     <ul class="space-y-3">
@@ -954,7 +908,6 @@
                     </ul>
                 </div>
 
-                <!-- Support -->
                 <div>
                     <h4 class="text-lg font-semibold mb-6">Dukungan</h4>
                     <ul class="space-y-3">
@@ -984,7 +937,6 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobileMenu');
             const hamburger = document.querySelector('.hamburger');
@@ -993,7 +945,6 @@
             hamburger.classList.toggle('active');
         }
 
-        // Close mobile menu when clicking outside
         document.addEventListener('click', function(e) {
             const mobileMenu = document.getElementById('mobileMenu');
             const hamburger = document.querySelector('.hamburger');
@@ -1004,7 +955,6 @@
             }
         });
 
-        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1018,11 +968,9 @@
             });
         });
 
-        // Form submission handler
         document.querySelector('form').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Show success message
             const notification = document.createElement('div');
             notification.className =
                 'fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg z-50 transform translate-x-full transition-transform duration-300 max-w-sm';
@@ -1048,12 +996,10 @@
                 }, 300);
             }, 5000);
 
-            // Reset form
             this.reset();
         });
 
 
-        // Add some dynamic particles
         function createParticle() {
             const particle = document.createElement('div');
             particle.className = 'data-particle';
@@ -1068,10 +1014,8 @@
             }, 4000);
         }
 
-        // Create particles periodically
         setInterval(createParticle, 3000);
 
-        // Handle navbar background on scroll
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
             if (window.scrollY > 50) {

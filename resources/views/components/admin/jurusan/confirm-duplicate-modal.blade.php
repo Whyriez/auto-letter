@@ -1,12 +1,10 @@
-<!-- ================= MODAL: KONFIRMASI DUPLIKASI ================= -->
+
 <div id="confirm-duplicate-modal"
     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4"
     role="dialog" aria-modal="true" aria-labelledby="confirm-duplicate-title">
 
-    <!-- Overlay (untuk animasi) -->
     <div class="absolute inset-0" data-modal-overlay></div>
 
-    <!-- Panel -->
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" data-modal-panel>
         <div class="text-center">
             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -46,7 +44,6 @@
     </div>
 </div>
 
-<!-- =============== ANIMATIONS (pakai kalau belum ada global) =============== -->
 <style>
     @keyframes overlay-in {
         from {
@@ -109,10 +106,7 @@
     }
 </style>
 
-<!-- =========================== SCRIPT =========================== -->
 <script>
-    // Panggil ini dari tombol:
-    // duplicateTemplate(id, nama) → openDuplicateModal(`/template-surat/${id}/duplicate`, nama)
     function duplicateTemplate(templateId, templateName) {
         openDuplicateModal(`/template-surat/${templateId}/duplicate`, templateName);
     }
@@ -124,29 +118,24 @@
         const form = document.getElementById('duplicate-form');
         const cancel = modal.querySelector('[data-cancel-btn]');
 
-        // set target & nama
         form.action = duplicateUrl;
         document.getElementById('duplicate-template-name').textContent = `"${templateName}"`;
 
-        // tampilkan
         modal.classList.remove('hidden');
         modal.classList.add('flex');
 
-        // reset tombol
         const dupBtn = modal.querySelector('[data-duplicate-btn]');
         const spinner = dupBtn.querySelector('svg');
         dupBtn.disabled = false;
         spinner.classList.add('hidden');
         dupBtn.querySelector('span').textContent = 'Duplikat';
 
-        // animasi in
         overlay.classList.remove('modal-overlay-out');
         panel.classList.remove('modal-panel-out');
-        void overlay.offsetWidth; // reflow
+        void overlay.offsetWidth; 
         overlay.classList.add('modal-overlay-in');
         panel.classList.add('modal-panel-in');
 
-        // fokus ke batal
         setTimeout(() => cancel?.focus(), 10);
     }
 
@@ -155,7 +144,6 @@
         const panel = modal.querySelector('[data-modal-panel]');
         const overlay = modal.querySelector('[data-modal-overlay]');
 
-        // animasi out
         overlay.classList.remove('modal-overlay-in');
         panel.classList.remove('modal-panel-in');
         overlay.classList.add('modal-overlay-out');
@@ -171,18 +159,15 @@
         });
     }
 
-    // Klik di luar panel → tutup
     document.getElementById('confirm-duplicate-modal')
         .addEventListener('click', (e) => {
             const panel = e.currentTarget.querySelector('[data-modal-panel]');
             if (!panel.contains(e.target)) closeDuplicateModal();
         });
 
-    // Tombol batal
     document.querySelector('#confirm-duplicate-modal [data-cancel-btn]')
         .addEventListener('click', closeDuplicateModal);
 
-    // ESC → tutup
     document.addEventListener('keydown', (e) => {
         const modal = document.getElementById('confirm-duplicate-modal');
         if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
@@ -190,7 +175,6 @@
         }
     });
 
-    // Proteksi double submit + spinner
     document.getElementById('duplicate-form').addEventListener('submit', function() {
         const dupBtn = this.querySelector('[data-duplicate-btn]');
         const spinner = dupBtn.querySelector('svg');

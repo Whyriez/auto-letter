@@ -4,10 +4,8 @@
 
 @section('content')
     <div class="lg:ml-64">
-        <!-- Top Bar -->
         <x-dashboard.topbar :title="'Dashboard'" />
 
-        <!-- Dashboard Content -->
         <main class="p-4 sm:p-6">
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Manajemen Jenis Surat</h2>
@@ -148,11 +146,9 @@
         class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 px-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col overflow-hidden">
 
-            <!-- Header (fixed) -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-red-50 flex-shrink-0">
                 <div class="flex items-center gap-3">
                     <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white shadow-sm">
-                        <!-- Document Text icon (valid) -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -172,7 +168,6 @@
                 </button>
             </div>
 
-            <!-- Form (scrollable) -->
             <form id="letter-type-form" method="POST" action="{{ route('jenis-surat.store') }}"
                 class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
                 @csrf
@@ -188,7 +183,6 @@
 
             </form>
 
-            <!-- Footer (fixed) -->
             <div class="flex flex-col sm:flex-row gap-3 px-6 py-4 border-t border-gray-200 bg-white flex-shrink-0">
                 <button type="button" onclick="closeLetterTypeModal()"
                     class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200">
@@ -213,13 +207,11 @@
                 const modalTitle = document.querySelector('#letter-type-modal #modal-title');
                 const submitText = document.querySelector('#letter-type-modal #submit-text');
 
-                // Reset form
                 form.reset();
                 form.querySelector('input[name="_method"]')?.remove();
                 form.action = "{{ route('jenis-surat.store') }}";
 
                 if (letterType) {
-                    // Mode edit
                     modalTitle.textContent = 'Edit Jenis Surat';
                     submitText.textContent = 'Update Jenis Surat';
                     const updateUrl = `{{ route('jenis-surat.update', ['jenis_surat' => ':id']) }}`.replace(':id', letterType
@@ -227,10 +219,8 @@
                     form.action = updateUrl;
                     form.insertAdjacentHTML("beforeend", `<input type="hidden" name="_method" value="PUT">`);
 
-                    // Isi form dengan data yang ada
                     document.getElementById('type-name').value = letterType.name;
                 } else {
-                    // Mode create
                     modalTitle.textContent = 'Buat Jenis Surat Baru';
                     submitText.textContent = 'Simpan Jenis Surat';
                 }
@@ -239,21 +229,18 @@
                 modal.classList.add('flex');
             }
 
-            // Aksi untuk menutup modal Jenis Surat
             function closeLetterTypeModal() {
                 const modal = document.getElementById('letter-type-modal');
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
             }
 
-            // Event listener untuk menutup modal saat klik di luar
             document.getElementById('letter-type-modal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeLetterTypeModal();
                 }
             });
 
-            // Action functions
             function editTemplate(template) {
                 openTemplateModal(template);
             }

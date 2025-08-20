@@ -4,20 +4,15 @@
 
 @section('content')
     <div class="lg:ml-64">
-        <!-- Top Bar -->
         <x-dashboard.topbar :title="'Dashboard'" />
 
-        <!-- Dashboard Content -->
         <main class="p-4 sm:p-6">
-            <!-- Welcome Section -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Selamat Datang, {{ Auth::user()->name }}</h2>
                 <p class="text-gray-600">Tinjau dan setujui permintaan surat yang tertunda dari departemen Anda.</p>
             </div>
 
-            <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <!-- Card Pending -->
                 <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
@@ -33,7 +28,6 @@
                     </div>
                 </div>
 
-                <!-- Card Approved Today -->
                 <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
@@ -49,7 +43,6 @@
                     </div>
                 </div>
 
-                <!-- Card Total This Month -->
                 <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-all duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
@@ -68,7 +61,6 @@
             </div>
 
 
-            <!-- Filters and Search -->
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
                 <form id="filter-form" method="GET" action="{{ route('kajur.index') }}">
                     <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -110,14 +102,12 @@
                 </form>
             </div>
 
-            <!-- Pending Approval Requests -->
             <div class="bg-white rounded-xl card-shadow overflow-hidden">
                 <div class="px-4 sm:px-6 py-4 border-b border-gray-200 bg-red-50">
                     <h3 class="text-lg font-semibold text-red-900">Permintaan Persetujuan Tertunda</h3>
                     <p class="text-sm text-red-700 mt-1">Meninjau dan menyetujui permintaan surat dari siswa</p>
                 </div>
 
-                <!-- Desktop Table -->
                 <div class="desktop-table overflow-x-auto">
                     <table class="w-full">
                         <thead class="bg-gray-50">
@@ -186,7 +176,6 @@
                     </table>
                 </div>
 
-                <!-- Mobile Cards -->
                 <div class="mobile-cards p-4 space-y-4">
                     @forelse ($pendingRequests as $request)
                         <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
@@ -244,7 +233,6 @@
                     @endforelse
                 </div>
 
-                <!-- Pagination -->
                 <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
                     <div class="flex items-center justify-between">
                         <div class="text-sm text-gray-700">
@@ -261,7 +249,6 @@
         </main>
     </div>
 
-    <!-- Reject Modal -->
     <x-rejected-form-modal />
 
     <script>
@@ -270,7 +257,6 @@
             const rejectButtons = document.querySelectorAll('.reject-btn');
             const rejectModal = document.getElementById('reject-modal');
 
-            // Tambahkan event listener untuk semua tombol tolak
             rejectButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -279,7 +265,6 @@
                 });
             });
 
-            // Tutup modal jika user klik di luar modal
             window.addEventListener('click', function(e) {
                 if (e.target === rejectModal) {
                     closeRejectModal();

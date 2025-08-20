@@ -76,7 +76,6 @@
 </head>
 
 <body>
-    <!-- Header dengan Logo -->
     <div class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -96,13 +95,10 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
             
-            <!-- Status Card -->
             <div class="bg-white rounded-2xl card-shadow overflow-hidden mb-8">
-                <!-- Header with verification icon -->
                 <div class="bg-gradient-to-r from-red-50 to-red-100 px-6 sm:px-8 py-6">
                     <div class="flex items-center">
                         <div class="verification-icon w-16 h-16 mr-4">
@@ -120,10 +116,8 @@
                     </div>
                 </div>
 
-                <!-- Status Result -->
                 <div class="p-6 sm:p-8">
                     @if ($status === 'valid')
-                        <!-- Valid Status -->
                         <div class="flex items-start space-x-4">
                             <div class="success-gradient w-16 h-16 rounded-full flex items-center justify-center status-animation">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +140,6 @@
                             </div>
                         </div>
                     @elseif ($status === 'mismatched')
-                        <!-- Mismatched Status -->
                         <div class="flex items-start space-x-4">
                             <div class="error-gradient w-16 h-16 rounded-full flex items-center justify-center status-animation">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,7 +162,6 @@
                             </div>
                         </div>
                     @else
-                        <!-- Invalid/Error Status -->
                         <div class="flex items-start space-x-4">
                             <div class="error-gradient w-16 h-16 rounded-full flex items-center justify-center status-animation">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -196,7 +188,6 @@
             </div>
 
             @if ($status === 'valid')
-                <!-- Document Details Card (only for valid documents) -->
                 <div class="bg-white rounded-2xl card-shadow overflow-hidden mb-8">
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 sm:px-8 py-4 border-b border-gray-200">
                         <h3 class="text-xl font-bold text-gray-900 flex items-center">
@@ -269,7 +260,6 @@
                     </div>
                 </div>
 
-                <!-- Blockchain Hash Card -->
                 <div class="bg-white rounded-2xl card-shadow overflow-hidden mb-8">
                     <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 sm:px-8 py-4 border-b border-gray-200">
                         <h3 class="text-xl font-bold text-gray-900 flex items-center">
@@ -318,7 +308,6 @@
                 </div>
             @endif
 
-            <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 @if ($status === 'valid')
                     <a href="{{ $documentUrl }}" target="_blank" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-200 card-shadow text-center">
@@ -345,7 +334,6 @@
                 </a>
             </div>
 
-            <!-- Footer Info -->
             <div class="text-center mt-12 text-gray-500">
                 <p class="text-sm">
                     Sistem verifikasi ini menggunakan teknologi blockchain untuk memastikan keaslian dokumen.

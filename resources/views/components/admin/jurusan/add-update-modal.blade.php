@@ -1,13 +1,10 @@
 <div id="template-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 px-4">
 
-    <!-- Panel -->
     <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
 
-        <!-- Header (fixed) -->
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-red-50 flex-shrink-0">
             <div class="flex items-center gap-3">
                 <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white shadow-sm">
-                    <!-- doc icon -->
                     <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -30,12 +27,10 @@
             </button>
         </div>
 
-        <!-- Form (scrollable) -->
         <form id="template-form" method="POST" action="{{ route('template-surat.store') }}"
             onsubmit="document.getElementById('isi_konten').value = quill.root.innerHTML;" class="flex-1 overflow-y-auto px-6 py-6 space-y-8">
             @csrf
 
-            <!-- Section: Informasi Dasar -->
             <section class="bg-white rounded-xl border border-gray-200 p-5">
                 <div class="flex items-center gap-2 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" fill="none"
@@ -47,7 +42,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Nama Surat -->
                     <div class="md:col-span-2">
                         <label for="template-name" class="block text-sm font-medium text-gray-700 mb-2">
                             Nama Surat <span class="text-red-500">*</span>
@@ -57,7 +51,6 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                     </div>
 
-                    <!-- Jenis Surat -->
                     <div>
                         <label for="template-category" class="block text-sm font-medium text-gray-700 mb-2">
                             Jenis Surat <span class="text-red-500">*</span>
@@ -71,7 +64,6 @@
                         </select>
                     </div>
 
-                    <!-- Status -->
                     <div>
                         <label for="template-status" class="block text-sm font-medium text-gray-700 mb-2">
                             Status <span class="text-red-500">*</span>
@@ -84,7 +76,6 @@
                         </select>
                     </div>
 
-                    <!-- Penerusan -->
                     <div class="md:col-span-2">
                         <label for="forward_to" class="block text-sm font-medium text-gray-700 mb-2">
                             Penerusan Surat
@@ -103,7 +94,6 @@
                 </div>
             </section>
 
-            <!-- Section: Penomoran Surat -->
             <section class="bg-white rounded-xl border border-gray-200 p-5">
                 <div class="flex items-center gap-2 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" fill="none"
@@ -144,7 +134,6 @@
                     tahun & template).</p>
             </section>
 
-            <!-- Section: Perihal & Tujuan -->
             <section class="bg-white rounded-xl border border-gray-200 p-5">
                 <div class="flex items-center gap-2 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" fill="none"
@@ -186,7 +175,6 @@
                 </div>
             </section>
 
-            <!-- Section: Isi Konten -->
             <section class="bg-white rounded-xl border border-gray-200 p-5">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
@@ -200,7 +188,6 @@
                     <span class="text-xs text-gray-500">Gunakan placeholder untuk data dinamis</span>
                 </div>
 
-                <!-- ✅ Editor & textarea: tetap seperti awal -->
                 <div id="editor" class="border border-gray-300 rounded-lg min-h-[220px]"></div>
                 <textarea id="isi_konten" name="konten" hidden></textarea>
 
@@ -336,7 +323,6 @@
             </section>
         </form>
 
-        <!-- Footer (fixed) -->
         <div class="flex flex-col sm:flex-row gap-3 px-6 py-4 border-t border-gray-200 bg-white flex-shrink-0">
             <button type="button" onclick="closeTemplateModal()"
                 class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200">

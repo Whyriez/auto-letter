@@ -10,20 +10,16 @@
             $user = auth()->user();
             $role = $user->role ?? 'mahasiswa';
 
-            // Aturan tampil field akademik
             $showAcademic = in_array($role, ['mahasiswa', 'kaprodi', 'admin_jurusan', 'kajur']);
             $showProdi = in_array($role, ['mahasiswa', 'kaprodi']);
             $idLabel = $role === 'mahasiswa' ? 'NIM' : 'NIP';
 
-            // Data akademik
             $nimnip = $user->nim_nip ?? ($user->nim ?? ($user->nip ?? null));
             $jurusan = $user->jurusan ?? null;
             $prodi = $user->prodi ?? null;
 
-            // QR Code TTD hanya untuk kajur & kaprodi
             $needsQRCode = in_array($role, ['kajur', 'kaprodi']);
 
-            // Ambil URL QR dari signature_image_path (bisa /storage/... atau path relatif)
             $rawQr = $user->signature_image_path ?? null;
             $qrUrl = null;
             if ($rawQr) {
@@ -37,7 +33,6 @@
         @endphp
 
         <main class="p-4 sm:p-6">
-            <!-- Header -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-1">Update Profile</h2>
                 <p class="text-gray-600">
@@ -49,14 +44,11 @@
             </div>
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                <!-- Form utama -->
                 <div class="xl:col-span-2 bg-white rounded-2xl p-6 card-shadow transition-transform hover:-translate-y-1.5">
                     <form action="{{ route('dashboard.setting.update') }}" method="POST" enctype="multipart/form-data"
                         class="space-y-8">
                         @csrf
                         @method('PUT')
-
-                        <!-- Section: QR Code TTD (hanya kajur & kaprodi) -->
                         @if ($needsQRCode)
                             <div class="border-b pb-6">
                                 <div class="flex items-center gap-2 mb-4 ">
@@ -109,7 +101,6 @@
                             </div>
                         @endif
 
-                        <!-- Section: Informasi Akun -->
                         <div class="border-b pb-6">
                             <div class="flex items-center gap-2 mb-4">
                                 <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +129,6 @@
                             </div>
                         </div>
 
-                        <!-- Section: Informasi Akademik (dinamis) -->
                         @if ($showAcademic)
                             <div class="border-b pb-6">
                                 <div class="flex items-center gap-2 mb-4">
@@ -178,7 +168,6 @@
                             </div>
                         @endif
 
-                        <!-- Section: Keamanan -->
                         <div>
                             <div class="flex items-center gap-2 mb-4">
                                 <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -209,7 +198,6 @@
                             </div>
                         </div>
 
-                        <!-- Actions -->
                         <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t">
                             <a href="{{ url()->previous() }}"
                                 class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-center">
@@ -223,7 +211,6 @@
                     </form>
                 </div>
 
-                <!-- Aside kanan -->
                 <aside class="space-y-6">
                     <div class="bg-white rounded-2xl p-6 card-shadow transition-transform hover:-translate-y-1.5">
                         <div class="flex items-center justify-between mb-4">
@@ -279,35 +266,29 @@
         </main>
     </div>
 
-    {{-- Script Preview QR & Validasi Password --}}
     <script>
-        // --- Elemen utama ---
         const qrInput = document.getElementById('qr-input');
         const qrPreview = document.getElementById('qr-preview');
         const qrEmpty = document.getElementById('qr-empty');
         const qrFallback = document.getElementById('qr-fallback');
         const delBtn = document.getElementById('delete-qr-btn');
 
-        // --- Preview QR (dengan fallback untuk format yang tak di-render <img>, mis. TIFF) ---
         function showPreviewObjectURL(file) {
             const url = URL.createObjectURL(file);
             if (!qrPreview) return;
 
             qrPreview.onload = () => {
-                // berhasil render -> pastikan fallback disembunyikan
                 qrPreview.classList.remove('hidden');
                 qrFallback?.classList.add('hidden');
                 qrEmpty?.classList.add('hidden');
             };
             qrPreview.onerror = () => {
-                // gagal render -> tampilkan fallback
                 qrPreview.classList.add('hidden');
                 qrFallback?.classList.remove('hidden');
                 qrEmpty?.classList.add('hidden');
             };
 
             qrPreview.src = url;
-            // File baru masih lokal, tombol hapus server disembunyikan
             delBtn?.classList.add('hidden');
         }
 
@@ -317,7 +298,6 @@
             showPreviewObjectURL(file);
         });
 
-        // --- Hapus QR di server (AJAX DELETE) ---
         delBtn?.addEventListener('click', async () => {
             const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -341,7 +321,6 @@
                     return;
                 }
 
-                // Sukses: bersihkan UI
                 if (qrPreview) {
                     qrPreview.src = '';
                     qrPreview.classList.add('hidden');
@@ -364,7 +343,6 @@
             }
         });
 
-        // --- Validasi password (tombol aktif kalau dua-duanya kosong; disable jika terisi tapi beda) ---
         const pwd = document.getElementById('password');
         const conf = document.getElementById('password_confirmation');
         const submitBtn = document.getElementById('submit-btn');

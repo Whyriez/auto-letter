@@ -1,4 +1,4 @@
-<!-- Modal: Konfirmasi Hapus Jenis Surat -->
+
 <div id="confirm-delete-jenis-surat" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4"
     role="dialog" aria-modal="true" aria-labelledby="confirm-delete-jenis-surat-title">
 
@@ -7,7 +7,6 @@
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" data-modal-panel>
         <div class="text-center">
             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <!-- ikon trash -->
                 <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -44,58 +43,45 @@
     </div>
 </div>
 <script>
-    // Fungsi untuk membuka modal hapus jenis surat
     function openDeleteJenisSuratModal(deleteUrl) {
         const modal = document.getElementById('confirm-delete-jenis-surat');
         const form = document.getElementById('delete-jenis-surat-form');
 
-        // Set action form
         form.action = deleteUrl;
 
-        // Tampilkan modal
         modal.classList.remove('hidden');
         modal.classList.add('flex');
     }
 
-    // Fungsi untuk menutup modal hapus jenis surat
     function closeDeleteJenisSuratModal() {
         const modal = document.getElementById('confirm-delete-jenis-surat');
 
-        // Sembunyikan modal
         modal.classList.add('hidden');
         modal.classList.remove('flex');
     }
     
-    // Tunggu hingga seluruh halaman selesai dimuat
     document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('confirm-delete-jenis-surat');
         
-        // Event listener untuk tombol 'Batal' di dalam modal
         const cancelButton = modal.querySelector('[data-cancel-btn]');
         if (cancelButton) {
             cancelButton.addEventListener('click', (e) => {
-                e.preventDefault(); // Mencegah tindakan default jika ada
+                e.preventDefault(); 
                 closeDeleteJenisSuratModal();
             });
         }
-
-        // Event listener untuk klik di luar panel modal (overlay)
         modal.addEventListener('click', (e) => {
             const panel = modal.querySelector('[data-modal-panel]');
-            // Jika klik terjadi di luar panel, tutup modal
             if (!panel.contains(e.target)) {
                 closeDeleteJenisSuratModal();
             }
         });
 
-        // Event listener untuk tombol ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
                 closeDeleteJenisSuratModal();
             }
         });
-        
-        // Spinner saat submit
         const deleteForm = document.getElementById('delete-jenis-surat-form');
         if (deleteForm) {
             deleteForm.addEventListener('submit', function() {

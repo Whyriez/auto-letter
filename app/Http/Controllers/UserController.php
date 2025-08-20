@@ -20,10 +20,8 @@ class UserController extends Controller
         $user = $request->user();
         $role = $user->role ?? 'mahasiswa';
 
-        // Hanya kajur & kaprodi yang butuh QR
         $needsQRCode = in_array($role, ['kajur', 'kaprodi']);
 
-        // Validasi dasar
         $rules = [
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
@@ -31,7 +29,6 @@ class UserController extends Controller
         ];
 
         if ($needsQRCode) {
-            // SVG bukan "image" menurut Fileinfo, jadi pakai file+mimes+mimetypes
             $rules['ttd_qr'] = [
                 'nullable',
                 'file',
@@ -56,21 +53,18 @@ class UserController extends Controller
 
         $validated = $request->validate($rules, $messages);
 
-        // Wajib upload QR bila role perlu & belum punya sama sekali
         if ($needsQRCode && empty($user->signature_image_path) && !$request->hasFile('ttd_qr')) {
             return back()
                 ->withErrors(['ttd_qr' => 'QR Code TTD wajib diunggah untuk peran ' . strtoupper($role) . '.'])
                 ->withInput();
         }
 
-        // Tolak upload QR jika role tidak diizinkan
         if (!$needsQRCode && $request->hasFile('ttd_qr')) {
             return back()
                 ->withErrors(['ttd_qr' => 'Pengunggahan QR Code TTD hanya untuk Kajur/Kaprodi.'])
                 ->withInput();
         }
 
-        // Data update
         $updateData = [
             'name'  => $validated['name'],
             'email' => $validated['email'],
@@ -80,13 +74,12 @@ class UserController extends Controller
             $updateData['password'] = Hash::make($validated['password']);
         }
 
-        // Jika ada file QR baru → hapus lama & simpan baru
         if ($needsQRCode && $request->hasFile('ttd_qr')) {
             if (!empty($user->signature_image_path)) {
                 $this->deleteExistingSignature($user->signature_image_path);
             }
-            $path = $request->file('ttd_qr')->store('ttd_qr', 'public');     // storage/app/public/ttd_qr/...
-            $updateData['signature_image_path'] = Storage::url($path);       // /storage/ttd_qr/xxx.png|svg
+            $path = $request->file('ttd_qr')->store('ttd_qr', 'public');    
+            $updateData['signature_image_path'] = Storage::url($path);  
         }
 
         $user->update($updateData);
@@ -120,8 +113,6 @@ class UserController extends Controller
     private function deleteExistingSignature(?string $url): void
     {
         if (!$url) return;
-
-        // /storage/ttd_qr/abc.png → ttd_qr/abc.png
         $relative = Str::of($url)->after('/storage/')->value();
 
         if ($relative && Storage::disk('public')->exists($relative)) {

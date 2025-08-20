@@ -1,15 +1,12 @@
-<!-- Modal: Konfirmasi Logout -->
+
 <div id="confirm-logout-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4"
     role="dialog" aria-modal="true" aria-labelledby="confirm-logout-title">
 
-    <!-- Overlay (untuk animasi dan klik-tutup) -->
     <div class="absolute inset-0" data-logout-overlay></div>
 
-    <!-- Panel -->
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" data-logout-panel>
         <div class="text-center">
             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <!-- ikon logout -->
                 <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -42,7 +39,6 @@
     </div>
 </div>
 
-<!-- Animations (pakai jika belum ada di halaman) -->
 <style>
     @keyframes overlay-in {
         from {
@@ -106,7 +102,6 @@
 </style>
 
 <script>
-    // Buka modal (dengan animasi & fokus)
     function openLogoutModal() {
         const modal = document.getElementById('confirm-logout-modal');
         const overlay = modal.querySelector('[data-logout-overlay]');
@@ -115,27 +110,22 @@
         const submit = modal.querySelector('[data-logout-submit]');
         const spin = submit.querySelector('svg');
 
-        // tampilkan modal
         modal.classList.remove('hidden');
         modal.classList.add('flex');
 
-        // reset tombol submit
         submit.disabled = false;
         spin.classList.add('hidden');
         submit.querySelector('span').textContent = 'Logout';
 
-        // trigger animasi masuk
         overlay.classList.remove('logout-overlay-out');
         panel.classList.remove('logout-panel-out');
         void overlay.offsetWidth; // reflow
         overlay.classList.add('logout-overlay-in');
         panel.classList.add('logout-panel-in');
 
-        // fokus ke tombol Batal
         setTimeout(() => cancel?.focus(), 10);
     }
 
-    // Tutup modal (dengan animasi keluar)
     function closeLogoutModal() {
         const modal = document.getElementById('confirm-logout-modal');
         const overlay = modal.querySelector('[data-logout-overlay]');
@@ -156,24 +146,20 @@
         });
     }
 
-    // Klik overlay untuk tutup
     document.getElementById('confirm-logout-modal')
         .addEventListener('click', (e) => {
             const panel = e.currentTarget.querySelector('[data-logout-panel]');
             if (!panel.contains(e.target)) closeLogoutModal();
         });
 
-    // Tombol Batal
     document.querySelector('#confirm-logout-modal [data-logout-cancel]')
         .addEventListener('click', closeLogoutModal);
 
-    // ESC untuk tutup
     document.addEventListener('keydown', (e) => {
         const modal = document.getElementById('confirm-logout-modal');
         if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeLogoutModal();
     });
 
-    // Proteksi double submit + feedback spinner
     document.getElementById('logout-form').addEventListener('submit', function() {
         const submit = this.querySelector('[data-logout-submit]');
         const spin = submit.querySelector('svg');

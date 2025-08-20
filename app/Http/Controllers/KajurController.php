@@ -58,7 +58,6 @@ class KajurController extends Controller
 
     public function approveAndExportPdf($id)
     {
-        // 1. Ambil data permintaan surat yang akan diekspor
         $letterRequest = LetterRequests::with(['user', 'letterTemplate.letterType'])
             ->findOrFail($id);
 
@@ -66,11 +65,9 @@ class KajurController extends Controller
             return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses.');
         }
 
-        // Ambil data user penanda tangan (signer)
         $userId = Auth::user()->id;
         $signer = User::findOrFail($userId);
 
-        // 2. Logika penomoran surat
         $tahun = now()->year;
         $templateId = $letterRequest->letterTemplate->id;
 
@@ -97,7 +94,6 @@ class KajurController extends Controller
             $signatureBase64 = null;
         }
 
-        // 3. Menyiapkan data mahasiswa utama
         $mainStudent = $letterRequest->user;
         $requestDetails = $letterRequest->request_details;
         $additionalStudents = $requestDetails['additional_students'] ?? [];
@@ -108,7 +104,6 @@ class KajurController extends Controller
 
         $verificationUrl = route('verify.check', ['unique_code' => $letterRequest->unique_code]);
 
-        // Buat tabel HTML untuk daftar mahasiswa
         $studentTableHtml = '<table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0; padding: 0;">';
         $studentTableHtml .= '<tr>';
         $studentTableHtml .= '<td style="width: 5%; padding: 0; margin: 0; line-height: 1.2; vertical-align: top;">' . 1 . '.</td>';
@@ -128,8 +123,6 @@ class KajurController extends Controller
         }
         $studentTableHtml .= '</table>';
 
-
-        // Ganti semua placeholder di konten template
         $replacements = [
             '{{ $array_mhs }}' => $studentTableHtml,
             '{{ $lokasi }}' => $location,
@@ -140,13 +133,12 @@ class KajurController extends Controller
         ];
         $rawContent = $letterRequest->letterTemplate->konten;
         $processedContent = str_replace(array_keys($replacements), array_values($replacements), $rawContent);
-        // $finalBodyContent = str_replace(array_keys($replacements), array_values($replacements), $letterRequest->letterTemplate->konten);
+     
         $lines = explode('<p>', $processedContent);
-        $finalBodyContent = ''; // Gunakan variabel ini
+        $finalBodyContent = ''; 
         foreach ($lines as $line) {
             if (empty(trim($line))) continue;
 
-            // Cek apakah baris mengandung placeholder spasi
             if (Str::contains($line, '{{ SPASI_PENYELARAS }}')) {
                 $parts = explode('{{ SPASI_PENYELARAS }}', $line);
                 $finalBodyContent .= '<table style="width: 100%; border-collapse: collapse;"><tr>';
@@ -154,11 +146,9 @@ class KajurController extends Controller
                 $finalBodyContent .= '<td style="padding: 0;">:' . str_replace('</p>', '', $parts[1]) . '</td>';
                 $finalBodyContent .= '</tr></table>';
             } else {
-                // Jika tidak, biarkan sebagai paragraf normal
                 $finalBodyContent .= '<p style="margin: 0; line-height: 1.5;">' . str_replace('</p>', '', $line) . '</p>';
             }
         }
-        // Siapkan data untuk view Blade PDF
         $data = [
             'logo_base64' => $logoBase64,
             'nomor_surat' => $nomorSurat,
@@ -173,22 +163,16 @@ class KajurController extends Controller
             'verificationUrl' => $verificationUrl,
         ];
 
-        // 4. Muat view Blade, buat PDF, dan dapatkan kontennya
         $pdf = PDF::loadView('surat.template', $data);
         $pdfContent = $pdf->output();
-        // return $pdf->stream('Surat_' . $letterRequest->unique_code . '.pdf');
-        // 5. Hashing konten PDF
         $documentHash = hash('sha256', $pdfContent);
 
-        // ** Contoh konsep untuk ID Transaksi (seperti dari blockchain) **
-        // Dalam implementasi nyata, kamu akan berinteraksi dengan API blockchain di sini
-        $blockchainTxId = Str::uuid(); // Menggunakan UUID sebagai contoh
+        // ** Contoh konsep untuk ID Transaksi dari blockchain **
+        $blockchainTxId = Str::uuid(); 
 
-        // 6. Simpan file ke storage
         $fileName = 'Surat_' . $letterRequest->unique_code . '.pdf';
         Storage::disk('public')->put('documents/' . $fileName, $pdfContent);
 
-        // 7. Update data di database
         $letterRequest->nomor_surat = $nomorSurat;
         $letterRequest->status = 'completed';
         $letterRequest->final_document_path = 'documents/' . $fileName;
@@ -220,7 +204,6 @@ class KajurController extends Controller
 
     public function previewSurat($id)
     {
-        // 1. Ambil data permintaan surat yang akan diekspor
         $letterRequest = LetterRequests::with(['user', 'letterTemplate.letterType'])
             ->findOrFail($id);
 
@@ -228,13 +211,10 @@ class KajurController extends Controller
             return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses.');
         }
 
-        // Ambil data user penanda tangan (signer)
         $userId = Auth::user()->id;
         $signer = User::findOrFail($userId);
 
-        // 2. Logika penomoran surat
         $tahun = now()->year;
-        $templateId = $letterRequest->letterTemplate->id;
 
         $nomor = "****";
         $kodeSeri = $letterRequest->letterTemplate->kode_seri;
@@ -252,7 +232,6 @@ class KajurController extends Controller
             $signatureBase64 = null;
         }
 
-        // 3. Menyiapkan data mahasiswa utama
         $mainStudent = $letterRequest->user;
         $requestDetails = $letterRequest->request_details;
         $additionalStudents = $requestDetails['additional_students'] ?? [];
@@ -263,7 +242,6 @@ class KajurController extends Controller
 
         $verificationUrl = route('verify.check', ['unique_code' => $letterRequest->unique_code]);
 
-        // Buat tabel HTML untuk daftar mahasiswa
         $studentTableHtml = '<table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0; padding: 0;">';
         $studentTableHtml .= '<tr>';
         $studentTableHtml .= '<td style="width: 5%; padding: 0; margin: 0; line-height: 1.2; vertical-align: top;">' . 1 . '.</td>';
@@ -283,8 +261,6 @@ class KajurController extends Controller
         }
         $studentTableHtml .= '</table>';
 
-
-        // Ganti semua placeholder di konten template
         $replacements = [
             '{{ $array_mhs }}' => $studentTableHtml,
             '{{ $lokasi }}' => $location,
@@ -295,13 +271,10 @@ class KajurController extends Controller
         ];
         $rawContent = $letterRequest->letterTemplate->konten;
         $processedContent = str_replace(array_keys($replacements), array_values($replacements), $rawContent);
-        // $finalBodyContent = str_replace(array_keys($replacements), array_values($replacements), $letterRequest->letterTemplate->konten);
         $lines = explode('<p>', $processedContent);
         $finalBodyContent = ''; // Gunakan variabel ini
         foreach ($lines as $line) {
             if (empty(trim($line))) continue;
-
-            // Cek apakah baris mengandung placeholder spasi
             if (Str::contains($line, '{{ SPASI_PENYELARAS }}')) {
                 $parts = explode('{{ SPASI_PENYELARAS }}', $line);
                 $finalBodyContent .= '<table style="width: 100%; border-collapse: collapse;"><tr>';
@@ -309,11 +282,9 @@ class KajurController extends Controller
                 $finalBodyContent .= '<td style="padding: 0;">:' . str_replace('</p>', '', $parts[1]) . '</td>';
                 $finalBodyContent .= '</tr></table>';
             } else {
-                // Jika tidak, biarkan sebagai paragraf normal
                 $finalBodyContent .= '<p style="margin: 0; line-height: 1.5;">' . str_replace('</p>', '', $line) . '</p>';
             }
         }
-        // Siapkan data untuk view Blade PDF
         $data = [
             'logo_base64' => $logoBase64,
             'nomor_surat' => $nomorSurat,
@@ -328,7 +299,6 @@ class KajurController extends Controller
             'verificationUrl' => $verificationUrl,
         ];
 
-        // 4. Muat view Blade, buat PDF, dan dapatkan kontennya
         $pdf = PDF::loadView('surat.preview_template', $data);
         $pdfContent = $pdf->output();
         return $pdf->stream('Surat_' . $letterRequest->unique_code . '.pdf');
