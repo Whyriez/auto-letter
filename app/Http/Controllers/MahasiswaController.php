@@ -19,7 +19,7 @@ class MahasiswaController extends Controller
             ->count();
 
         $approvedLetters = LetterRequests::where('user_id', $userId)
-            ->where('status', 'approved')
+            ->where('status', 'completed')
             ->count();
 
         $letterTypes = LetterTemplate::all();
