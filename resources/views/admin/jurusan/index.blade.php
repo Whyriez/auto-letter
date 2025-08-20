@@ -13,7 +13,7 @@
         <main class="p-4 sm:p-6">
             <!-- Welcome Section -->
             <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Dashboard Super Admin</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Dashboard Admin Jurusan</h2>
                 <p class="text-gray-600">Hallo, {{ Auth::user()->name }}</p>
             </div>
 

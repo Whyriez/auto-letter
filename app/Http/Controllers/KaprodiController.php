@@ -63,13 +63,8 @@ class KaprodiController extends Controller
         $letterRequest = LetterRequests::with(['user', 'letterTemplate.letterType'])
             ->findOrFail($id);
 
-
         if ($letterRequest->status !== 'pending') {
-            $notification = [
-                'message' => 'Surat berhasil disetujui dan disimpan.',
-                'type' => 'success'
-            ];
-            return redirect()->back()->with('notification', $notification);
+            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses.');
         }
 
         // Ambil data user penanda tangan (signer)
@@ -202,11 +197,7 @@ class KaprodiController extends Controller
         $letterRequest->blockchain_tx_id = $blockchainTxId;
         $letterRequest->save();
 
-        $notification = [
-            'message' => 'Surat berhasil disetujui dan disimpan.',
-            'type' => 'success'
-        ];
-        return redirect()->back()->with('notification', $notification);
+        return redirect()->back()->with('success', 'Surat berhasil disetujui dan disimpan.');
     }
 
     public function rejected(Request $request, $id)
@@ -214,30 +205,18 @@ class KaprodiController extends Controller
         $letterRequest = LetterRequests::findOrFail($id);
 
         if ($letterRequest->status !== 'pending') {
-            $notification = [
-                'message' => 'Surat ini sudah disetujui atau diproses sebelumnya.',
-                'type' => 'error'
-            ];
-            return redirect()->back()->with('notification', $notification);
+            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses sebelumnya.');
         }
 
         if (!$request->has('notes') || empty($request->input('notes'))) {
-            $notification = [
-                'message' => 'Catatan penolakan tidak boleh kosong.',
-                'type' => 'error'
-            ];
-            return redirect()->back()->with('notification', $notification);
+            return redirect()->back()->with('error', 'Catatan penolakan tidak boleh kosong.');
         }
 
         $letterRequest->status = 'rejected';
         $letterRequest->notes = $request->input('notes');
         $letterRequest->save();
 
-        $notification = [
-            'message' => 'Surat berhasil ditolak dan catatan telah disimpan.',
-            'type' => 'success'
-        ];
-        return redirect()->back()->with('notification', $notification);
+        return redirect()->back()->with('success', 'Surat berhasil ditolak dan catatan telah disimpan.');
     }
 
     public function previewSurat($id)
@@ -247,11 +226,7 @@ class KaprodiController extends Controller
             ->findOrFail($id);
 
         if ($letterRequest->status !== 'pending') {
-            $notification = [
-                'message' => 'Surat ini sudah disetujui atau diproses.',
-                'type' => 'error'
-            ];
-            return redirect()->back()->with('notification', $notification);
+            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses.');
         }
 
         // Ambil data user penanda tangan (signer)
