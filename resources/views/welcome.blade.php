@@ -32,6 +32,42 @@
             background: linear-gradient(135deg, #d32f2f 0%, #c62828 50%, #b71c1c 100%);
         }
 
+        /* Mobile menu styles */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        .hamburger {
+            cursor: pointer;
+            z-index: 60;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: black;
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
         /* Animated background elements */
         .network-node {
             position: absolute;
@@ -227,6 +263,10 @@
                 transform: none;
                 margin: 0 auto 1rem auto;
             }
+
+            .hero-gradient {
+                padding-top: 80px;
+            }
         }
     </style>
 </head>
@@ -257,27 +297,77 @@
         </div>
 
         <!-- Navigation -->
-        <nav class="absolute top-0 left-0 right-0 z-20 px-6 py-6">
-            <div class="max-w-7xl mx-auto flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 red-gradient rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
-                        </svg>
+        <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 red-gradient rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="text-2xl font-bold text-gray-600">AutoLetter</span>
                     </div>
-                    <span class="text-2xl font-bold text-white">AutoLetter</span>
-                </div>
 
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="/" class="text-gray-600 hover:text-red-400 transition-colors">Home</a>
-                    {{-- <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Keamanan</a>
-                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Harga</a>
-                    <a href="#" class="text-gray-600 hover:text-red-400 transition-colors">Kontak</a> --}}
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="/"
+                            class="text-gray-600 hover:text-red-400 transition-colors font-medium">Home</a>
+                        @if (Auth::check())
+                            @php
+                                $dashboardRoute = 'dashboard';
+
+                                switch (Auth::user()->role) {
+                                    case 'super_admin':
+                                        $dashboardRoute = 'super_admin.dashboard';
+                                        break;
+                                    case 'admin_jurusan':
+                                        $dashboardRoute = 'admin_jurusan.dashboard';
+                                        break;
+                                    case 'kajur':
+                                        $dashboardRoute = 'kajur.index';
+                                        break;
+                                    case 'kaprodi':
+                                        $dashboardRoute = 'kaprodi.index';
+                                        break;
+                                    case 'mahasiswa':
+                                        $dashboardRoute = 'mahasiswa.index';
+                                        break;
+                                }
+                            @endphp
+                            <a href="{{ route($dashboardRoute) }}"
+                                class="text-gray-600 hover:text-red-400 transition-colors">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}"
+                                class="text-gray-600 hover:text-red-400 transition-colors font-medium">Login</a>
+                        @endif
+
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" type="button" onclick="toggleMobileMenu()"
+                            class="text-gray-400 hover:text-white focus:outline-none focus:text-white transition-colors">
+                            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-full h-screen bg-gray-100 z-40 md:hidden">
+                <div class="flex flex-col items-center justify-center h-full space-y-8">
+                    <a href="/" class="text-gray-600 text-xl font-medium hover:text-red-400 transition-colors"
+                        onclick="toggleMobileMenu()">Home</a>
                     @if (Auth::check())
                         @php
-                            $dashboardRoute = 'dashboard'; // Default route jika tidak ada yang cocok
+                            $dashboardRoute = 'dashboard';
 
                             switch (Auth::user()->role) {
                                 case 'super_admin':
@@ -298,11 +388,15 @@
                             }
                         @endphp
                         <a href="{{ route($dashboardRoute) }}"
-                            class="text-gray-600 hover:text-red-400 transition-colors">Dashboard</a>
+                            class="text-gray-600 text-xl font-medium hover:text-red-400 transition-colors">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}"
-                            class="text-gray-600 hover:text-red-400 transition-colors">Login</a>
+                            class="text-gray-600 text-xl font-medium hover:text-red-400 transition-colors">Login</a>
                     @endif
+
+                    <a href="#cta-section"
+                        class="red-gradient text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-200"
+                        onclick="toggleMobileMenu()">Request Demo</a>
                 </div>
             </div>
         </nav>
@@ -310,15 +404,16 @@
         <!-- Hero Content -->
         <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-5xl md:text-7xl font-black text-gradient mb-6">
+                <h1 class="text-4xl md:text-7xl font-black text-gradient mb-6">
                     Revolusi Administrasi Akademik
                 </h1>
 
-                <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto">
+                <p class="text-lg md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto">
                     Otomatisasi surat mahasiswa yang cepat, aman, dan terverifikasi blockchain
                 </p>
 
-                <div class="flex justify-center items-center space-x-8 mb-12">
+                <div
+                    class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8 mb-12">
                     <div class="flex items-center space-x-2 text-gray-400">
                         <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -353,16 +448,16 @@
                     </svg>
                 </a>
 
-                <div class="mt-16">
-                    <p class="text-gray-500 text-sm mb-6">Dipercaya oleh universitas terkemuka</p>
-                    <div class="flex justify-center items-center space-x-12 opacity-60">
-                        <div class="text-gray-400 font-semibold text-lg">UI</div>
-                        <div class="text-gray-400 font-semibold text-lg">ITB</div>
-                        <div class="text-gray-400 font-semibold text-lg">UGM</div>
-                        <div class="text-gray-400 font-semibold text-lg">ITS</div>
-                        <div class="text-gray-400 font-semibold text-lg">UNPAD</div>
-                    </div>
-                </div>
+                <!--<div class="mt-16">-->
+                <!--    <p class="text-gray-500 text-sm mb-6">Dipercaya oleh universitas terkemuka</p>-->
+                <!--    <div class="flex flex-wrap justify-center items-center space-x-6 sm:space-x-12 opacity-60">-->
+                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">UI</div>-->
+                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">ITB</div>-->
+                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">UGM</div>-->
+                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">ITS</div>-->
+                <!--        <div class="text-gray-400 font-semibold text-lg mb-2 sm:mb-0">UNPAD</div>-->
+                <!--    </div>-->
+                <!--</div>-->
             </div>
         </div>
     </section>
@@ -371,23 +466,24 @@
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
                     Cukup 3 Langkah Mudah
                 </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
                     Proses administrasi akademik yang revolusioner dengan teknologi blockchain
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative">
                 <!-- Step 1 -->
-                <div class="step-card bg-white rounded-2xl p-8 text-center relative shadow-lg border border-gray-100">
+                <div
+                    class="step-card bg-white rounded-2xl p-6 md:p-8 text-center relative shadow-lg border border-gray-100">
                     <div class="step-number">1</div>
                     <div class="connecting-line hidden md:block"></div>
 
                     <div class="mb-6">
-                        <svg class="w-24 h-24 mx-auto text-gray-700" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24" stroke-width="1.5">
+                        <svg class="w-16 md:w-24 h-16 md:h-24 mx-auto text-gray-700" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                             <rect x="2" y="14" width="20" height="6" rx="2" ry="2" />
                             <rect x="4" y="4" width="16" height="10" rx="1" ry="1" />
                             <rect x="5" y="5" width="14" height="8" rx="0.5" ry="0.5"
@@ -397,20 +493,21 @@
                         </svg>
                     </div>
 
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Mahasiswa Request</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Mahasiswa Request</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Mahasiswa mengajukan permohonan surat melalui platform digital dengan mudah
                     </p>
                 </div>
 
                 <!-- Step 2 -->
-                <div class="step-card bg-white rounded-2xl p-8 text-center relative shadow-lg border border-gray-100">
+                <div
+                    class="step-card bg-white rounded-2xl p-6 md:p-8 text-center relative shadow-lg border border-gray-100">
                     <div class="step-number">2</div>
                     <div class="connecting-line hidden md:block"></div>
 
                     <div class="mb-6">
-                        <svg class="w-24 h-24 mx-auto text-gray-700" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24" stroke-width="1.5">
+                        <svg class="w-16 md:w-24 h-16 md:h-24 mx-auto text-gray-700" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                             <polyline points="14,2 14,8 20,8" />
                             <path d="M15 12l-3 3-2-2" />
@@ -419,19 +516,20 @@
                         </svg>
                     </div>
 
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Approval Digital</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Approval Digital</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Pihak berwenang memberikan persetujuan digital dengan tanda tangan elektronik
                     </p>
                 </div>
 
                 <!-- Step 3 -->
-                <div class="step-card bg-white rounded-2xl p-8 text-center relative shadow-lg border border-gray-100">
+                <div
+                    class="step-card bg-white rounded-2xl p-6 md:p-8 text-center relative shadow-lg border border-gray-100">
                     <div class="step-number">3</div>
 
                     <div class="mb-6">
-                        <svg class="w-24 h-24 mx-auto text-gray-700" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24" stroke-width="1.5">
+                        <svg class="w-16 md:w-24 h-16 md:h-24 mx-auto text-gray-700" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                             <path d="M12 2l8 3v7c0 5-4 9-8 11-4-2-8-6-8-11V5l8-3z" />
                             <rect x="8" y="7" width="8" height="8" fill="none" stroke="currentColor"
                                 stroke-width="1" />
@@ -444,8 +542,8 @@
                         </svg>
                     </div>
 
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Verifikasi Blockchain</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Verifikasi Blockchain</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Surat disimpan dalam blockchain dan dilengkapi QR code untuk verifikasi
                     </p>
                 </div>
@@ -458,11 +556,11 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <!-- Left Content -->
-                <div>
-                    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                <div class="order-2 lg:order-1">
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
                         Verifikasi Instan dengan QR Code
                     </h2>
-                    <p class="text-xl text-gray-600 mb-8">
+                    <p class="text-lg md:text-xl text-gray-600 mb-8">
                         Setiap dokumen yang dihasilkan dilengkapi dengan QR code yang terhubung langsung ke blockchain.
                         Verifikasi keaslian dokumen dapat dilakukan kapan saja, di mana saja, hanya dalam hitungan
                         detik.
@@ -470,7 +568,8 @@
 
                     <div class="space-y-4 mb-8">
                         <div class="flex items-center space-x-3">
-                            <div class="w-6 h-6 red-gradient rounded-full flex items-center justify-center">
+                            <div
+                                class="w-6 h-6 red-gradient rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -480,7 +579,8 @@
                             <span class="text-gray-700 font-medium">Verifikasi real-time 24/7</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <div class="w-6 h-6 red-gradient rounded-full flex items-center justify-center">
+                            <div
+                                class="w-6 h-6 red-gradient rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -490,7 +590,8 @@
                             <span class="text-gray-700 font-medium">Tidak dapat dipalsukan atau dimanipulasi</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <div class="w-6 h-6 red-gradient rounded-full flex items-center justify-center">
+                            <div
+                                class="w-6 h-6 red-gradient rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -508,10 +609,10 @@
                 </div>
 
                 <!-- Right Visual -->
-                <div class="relative">
-                    <div class="bg-white rounded-3xl p-8 shadow-2xl">
+                <div class="relative order-1 lg:order-2">
+                    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-2xl">
                         <!-- Document -->
-                        <div class="bg-gray-50 rounded-xl p-6 mb-6">
+                        <div class="bg-gray-50 rounded-xl p-4 md:p-6 mb-6">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center space-x-3">
                                     <div class="w-8 h-8 red-gradient rounded-lg flex items-center justify-center">
@@ -522,12 +623,13 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <span class="font-semibold text-gray-900">Surat Keterangan Aktif</span>
+                                    <span class="font-semibold text-gray-900 text-sm md:text-base">Surat Keterangan
+                                        Aktif</span>
                                 </div>
                                 <div class="text-xs text-gray-500">ID: #AL2024001</div>
                             </div>
 
-                            <div class="space-y-2 text-sm text-gray-600 mb-4">
+                            <div class="space-y-2 text-xs md:text-sm text-gray-600 mb-4">
                                 <div>Nama: Ahmad Rizki Pratama</div>
                                 <div>NIM: 2021110001</div>
                                 <div>Program Studi: Teknik Informatika</div>
@@ -537,8 +639,9 @@
                             <!-- QR Code -->
                             <div class="flex justify-center">
                                 <div
-                                    class="w-24 h-24 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
+                                    class="w-20 h-20 md:w-24 md:h-24 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center">
+                                    <svg class="w-12 h-12 md:w-16 md:h-16 text-gray-800" fill="currentColor"
+                                        viewBox="0 0 24 24">
                                         <rect x="1" y="1" width="6" height="6" fill="currentColor" />
                                         <rect x="17" y="1" width="6" height="6" fill="currentColor" />
                                         <rect x="1" y="17" width="6" height="6" fill="currentColor" />
@@ -596,13 +699,14 @@
                     </div>
 
                     <!-- Verified Badge -->
-                    <div class="absolute -bottom-4 -right-4 bg-green-500 text-white rounded-full p-4 shadow-lg">
+                    <div class="absolute -bottom-4 -right-4 bg-green-500 text-white rounded-full p-3 md:p-4 shadow-lg">
                         <div class="flex items-center space-x-2">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5 13l4 4L19 7"></path>
                             </svg>
-                            <span class="font-bold text-sm">VERIFIED</span>
+                            <span class="font-bold text-xs md:text-sm">VERIFIED</span>
                         </div>
                     </div>
                 </div>
@@ -614,32 +718,32 @@
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
                     Mengapa Memilih AutoLetter?
                 </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
                     Solusi terdepan untuk administrasi akademik yang efisien dan terpercaya
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Benefit 1 -->
-                <div class="benefit-card bg-white rounded-2xl p-8 text-center shadow-lg border border-gray-100">
+                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Bebas Birokrasi</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Bebas Birokrasi</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Tidak perlu lagi mengantri atau menunggu berhari-hari. Proses administrasi selesai dalam
                         hitungan menit.
                     </p>
                 </div>
 
                 <!-- Benefit 2 -->
-                <div class="benefit-card bg-white rounded-2xl p-8 text-center shadow-lg border border-gray-100">
+                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -647,30 +751,30 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Keamanan Terjamin</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Keamanan Terjamin</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Teknologi blockchain memastikan dokumen tidak dapat dipalsukan dan selalu dapat diverifikasi
                         keasliannya.
                     </p>
                 </div>
 
                 <!-- Benefit 3 -->
-                <div class="benefit-card bg-white rounded-2xl p-8 text-center shadow-lg border border-gray-100">
+                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Efisien & Cepat</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Efisien & Cepat</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Otomatisasi penuh mengurangi kesalahan manusia dan mempercepat seluruh proses administrasi
                         akademik.
                     </p>
                 </div>
 
                 <!-- Benefit 4 -->
-                <div class="benefit-card bg-white rounded-2xl p-8 text-center shadow-lg border border-gray-100">
+                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -678,14 +782,14 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Hemat Biaya</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Hemat Biaya</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Mengurangi biaya operasional dengan otomatisasi proses dan eliminasi penggunaan kertas.
                     </p>
                 </div>
 
                 <!-- Benefit 5 -->
-                <div class="benefit-card bg-white rounded-2xl p-8 text-center shadow-lg border border-gray-100">
+                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -693,14 +797,14 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Analytics Lengkap</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Analytics Lengkap</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Dashboard analitik memberikan insight mendalam tentang pola dan tren administrasi akademik.
                     </p>
                 </div>
 
                 <!-- Benefit 6 -->
-                <div class="benefit-card bg-white rounded-2xl p-8 text-center shadow-lg border border-gray-100">
+                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -708,8 +812,8 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Ramah Lingkungan</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Ramah Lingkungan</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
                         Sistem paperless yang mendukung program go-green dan sustainability di lingkungan kampus.
                     </p>
                 </div>
@@ -720,12 +824,12 @@
     <!-- Final CTA Section -->
     <section id="cta-section" class="py-20 bg-gray-50">
         <div class="max-w-4xl mx-auto px-6">
-            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-2xl">
+            <div class="bg-white rounded-3xl p-6 md:p-12 shadow-2xl">
                 <div class="text-center mb-8">
-                    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
                         Siap Bertransformasi?
                     </h2>
-                    <p class="text-xl text-gray-600">
+                    <p class="text-lg md:text-xl text-gray-600">
                         Bergabunglah dengan universitas terdepan yang telah mempercayai AutoLetter
                     </p>
                 </div>
@@ -777,7 +881,7 @@
 
                     <div class="text-center">
                         <button type="submit"
-                            class="red-gradient text-white font-bold py-4 px-12 rounded-xl text-lg hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                            class="red-gradient text-white font-bold py-4 px-8 md:px-12 rounded-xl text-lg hover:shadow-lg transition-all duration-200 transform hover:scale-105">
                             Request Demo Gratis
                         </button>
                         <p class="text-sm text-gray-500 mt-4">
@@ -880,6 +984,26 @@
     </footer>
 
     <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+
+            mobileMenu.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+        });
+
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -928,6 +1052,7 @@
             this.reset();
         });
 
+
         // Add some dynamic particles
         function createParticle() {
             const particle = document.createElement('div');
@@ -945,6 +1070,18 @@
 
         // Create particles periodically
         setInterval(createParticle, 3000);
+
+        // Handle navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-gray-50/95');
+                nav.classList.remove('bg-gray-50/90');
+            } else {
+                nav.classList.add('bg-gray-50/90');
+                nav.classList.remove('bg-gray-50/95');
+            }
+        });
     </script>
 
 </html>
