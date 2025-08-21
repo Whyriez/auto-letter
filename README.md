@@ -1,70 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AutoLetter (Laravel 12)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi otomasi surat-menyurat berbasis **Laravel 12**. Dokumen ini menjelaskan **teknologi yang digunakan**, **cara menjalankan proyek secara lokal**, dan **tautan demo** agar dapat dijalankan di lokal dengan mudah.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Teknologi yang Digunakan
+- **Framework**: Laravel 12 (PHP **≥ 8.2**)
+- **Frontend**: Tailwind CSS (**via CDN**, tidak memerlukan proses build)
+- **Database**: MySQL (disarankan versi terbaru)
+- **Library utama**:
+  - `barryvdh/laravel-dompdf` — untuk **membangkitkan/mengekspor PDF**.
+  - `simple-qrcode` — untuk **membuat QR Code**.
+  - `Quill` — untuk **rich-text editor**. Script berikut memuat Quill v2 via CDN.
+  - `Apache ECharts` — untuk **grafik/chart** interaktif.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🧩 Prasyarat
+Pastikan terpasang di mesin lokal:
+- **PHP ≥ 8.2**, **Composer**
+- **MySQL** (disarankan versi terbaru)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🚀 Setup & Jalankan Secara Lokal (Langkah Demi Langkah)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1) Clone & instal dependensi
+```bash
+git clone https://github.com/Whyriez/auto-letter.git
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+cd autoletter
+```
+# PHP dependencies
+```bash
+composer install
+```
+### 2) Salin `.env` & generate APP_KEY
+```bash
+cp .env.example .env
+````
 
-## Laravel Sponsors
+```bash
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3) Konfigurasi `.env` minimal
+Edit file `.env` Anda (sesuaikan sesuai lingkungan lokal):
 
-### Premium Partners
+~~~env
+APP_NAME=AutoLetter
+APP_ENV=local
+APP_KEY= # (terisi otomatis oleh key:generate)
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# Database (sesuaikan jika perlu)
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=autoletter
+DB_USERNAME=root
+DB_PASSWORD=
+~~~
 
-## Contributing
+### 4) Migrasi, seeder, dan storage link
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan migrate --seed
+```
 
-## Code of Conduct
+```bash
+php artisan storage:link
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5) Jalankan server lokal
 
-## Security Vulnerabilities
+```bash
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Aplikasi berjalan di **[http://127.0.0.1:8000](http://127.0.0.1:8000)** atau (port **8000** default).
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🔑 Akun Demo (dari Seeder)
+
+> Password default seluruh akun: **123**
+
+* `admin@gmail.com` — **super\_admin**
+* `mahasiswa@gmail.com` — **mahasiswa**
+* `admin_jurusan@gmail.com` — **admin\_jurusan**
+* `kaprodi@gmail.com` — **kaprodi**
+* `kajur@gmail.com` — **kajur**
+
+---
+
+## 🌐 Link Akses (Opsional)
+
+Demo online: **[https://auto-letter.limapp.my.id/](https://auto-letter.limapp.my.id/)**
+
+---
 
 
-
-perbaikan ui
-
-<!-- -perbaikan modal semua termasuk konfrimasi delete dan konfirmasi logout -->
-<!-- -mengganti alert dengan toaster -->
--kalau masih sempat menambahkan grafik di dashboard
-<!-- -redirect user dari halaman utama -->
