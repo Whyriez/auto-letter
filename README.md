@@ -13,6 +13,8 @@ Aplikasi otomasi surat-menyurat berbasis **Laravel 12**. Dokumen ini menjelaskan
   - `simple-qrcode` — untuk **membuat QR Code**.
   - `Quill` — untuk **rich-text editor**. Script berikut memuat Quill v2 via CDN.
   - `Apache ECharts` — untuk **grafik/chart** interaktif.
+  - `sheetjs ` — untuk **preview excel**.
+  - `phpspreadsheet` — untuk **mengelola inputan excel**.
 
 ---
 
