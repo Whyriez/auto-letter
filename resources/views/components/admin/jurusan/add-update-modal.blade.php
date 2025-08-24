@@ -224,7 +224,7 @@
 
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $nama_mhs }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ NAMA_MAHASISWA }}</code>
                                 <span class="font-semibold text-gray-800">→ Nama Mahasiswa Utama</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
@@ -233,7 +233,7 @@
                             </li>
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $nim }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ NIM }}</code>
                                 <span class="font-semibold text-gray-800">→ NIM Mahasiswa Utama</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
@@ -243,7 +243,7 @@
 
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $nama_dsn }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ NAMA_DOSEN }}</code>
                                 <span class="font-semibold text-gray-800">→ Nama Penanda Tangan (Dosen)</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
@@ -252,7 +252,7 @@
                             </li>
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $nip }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ NIP }}</code>
                                 <span class="font-semibold text-gray-800">→ NIP Penanda Tangan (Dosen)</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
@@ -261,7 +261,7 @@
                             </li>
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $jabatan }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ JABATAN }}</code>
                                 <span class="font-semibold text-gray-800">→ Jabatan Penanda Tangan (Dosen)</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
@@ -271,7 +271,7 @@
 
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $lokasi }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ LOKASI }}</code>
                                 <span class="font-semibold text-gray-800">→ Lokasi Tujuan</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
@@ -280,7 +280,7 @@
                             </li>
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $waktu }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ WAKTU }}</code>
                                 <span class="font-semibold text-gray-800">→ Waktu (Hari, Bulan, Tanggal, Jam)</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
@@ -289,7 +289,7 @@
                             </li>
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $mata_kuliah }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ MATA_KULIAH }}</code>
                                 <span class="font-semibold text-gray-800">→ Mata Kuliah</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Contoh Hasil:</span><br>
@@ -299,7 +299,7 @@
 
                             <li>
                                 <code
-                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ $array_mhs }}</code>
+                                    class="bg-gray-100 px-1 py-0.5 rounded text-red-600 font-mono text-sm">{{ DAFTAR_MAHASISWA }}</code>
                                 <span class="font-semibold text-gray-800">→ Daftar Mahasiswa Tambahan</span>
                                 <p class="mt-1">
                                     <span class="font-semibold text-gray-800">Hasil:</span><br>

@@ -122,19 +122,28 @@ class KaprodiController extends Controller
         }
         $studentTableHtml .= '</table>';
 
+        $jabatan = $signer->role;
+
+        if ($jabatan === 'kajur') {
+            $jabatan = 'Ketua Jurusan' . ' ' . $signer->jurusan;
+        } elseif ($jabatan === 'kaprodi') {
+            $jabatan = 'Ketua Program Studi' . ' ' . $signer->prodi;
+        }
+
         $replacements = [
-            '{{ $array_mhs }}' => $studentTableHtml,
-            '{{ $lokasi }}' => $location,
-            '{{ $waktu }}' => $waktu,
-            '{{ $dosen_pembimbing }}' => $researchLecturer,
-            '{{ $mata_kuliah }}' => $course,
-            '{{ $nama_dsn }}' => $signer->name,
+            '{{ DAFTAR_MAHASISWA }}' => $studentTableHtml,
+            '{{ LOKASI }}' => $location,
+            '{{ WAKTU }}' => $waktu,
+            '{{ DOSEN_PEMBIMBING }}' => $researchLecturer,
+            '{{ MATA_KULIAH }}' => $course,
+            '{{ NAMA_DOSEN }}' => $signer->name,
+            '{{ JABATAN }}' => $jabatan,
         ];
         $rawContent = $letterRequest->letterTemplate->konten;
         $processedContent = str_replace(array_keys($replacements), array_values($replacements), $rawContent);
-    
+
         $lines = explode('<p>', $processedContent);
-        $finalBodyContent = ''; 
+        $finalBodyContent = '';
         foreach ($lines as $line) {
             if (empty(trim($line))) continue;
 
@@ -167,7 +176,7 @@ class KaprodiController extends Controller
         $documentHash = hash('sha256', $pdfContent);
 
         // ** Contoh konsep untuk ID Transaksi dari blockchain **
-        $blockchainTxId = Str::uuid(); 
+        $blockchainTxId = Str::uuid();
 
         $fileName = 'Surat_' . $letterRequest->unique_code . '.pdf';
         Storage::disk('public')->put('documents/' . $fileName, $pdfContent);
@@ -260,17 +269,26 @@ class KaprodiController extends Controller
         }
         $studentTableHtml .= '</table>';
 
+        $jabatan = $signer->role;
+
+        if ($jabatan === 'kajur') {
+            $jabatan = 'Ketua Jurusan' . ' ' . $signer->jurusan;
+        } elseif ($jabatan === 'kaprodi') {
+            $jabatan = 'Ketua Program Studi' . ' ' . $signer->prodi;
+        }
+
         $replacements = [
-            '{{ $array_mhs }}' => $studentTableHtml,
-            '{{ $lokasi }}' => $location,
-            '{{ $waktu }}' => $waktu,
-            '{{ $dosen_pembimbing }}' => $researchLecturer,
-            '{{ $mata_kuliah }}' => $course,
-            '{{ $nama_dsn }}' => $signer->name,
+            '{{ DAFTAR_MAHASISWA }}' => $studentTableHtml,
+            '{{ LOKASI }}' => $location,
+            '{{ WAKTU }}' => $waktu,
+            '{{ DOSEN_PEMBIMBING }}' => $researchLecturer,
+            '{{ MATA_KULIAH }}' => $course,
+            '{{ NAMA_DOSEN }}' => $signer->name,
+            '{{ JABATAN }}' => $jabatan,
         ];
         $rawContent = $letterRequest->letterTemplate->konten;
         $processedContent = str_replace(array_keys($replacements), array_values($replacements), $rawContent);
-     
+
         $lines = explode('<p>', $processedContent);
         $finalBodyContent = '';
         foreach ($lines as $line) {

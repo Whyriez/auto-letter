@@ -9,6 +9,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\SuratEditorController;
+use App\Http\Controllers\TemplateSurat;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
@@ -43,8 +44,9 @@ Route::group(['middleware' => ['auth']], function () {
     //? Admin Jurusan
     Route::middleware(['role:admin_jurusan'])->group(function () {
         Route::get('/admin-jurusan', [AdminJurusanController::class, 'index'])->name('admin_jurusan.dashboard');
-        Route::resource('template-surat', SuratController::class)->names('template-surat');
-        Route::post('template-surat/{template}/duplicate', [SuratController::class, 'duplicate'])->name('template-surat.duplicate');
+        Route::resource('surat', SuratController::class)->names('surat');
+        Route::post('surat/{template}/duplicate', [SuratController::class, 'duplicate'])->name('surat.duplicate');
+        Route::resource('template-surat', TemplateSurat::class)->names('template-surat');
         Route::resource('jenis-surat', JenisSuratController::class)->names('jenis-surat');
     });
 

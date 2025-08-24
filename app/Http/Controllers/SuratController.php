@@ -27,13 +27,13 @@ class SuratController extends Controller
             $query->where('status', $request->status);
         }
 
-        $templates = $query->paginate(10)->withQueryString();
+        $surats = $query->paginate(10)->withQueryString();
 
         $users = User::whereIn('role', ['kaprodi', 'kajur'])->get();
 
         $letterTypes = LetterTypes::all();
 
-        return view('admin.jurusan.surat', compact('templates', 'users', 'letterTypes'));
+        return view('admin.jurusan.surat', compact('surats', 'users', 'letterTypes'));
     }
 
 
@@ -126,6 +126,6 @@ class SuratController extends Controller
             'message' => 'Template berhasil diupdate!',
             'type' => 'success',
         ];
-        return redirect()->route('template-surat.index')->with('notification', $notification);
+        return redirect()->route('surat.index')->with('notification', $notification);
     }
 }

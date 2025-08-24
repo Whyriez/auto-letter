@@ -22,7 +22,7 @@ class MahasiswaController extends Controller
             ->where('status', 'completed')
             ->count();
 
-        $letterTypes = LetterTemplate::all();
+        $letterTypes = LetterTemplate::where('status', 'active')->get();
         $letterHistory = LetterRequests::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->get();

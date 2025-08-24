@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.layout')
-@section('title', 'Admin Jurusan | Template Surat')
-@section('template-surat', 'active')
+@section('title', 'Admin Jurusan | Surat')
+@section('surat', 'active')
 
 @section('content')
     <div class="lg:ml-64">
@@ -8,7 +8,7 @@
 
         <main class="p-4 sm:p-6">
             <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Manajemen Template Surat</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Manajemen Surat</h2>
                 <p class="text-gray-600">Buat, edit, dan kelola templat surat untuk departemen Anda.</p>
             </div>
 
@@ -20,13 +20,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
-                        Tambah Template Surat Baru
+                        Tambah Surat Baru
                     </div>
                 </button>
             </div>
 
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
-                <form method="GET" action="{{ route('template-surat.index') }}"
+                <form method="GET" action="{{ route('surat.index') }}"
                     class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                     <div class="flex flex-col sm:flex-row gap-4 flex-1">
                         <div class="relative">
@@ -35,7 +35,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
-                            <input type="text" name="search" placeholder="Search templates..."
+                            <input type="text" name="search" placeholder="Search surat..."
                                 value="{{ request('search') }}"
                                 class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full sm:w-64">
                         </div>
@@ -113,7 +113,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse($templates as $template)
+                            @forelse($surats as $surat)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
@@ -128,34 +128,34 @@
                                             </div>
                                             <div>
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    {{ $template->nama_surat }}</div>
+                                                    {{ $surat->nama_surat }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ ucfirst($template->letterType->name) }}
+                                        {{ ucfirst($surat->letterType->name) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $template->updated_at->format('M d, Y') }}
+                                        {{ $surat->updated_at->format('M d, Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
                                             class="px-2 py-1 rounded-full text-xs font-medium
-                    {{ $template->status === 'active' ? 'status-active' : ($template->status === 'draft' ? 'status-draft' : 'status-archived') }}">
-                                            {{ ucfirst($template->status) }}
+                    {{ $surat->status === 'active' ? 'status-active' : ($surat->status === 'draft' ? 'status-draft' : 'status-archived') }}">
+                                            {{ ucfirst($surat->status) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $template->letter_requests_count }}
+                                        {{ $surat->letter_requests_count }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                        <button onclick="editTemplate({{ $template }})"
+                                        <button onclick="editTemplate({{ $surat }})"
                                             class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">
                                             Edit
                                         </button>
 
                                         <button
-                                            onclick="duplicateTemplate({{ $template->id }}, '{{ $template->nama_surat }}')"
+                                            onclick="duplicateTemplate({{ $surat->id }}, '{{ $surat->nama_surat }}')"
                                             class="text-blue-600 hover:text-blue-900 ml-2">
                                             Duplikat
                                         </button>
@@ -173,7 +173,7 @@
                 </div>
 
                 <div class="mobile-cards p-4 space-y-4">
-                    @forelse($templates as $template)
+                    @forelse($surats as $surat)
                         <div class="bg-gray-50 rounded-lg p-4 card-hover transition-all duration-200">
                             <div class="flex items-start justify-between mb-3">
                                 <div class="flex items-center">
@@ -186,46 +186,46 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-sm font-medium text-gray-900">{{ $template->nama_surat }}
+                                        <div class="text-sm font-medium text-gray-900">{{ $surat->nama_surat }}
                                         </div>
-                                        <div class="text-xs text-gray-500">{{ ucfirst($template->letter_type_id) }}
+                                        <div class="text-xs text-gray-500">{{ ucfirst($surat->letter_type_id) }}
                                         </div>
                                     </div>
                                 </div>
                                 <span
                                     class="px-2 py-1 rounded-full text-xs font-medium
-                    {{ $template->status === 'active' ? 'status-active' : ($template->status === 'draft' ? 'status-draft' : 'status-archived') }}">
-                                    {{ ucfirst($template->status) }}
+                    {{ $surat->status === 'active' ? 'status-active' : ($surat->status === 'draft' ? 'status-draft' : 'status-archived') }}">
+                                    {{ ucfirst($surat->status) }}
                                 </span>
                             </div>
                             <div class="space-y-2 text-sm mb-4">
                                 <div class="flex justify-between">
                                     <span class="text-gray-600">Kategori:</span>
-                                    <span class="text-gray-900 font-medium">{{ ucfirst($template->kategori) }}</span>
+                                    <span class="text-gray-900 font-medium">{{ ucfirst($surat->kategori) }}</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-gray-600">Terakhir Diubah:</span>
-                                    <span class="text-gray-900">{{ $template->updated_at->format('M d, Y') }}</span>
+                                    <span class="text-gray-900">{{ $surat->updated_at->format('M d, Y') }}</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-gray-600">Total Penggunaan:</span>
-                                    <span class="text-gray-900">{{ $template->letter_requests_count }} times</span>
+                                    <span class="text-gray-900">{{ $surat->letter_requests_count }} times</span>
                                 </div>
                             </div>
                             <div class="flex space-x-2">
-                                <button onclick="editTemplate({{ $template }})"
+                                <button onclick="editTemplate({{ $surat }})"
                                     class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">
                                     Edit
                                 </button>
 
-                                <button onclick="duplicateTemplate({{ $template->id }}, '{{ $template->nama_surat }}')"
+                                <button onclick="duplicateTemplate({{ $surat->id }}, '{{ $surat->nama_surat }}')"
                                     class="text-blue-600 hover:text-blue-900 ml-2">
                                     Duplikat
                                 </button>
                             </div>
                         </div>
                     @empty
-                        <p class="text-center text-gray-500">Belum ada template surat.</p>
+                        <p class="text-center text-gray-500">Belum ada surat.</p>
                     @endforelse
                 </div>
 
@@ -233,15 +233,15 @@
                     <div class="flex items-center justify-between">
                         <div class="text-sm text-gray-700">
                             Menampilkan
-                            <span class="font-medium">{{ $templates->firstItem() }}</span>
+                            <span class="font-medium">{{ $surats->firstItem() }}</span>
                             hingga
-                            <span class="font-medium">{{ $templates->lastItem() }}</span>
+                            <span class="font-medium">{{ $surats->lastItem() }}</span>
                             dari
-                            <span class="font-medium">{{ $templates->total() }}</span>
+                            <span class="font-medium">{{ $surats->total() }}</span>
                             hasil
                         </div>
                         <div>
-                            {{ $templates->appends(request()->query())->links('pagination::tailwind') }}
+                            {{ $surats->appends(request()->query())->links('pagination::tailwind') }}
 
                         </div>
                     </div>
@@ -254,57 +254,57 @@
     <x-admin.jurusan.add-update-modal :letterTypes="$letterTypes" :users="$users" />
     <x-admin.jurusan.confirm-duplicate-modal />
 
- @push('scriptsSurat')
+    @push('scriptsSurat')
         @verbatim
-           <script>
+            <script>
                 const placeholders = [{
                         key: 'SPASI_PENYELARAS',
                         display: '{{ SPASI_PENYELARAS }}',
                         description: 'Untuk menyelaraskan teks seperti tabel'
                     },
                     {
-                        key: 'nama_mhs',
-                        display: '{{ $nama_mhs }}',
+                        key: 'nama_mahasiswa',
+                        display: '{{ NAMA_MAHASISWA }}',
                         description: 'Nama Mahasiswa Utama'
                     },
                     {
                         key: 'nim',
-                        display: '{{ $nim }}',
+                        display: '{{ NIM }}',
                         description: 'NIM Mahasiswa Utama'
                     },
                     {
-                        key: 'nama_dsn',
-                        display: '{{ $nama_dsn }}',
+                        key: 'nama_dosen',
+                        display: '{{ NAMA_DOSEN }}',
                         description: 'Nama Penanda Tangan (Dosen)'
                     },
                     {
                         key: 'nip',
-                        display: '{{ $nip }}',
+                        display: '{{ NIP }}',
                         description: 'NIP Penanda Tangan (Dosen)'
                     },
                     {
                         key: 'jabatan',
-                        display: '{{ $jabatan }}',
+                        display: '{{ JABATAN }}',
                         description: 'Jabatan Penanda Tangan (Dosen)'
                     },
                     {
                         key: 'lokasi',
-                        display: '{{ $lokasi }}',
+                        display: '{{ LOKASI }}',
                         description: 'Lokasi Tujuan'
                     },
                     {
                         key: 'waktu',
-                        display: '{{ $waktu }}',
+                        display: '{{ WAKTU }}',
                         description: 'Waktu (Hari, Bulan, Tanggal, Jam)'
                     },
                     {
                         key: 'mata_kuliah',
-                        display: '{{ $mata_kuliah }}',
+                        display: '{{ MATA_KULIAH }}',
                         description: 'Mata Kuliah'
                     },
                     {
-                        key: 'array_mhs',
-                        display: '{{ $array_mhs }}',
+                        key: 'daftar_mahasiswa',
+                        display: '{{ DAFTAR_MAHASISWA }}',
                         description: 'Daftar Mahasiswa Tambahan'
                     }
                 ];
@@ -430,15 +430,15 @@
                         const selection = quill.getSelection();
                         const currentPos = selection ? selection.index : currentRange.index;
                         const text = quill.getText();
-                        
+
                         let searchStart = Math.max(0, currentPos - 20);
                         const textBefore = text.substring(searchStart, currentPos);
                         const braceIndex = textBefore.lastIndexOf(TRIGGER_CHARS);
-                        
+
                         if (braceIndex !== -1) {
                             const actualBracePos = searchStart + braceIndex;
                             const deleteLength = currentPos - actualBracePos;
-                            
+
                             quill.deleteText(actualBracePos, deleteLength);
                             quill.insertText(actualBracePos, placeholder);
                             quill.setSelection(actualBracePos + placeholder.length);
@@ -538,7 +538,7 @@
                     key: 'ArrowUp'
                 }, function(range, context) {
                     if (isDropdownVisible) {
-                        return false; 
+                        return false;
                     }
                     return true;
                 });
@@ -599,12 +599,12 @@
                     const ara = document.getElementById('forward_to').value = template.forward_to;
                     quill.root.innerHTML = template.konten ?? '';
 
-                    form.action = `/template-surat/${template.id}`;
+                    form.action = `/surat/${template.id}`;
                     form.insertAdjacentHTML("beforeend", `<input type="hidden" name="_method" value="PUT">`);
                 } else {
                     modalTitle.textContent = 'Buat Template Surat Baru';
                     submitText.textContent = 'Buat Template';
-                    form.action = `{{ route('template-surat.store') }}`;
+                    form.action = `{{ route('surat.store') }}`;
                     form.reset();
                 }
 
@@ -627,7 +627,7 @@
             function duplicateTemplate(templateId, templateName) {
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = `/template-surat/${templateId}/duplicate`;
+                form.action = `/surat/${templateId}/duplicate`;
 
                 const csrfToken = document.createElement('input');
                 csrfToken.type = 'hidden';

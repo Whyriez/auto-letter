@@ -82,7 +82,7 @@
                                 &nbsp;
                             </div>
                             <img src="data:image/png;base64, {!! base64_encode(QrCode::size(120)->generate($verificationUrl)) !!}">
-                            <p style="margin-top: 0.5rem; color: #6b7280;">Scan untuk Verifikasi</p>
+                            <p style="margin-top: 0.5rem; color: #6b7280;">Silakan pindai kode QR ini untuk memverifikasi keaslian surat.</p>
                         </div>
                     </div>
                 </td>
@@ -90,10 +90,12 @@
                 <td style="width: 50%; text-align: center; vertical-align: top;">
                     <div class="signature-block">
                         @if ($signer->role === 'kaprodi')
-                            <p style="font-weight: 600; margin-bottom: 1rem;">Ketua Program Studi <br> Sistem Informasi
+                            <p style="font-weight: 600; margin-bottom: 1rem;">Ketua Program Studi <br>
+                                {{ $signer->prodi }}
                             </p>
                         @elseif ($signer->role === 'kajur')
-                            <p style="font-weight: 600; margin-bottom: 1rem;">Ketua Jurusan <br> Teknik Informatika</p>
+                            <p style="font-weight: 600; margin-bottom: 1rem;">Ketua Jurusan <br> {{ $signer->jurusan }}
+                            </p>
                         @else
                             <p style="font-weight: 600; margin-bottom: 1rem;">Pihak Berwenang</p>
                             <p style="font-weight: 600; margin-bottom: 1rem;">[Nama Program Studi/Jurusan]</p>
