@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/dashboard/users/{id}', [SuperAdminController::class, 'delete_user'])->name('super_admin.delete_user');
         Route::patch('/dashboard/users/{id}/toggle-suspend', [SuperAdminController::class, 'toggleSuspend'])->name('super_admin.toggle_suspend');
         Route::patch('/dashboard/users/{id}/update-role', [SuperAdminController::class, 'updateRole'])->name('super_admin.update_role');
+        Route::post('/dashboard/import-mahasiswa', [SuperAdminController::class, 'importMahasiswa'])->name('super_admin.import_mahasiswa');
+        Route::get('/dashboard/download-template', [SuperAdminController::class, 'downloadTemplateUser'])->name('super_admin.users.template');
     });
 
     // ? update profile
