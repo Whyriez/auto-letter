@@ -312,21 +312,7 @@
                 <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
 
                     @if ($users->hasPages())
-                        <div class="flex items-center justify-between">
-                            <div class="text-sm text-gray-700">
-                                Menampilkan
-                                <span class="font-medium">{{ $users->firstItem() }}</span>
-                                sampai
-                                <span class="font-medium">{{ $users->lastItem() }}</span>
-                                dari
-                                <span class="font-medium">{{ $users->total() }}</span>
-                                hasil
-                            </div>
-                            <div>
-                                {{ $users->links() }}
-                            </div>
-
-                        </div>
+                        {{ $users->links('components.paging.custom-pagination') }}
                     @endif
 
                 </div>

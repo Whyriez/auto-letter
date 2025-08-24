@@ -237,16 +237,9 @@
 
                 <!-- Pagination -->
                 <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
-                    <div class="flex items-center justify-between">
-                        <div class="text-sm text-gray-700">
-                            Menampilkan <span class="font-medium">{{ $pendingRequests->firstItem() }}</span>
-                            hingga <span class="font-medium">{{ $pendingRequests->lastItem() }}</span>
-                            dari <span class="font-medium">{{ $pendingRequests->total() }}</span> hasil
-                        </div>
-                        <div class="flex space-x-2">
-                            {{ $pendingRequests->links('pagination::tailwind') }}
-                        </div>
-                    </div>
+                    @if ($pendingRequests->hasPages())
+                        {{ $pendingRequests->links('components.paging.custom-pagination') }}
+                    @endif
                 </div>
             </div>
         </main>
@@ -255,7 +248,6 @@
     <x-rejected-form-modal />
 
     <script>
- 
         document.addEventListener('DOMContentLoaded', function() {
             const rejectButtons = document.querySelectorAll('.reject-btn');
             const rejectModal = document.getElementById('reject-modal');
