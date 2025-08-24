@@ -893,45 +893,12 @@
                         </a>
                     </div>
                 </div>
-
-                <div>
-                    <h4 class="text-lg font-semibold mb-6">Produk</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Fitur Utama</a>
-                        </li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Keamanan</a>
-                        </li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Integrasi</a>
-                        </li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">API
-                                Documentation</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-semibold mb-6">Dukungan</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Pusat
-                                Bantuan</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Kontak</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Status
-                                System</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Kebijakan
-                                Privasi</a></li>
-                    </ul>
-                </div>
             </div>
 
             <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 text-sm">
-                    © 2024 AutoLetter. Semua hak cipta dilindungi.
+                    © 2025 AutoLetter. Semua hak cipta dilindungi.
                 </p>
-                <div class="flex items-center space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Syarat &
-                        Ketentuan</a>
-                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Kebijakan
-                        Privasi</a>
-                </div>
             </div>
         </div>
     </footer>
