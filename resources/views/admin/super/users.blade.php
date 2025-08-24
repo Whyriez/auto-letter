@@ -12,7 +12,7 @@
                 <p class="text-gray-600">Kelola semua pengguna sistem, peran, dan izin di seluruh platform.</p>
             </div>
 
-            <div class="mb-8">
+            <div class="mb-8 flex items-center flex-col sm:flex-row gap-4">
                 <button onclick="openUserModal()"
                     class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-200 card-shadow">
                     <div class="flex items-center justify-center">
@@ -23,6 +23,25 @@
                         Tambah User Baru
                     </div>
                 </button>
+                <!-- Button: Import Mahasiswa (lebih proporsional + ikon upload yang relevan) -->
+                <button type="button" onclick="openImportUsersModal()" title="Import file CSV/Excel mahasiswa"
+                    aria-label="Import data mahasiswa (CSV/Excel)"
+                    class="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 md:px-7 md:py-3.5 rounded-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-200 card-shadow">
+                    <svg class="w-5 h-5 md:w-6 md:h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        aria-hidden="true">
+                        <!-- Tray (baki) -->
+                        <path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <!-- Panah ke atas -->
+                        <path d="M7.5 10.5 12 6m0 0 4.5 4.5M12 6v12" stroke-width="1.8" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+
+                    <span class="text-sm md:text-base tracking-tight">
+                        Impor Mahasiswa
+                    </span>
+                </button>
+
             </div>
 
             <div class="bg-white rounded-xl p-4 sm:p-6 card-shadow mb-6">
@@ -159,7 +178,8 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                         <button onclick="openEditUserModal('{{ $u->id }}')"
                                             class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">Edit</button>
-                                        <button onclick="openDeleteModal('{{ route('super_admin.delete_user', $u->id) }}')"
+                                        <button
+                                            onclick="openDeleteModal('{{ route('super_admin.delete_user', $u->id) }}')"
                                             class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-lg transition-colors">Hapus</button>
                                         @if ($u->is_suspend)
                                             {{-- Form untuk mengaktifkan kembali (Unsuspend) --}}
@@ -326,6 +346,9 @@
     <x-admin.super.edit-modal />
 
     <x-admin.super.confirm-delete-modal />
+
+    <x-admin.super.upload-csv-user-modal />
+
 @endsection
 <script>
     async function handleRoleChange(selectElement, userId, oldRole) {
