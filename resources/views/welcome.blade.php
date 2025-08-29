@@ -383,7 +383,7 @@
 
                     <a href="#cta-section"
                         class="red-gradient text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-200"
-                        onclick="toggleMobileMenu()">Request Demo</a>
+                        onclick="toggleMobileMenu()">Coba Sekarang</a>
                 </div>
             </div>
         </nav>
@@ -426,7 +426,7 @@
 
                 <a href="#cta-section"
                     class="hero-button red-gradient text-white font-bold py-4 px-8 rounded-xl text-lg inline-flex items-center space-x-3 group">
-                    <span>Request Demo</span>
+                    <span>Coba Sekarang</span>
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -690,8 +690,9 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
+            <div class="flex flex-wrap gap-8 justify-center">
+                <div
+                    class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100 lg:w-1/4">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -705,7 +706,8 @@
                     </p>
                 </div>
 
-                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
+                <div
+                    class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100 lg:w-1/4">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -720,7 +722,8 @@
                     </p>
                 </div>
 
-                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
+                <div
+                    class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100 lg:w-1/4">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -734,7 +737,8 @@
                     </p>
                 </div>
 
-                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
+                <div
+                    class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100 lg:w-1/4">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -748,7 +752,8 @@
                     </p>
                 </div>
 
-                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
+                <div
+                    class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100 lg:w-1/4">
                     <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -762,90 +767,62 @@
                     </p>
                 </div>
 
-                <div class="benefit-card bg-white rounded-2xl p-6 md:p-8 text-center shadow-lg border border-gray-100">
-                    <div class="w-16 h-16 red-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Ramah Lingkungan</h3>
-                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
-                        Sistem paperless yang mendukung program go-green dan sustainability di lingkungan kampus.
-                    </p>
-                </div>
             </div>
         </div>
     </section>
 
     <section id="cta-section" class="py-20 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-6">
-            <div class="bg-white rounded-3xl p-6 md:p-12 shadow-2xl">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-                        Siap Bertransformasi?
-                    </h2>
-                    <p class="text-lg md:text-xl text-gray-600">
-                        Bergabunglah dengan universitas terdepan yang telah mempercayai AutoLetter
+        <div class=" mx-auto px-6">
+            <div class="rounded-3xl p-10 md:p-16 text-center">
+
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+                    Mulai Gunakan AutoLetter Hari Ini
+                </h2>
+
+                <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
+                    Daftar dalam hitungan menit dan rasakan langsung kemudahan administrasi akademik yang modern,
+                    efisien, dan bebas birokrasi.
+                </p>
+
+                <div>
+                    @if (Auth::check())
+                        @php
+                            $dashboardRoute = 'dashboard';
+
+                            switch (Auth::user()->role) {
+                                case 'super_admin':
+                                    $dashboardRoute = 'super_admin.dashboard';
+                                    break;
+                                case 'admin_jurusan':
+                                    $dashboardRoute = 'admin_jurusan.dashboard';
+                                    break;
+                                case 'kajur':
+                                    $dashboardRoute = 'kajur.index';
+                                    break;
+                                case 'kaprodi':
+                                    $dashboardRoute = 'kaprodi.index';
+                                    break;
+                                case 'mahasiswa':
+                                    $dashboardRoute = 'mahasiswa.index';
+                                    break;
+                            }
+                        @endphp
+                        <a href="{{ route($dashboardRoute) }}"
+                            class="red-gradient inline-block text-white font-bold py-4 px-8 md:px-12 rounded-xl text-lg hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                            Daftar Gratis Sekarang
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="red-gradient inline-block text-white font-bold py-4 px-8 md:px-12 rounded-xl text-lg hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                            Daftar Gratis Sekarang
+                        </a>
+                    @endif
+
+                    <p class="text-sm text-gray-500 mt-4">
+                        Proses pendaftaran cepat dan mudah.
                     </p>
                 </div>
 
-                <form class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
-                            <input type="text"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                placeholder="Masukkan nama lengkap">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Institusi</label>
-                            <input type="email"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                placeholder="nama@universitas.ac.id">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Institusi</label>
-                            <input type="text"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                placeholder="Universitas Indonesia">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Posisi/Jabatan</label>
-                            <select
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                                <option>Pilih posisi Anda</option>
-                                <option>Rektor/Wakil Rektor</option>
-                                <option>Dekan/Wakil Dekan</option>
-                                <option>Kepala Program Studi</option>
-                                <option>Staff Akademik</option>
-                                <option>Staff IT</option>
-                                <option>Lainnya</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Pesan (Opsional)</label>
-                        <textarea rows="4"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                            placeholder="Ceritakan kebutuhan spesifik institusi Anda..."></textarea>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit"
-                            class="red-gradient text-white font-bold py-4 px-8 md:px-12 rounded-xl text-lg hover:shadow-lg transition-all duration-200 transform hover:scale-105">
-                            Request Demo Gratis
-                        </button>
-                        <p class="text-sm text-gray-500 mt-4">
-                            Tim kami akan menghubungi Anda dalam 24 jam
-                        </p>
-                    </div>
-                </form>
             </div>
         </div>
     </section>
@@ -910,37 +887,6 @@
                     });
                 }
             });
-        });
-
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const notification = document.createElement('div');
-            notification.className =
-                'fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg z-50 transform translate-x-full transition-transform duration-300 max-w-sm';
-            notification.innerHTML = `
-                <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span class="text-sm font-medium">Demo request berhasil dikirim! Tim kami akan menghubungi Anda dalam 24 jam.</span>
-                </div>
-            `;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.classList.remove('translate-x-full');
-            }, 100);
-
-            setTimeout(() => {
-                notification.classList.add('translate-x-full');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 5000);
-
-            this.reset();
         });
 
 
