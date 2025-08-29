@@ -36,22 +36,28 @@
             background-clip: text;
         }
 
+        /* === TOAST MINIMAL (posisi kanan bawah) === */
         #toast-container {
             position: fixed;
             right: 1rem;
             bottom: 1rem;
+            /* sudut kanan bawah */
             z-index: 9999;
             display: flex;
             flex-direction: column;
+            /* toast baru di bawah toast sebelumnya */
             gap: .5rem;
             pointer-events: none;
+            /* tidak menghalangi klik elemen lain */
         }
 
         .toast {
             pointer-events: auto;
             background: #fff;
+            /* putih, no border */
             border: none;
             border-radius: .75rem;
+            /* rounded-xl */
             padding: .75rem 1rem;
             width: min(92vw, 360px);
             box-shadow:
@@ -59,6 +65,7 @@
                 0 4px 6px -4px rgb(0 0 0 / 0.1);
             opacity: 0;
             transform: translateY(10px);
+            /* animasi naik (dari bawah) */
             animation: toast-in 160ms ease-out forwards;
         }
 
@@ -114,6 +121,7 @@
 <body>
     <div class="login-container flex items-center justify-center px-4 py-8">
         <div class="w-full max-w-md">
+            <!-- Logo -->
             <div class="text-center mb-8">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-xl mb-4">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -126,15 +134,17 @@
                 <p class="text-gray-600 text-sm">University Web Platform</p>
             </div>
 
+            <!-- Card -->
             <div class="bg-white rounded-2xl form-shadow p-8">
                 <div class="mb-6 text-center">
-                    <h2 class="text-2xl font-semibold text-gray-900 mb-2">Selamat Datang kembali</h2>
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-2">Selamat Datang</h2>
                     <p class="text-gray-600 text-sm">Silakan masuk ke akun Anda</p>
                 </div>
 
                 <form class="space-y-6" action="{{ route('login.process') }}" method="POST">
                     @csrf
 
+                    <!-- Email -->
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Alamat Email</label>
                         <input type="email" id="email" name="email" required
@@ -142,6 +152,7 @@
                             placeholder="Masukkan alamat email Anda" />
                     </div>
 
+                    <!-- Password -->
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                         <div class="relative">
@@ -162,11 +173,15 @@
                         </div>
                     </div>
 
+                    <!-- Remember -->
                     <div class="flex items-center mb-4">
                         <input type="checkbox" id="remember" name="remember" class="mr-2 leading-tight" />
                         <label for="remember" class="text-sm text-gray-600">Remember Me</label>
                     </div>
 
+                    <!-- (Box alert dihapus, diganti toast otomatis) -->
+
+                    <!-- Submit -->
                     <button type="submit"
                         class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-red-200">
                         Login
@@ -174,6 +189,7 @@
                 </form>
             </div>
 
+            <!-- Footer -->
             <div class="text-center mt-8">
                 <p class="text-xs text-gray-500">© 2024 AutoLetter. All rights reserved.</p>
             </div>
@@ -241,6 +257,7 @@
             });
         }
 
+        // === Auto trigger dari session notification ===
         document.addEventListener('DOMContentLoaded', () => {
             @if (session('notification'))
                 const notif = @json(session('notification'));
