@@ -157,10 +157,11 @@
                                             class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-lg transition-colors">
                                             Lihat Detail
                                         </a>
-                                        <a href="{{ route('kaprodi.approveAndExportPdf', ['id' => $request->id]) }}"
-                                            class="text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-lg transition-colors">
+                                        <button type="button"
+                                            class="approve-open-btn text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-lg transition-colors"
+                                            data-approve-url="{{ route('kaprodi.approveAndExportPdf', ['id' => $request->id]) }}">
                                             Setujui
-                                        </a>
+                                        </button>
                                         <a href="#"
                                             data-url="{{ route('kaprodi.rejected', ['id' => $request->id]) }}"
                                             class="reject-btn text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-lg transition-colors">
@@ -218,10 +219,11 @@
                                     class="flex-1 text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                                     Lihat Detail
                                 </a>
-                                <a href="{{ route('kaprodi.approveAndExportPdf', ['id' => $request->id]) }}"
-                                    class="flex-1 text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
+                                <button type="button"
+                                    class="approve-open-btn text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-lg transition-colors"
+                                    data-approve-url="{{ route('kaprodi.approveAndExportPdf', ['id' => $request->id]) }}">
                                     Setujui
-                                </a>
+                                </button>
                                 <a href="#" data-url="{{ route('kaprodi.rejected', ['id' => $request->id]) }}"
                                     class="reject-btn flex-1 text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                                     Tolak
@@ -245,6 +247,7 @@
         </main>
     </div>
 
+    <x-approve-modal />
     <x-rejected-form-modal />
 
     <script>

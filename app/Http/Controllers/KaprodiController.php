@@ -61,7 +61,11 @@ class KaprodiController extends Controller
             ->findOrFail($id);
 
         if ($letterRequest->status !== 'pending') {
-            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses.');
+            $notification = [
+                'message' => 'Surat ini sudah disetujui atau diproses.',
+                'type' => 'error'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
 
         $userId = Auth::user()->id;
@@ -188,7 +192,11 @@ class KaprodiController extends Controller
         $letterRequest->blockchain_tx_id = $blockchainTxId;
         $letterRequest->save();
 
-        return redirect()->back()->with('success', 'Surat berhasil disetujui dan disimpan.');
+        $notification = [
+            'message' => 'Surat berhasil disetujui dan disimpan.',
+            'type' => 'success'
+        ];
+        return redirect()->back()->with('notification', $notification);
     }
 
     public function rejected(Request $request, $id)
@@ -196,18 +204,30 @@ class KaprodiController extends Controller
         $letterRequest = LetterRequests::findOrFail($id);
 
         if ($letterRequest->status !== 'pending') {
-            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses sebelumnya.');
+            $notification = [
+                'message' => 'Surat ini sudah disetujui atau diproses sebelumnya.',
+                'type' => 'error'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
 
         if (!$request->has('notes') || empty($request->input('notes'))) {
-            return redirect()->back()->with('error', 'Catatan penolakan tidak boleh kosong.');
+            $notification = [
+                'message' => 'Catatan penolakan tidak boleh kosong.',
+                'type' => 'error'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
 
         $letterRequest->status = 'rejected';
         $letterRequest->notes = $request->input('notes');
         $letterRequest->save();
 
-        return redirect()->back()->with('success', 'Surat berhasil ditolak dan catatan telah disimpan.');
+        $notification = [
+            'message' => 'Surat berhasil ditolak.',
+            'type' => 'success'
+        ];
+        return redirect()->back()->with('notification', $notification);
     }
 
     public function previewSurat($id)
@@ -216,7 +236,11 @@ class KaprodiController extends Controller
             ->findOrFail($id);
 
         if ($letterRequest->status !== 'pending') {
-            return redirect()->back()->with('error', 'Surat ini sudah disetujui atau diproses.');
+            $notification = [
+                'message' => 'Surat ini sudah disetujui atau diproses.',
+                'type' => 'error'
+            ];
+            return redirect()->back()->with('notification', $notification);
         }
 
         $userId = Auth::user()->id;

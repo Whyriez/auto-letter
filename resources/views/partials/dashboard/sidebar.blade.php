@@ -53,32 +53,46 @@
                  Dashboard
              </a>
 
+             <!-- Data Surat: ikon dokumen dengan garis-garis (representasi data/list) -->
              <a href="{{ route('surat.index') }}"
                  class="flex items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('surat')">
-                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                     </path>
+                 <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                     <rect x="4" y="3" width="16" height="18" rx="2" stroke-width="2" />
+                     <line x1="8" y1="8" x2="16" y2="8" stroke-width="2"
+                         stroke-linecap="round" />
+                     <line x1="8" y1="12" x2="16" y2="12" stroke-width="2"
+                         stroke-linecap="round" />
+                     <line x1="8" y1="16" x2="16" y2="16" stroke-width="2"
+                         stroke-linecap="round" />
                  </svg>
                  Data Surat
              </a>
 
+             <!-- Template Surat: ikon dua dokumen bertumpuk (melambangkan template/duplikat) -->
              <a href="{{ route('template-surat.index') }}"
                  class="flex items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('template-surat')">
-                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                     </path>
+                 <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                     <!-- lembar belakang -->
+                     <rect x="5" y="4" width="12" height="14" rx="2" stroke-width="2" opacity=".6" />
+                     <!-- lembar depan -->
+                     <rect x="7" y="6" width="12" height="14" rx="2" stroke-width="2" />
+                     <!-- garis contoh pada template -->
+                     <line x1="10" y1="11" x2="16" y2="11" stroke-width="2"
+                         stroke-linecap="round" />
+                     <line x1="10" y1="15" x2="16" y2="15" stroke-width="2"
+                         stroke-linecap="round" />
                  </svg>
-                Template Surat
+                 Template Surat
              </a>
 
+             <!-- Jenis Surat: ikon tag/kategori (melambangkan jenis/klasifikasi) -->
              <a href="{{ route('jenis-surat.index') }}"
                  class="flex items-center px-3 py-2 rounded-lg mb-1 transition-colors font-medium text-gray-700 hover:bg-gray-100 @yield('jenis-surat')">
-                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                     </path>
+                 <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     aria-hidden="true">
+                     <path d="M4 10V7a2 2 0 0 1 2-2h4l9.3 9.3a2 2 0 0 1 0 2.8L16.1 20.3a2 2 0 0 1-2.8 0L4 10z"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                     <circle cx="9" cy="7.5" r="1.2" stroke-width="2" />
                  </svg>
                  Jenis Surat
              </a>

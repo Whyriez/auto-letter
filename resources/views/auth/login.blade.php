@@ -19,14 +19,12 @@
         }
 
         .form-shadow {
-            box-shadow:
-                0 20px 25px -5px rgba(0, 0, 0, 0.1),
-                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
         }
 
         .input-focus:focus {
             border-color: #dc2626;
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, .1);
         }
 
         .logo-text {
@@ -36,6 +34,7 @@
             background-clip: text;
         }
 
+        /* Toast (tetap) */
         #toast-container {
             position: fixed;
             right: 1rem;
@@ -54,9 +53,7 @@
             border-radius: .75rem;
             padding: .75rem 1rem;
             width: min(92vw, 360px);
-            box-shadow:
-                0 10px 15px -3px rgb(0 0 0 / 0.1),
-                0 4px 6px -4px rgb(0 0 0 / 0.1);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
             opacity: 0;
             transform: translateY(10px);
             animation: toast-in 160ms ease-out forwards;
@@ -114,6 +111,7 @@
 <body>
     <div class="login-container flex items-center justify-center px-4 py-8">
         <div class="w-full max-w-md">
+            <!-- Logo -->
             <div class="text-center mb-8">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-xl mb-4">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -126,13 +124,15 @@
                 <p class="text-gray-600 text-sm">University Web Platform</p>
             </div>
 
+            <!-- Card -->
             <div class="bg-white rounded-2xl form-shadow p-8">
                 <div class="mb-6 text-center">
                     <h2 class="text-2xl font-semibold text-gray-900 mb-2">Selamat Datang kembali</h2>
                     <p class="text-gray-600 text-sm">Silakan masuk ke akun Anda</p>
                 </div>
 
-                <form class="space-y-6" action="{{ route('login.process') }}" method="POST">
+                <!-- Form -->
+                <form id="login-form" class="space-y-6" action="{{ route('login.process') }}" method="POST">
                     @csrf
 
                     <div>
@@ -167,9 +167,15 @@
                         <label for="remember" class="text-sm text-gray-600">Remember Me</label>
                     </div>
 
-                    <button type="submit"
-                        class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-red-200">
-                        Login
+                    <!-- Submit: sudah diberi spinner & text wrapper -->
+                    <button id="login-submit" type="submit"
+                        class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-red-200 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 hidden animate-spin" data-submit-spinner viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" aria-hidden="true">
+                            <circle cx="12" cy="12" r="9" stroke-width="2" class="opacity-25"></circle>
+                            <path d="M21 12a9 9 0 00-9-9" stroke-width="2" class="opacity-75"></path>
+                        </svg>
+                        <span data-submit-text>Login</span>
                     </button>
                 </form>
             </div>
@@ -181,6 +187,27 @@
     </div>
 
     <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17.94 17.94A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 012.122-3.362M6.343 6.343A9.97 9.97 0 0112 5c4.478 0 8.268 2.943 9.543 7a9.97 9.97 0 01-1.357 2.572M15 12a3 3 0 11-6 0 3 3 0 016 0zM3 3l18 18"></path>
+        `;
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+        `;
+            }
+        }
+
+        // Toast minimal
         function showToast(message, {
             type = 'success',
             duration = 3200
@@ -191,33 +218,27 @@
                 container.id = 'toast-container';
                 document.body.appendChild(container);
             }
-
-            const icon =
-                type === 'error' ?
-                `
-      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9l-6 6m0-6l6 6"/>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-      </svg>` :
-                `
-      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-      </svg>`;
-
+            const icon = type === 'error' ?
+                `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9l-6 6m0-6l6 6"/>
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                   d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+           </svg>` :
+                `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                   d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+           </svg>`;
             const iconColor = type === 'error' ? '#dc2626' : '#16a34a';
 
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = `
-      <div class="toast__row">
-        <div class="toast__icon" style="color:${iconColor}">${icon}</div>
-        <div class="toast__text">${message}</div>
-      </div>
-    `;
-
+        <div class="toast__row">
+          <div class="toast__icon" style="color:${iconColor}">${icon}</div>
+          <div class="toast__text">${message}</div>
+        </div>
+      `;
             container.appendChild(toast);
 
             const remove = () => {
@@ -241,13 +262,33 @@
             });
         }
 
+        // Efek loading saat submit
         document.addEventListener('DOMContentLoaded', () => {
+            // Notifikasi (opsional)
             @if (session('notification'))
                 const notif = @json(session('notification'));
                 showToast(notif.message, {
                     type: notif.type
                 });
             @endif
+
+            const form = document.getElementById('login-form');
+            const btn = document.getElementById('login-submit');
+            const spin = btn.querySelector('[data-submit-spinner]');
+            const text = btn.querySelector('[data-submit-text]');
+
+            form.addEventListener('submit', () => {
+                // disable semua field agar tidak bisa diubah saat proses
+                form.querySelectorAll('input, button, select, textarea').forEach(el => {
+                    if (el !== btn) el.setAttribute('readonly', 'readonly');
+                });
+
+                // tombol jadi loading
+                btn.disabled = true;
+                btn.setAttribute('aria-busy', 'true');
+                spin.classList.remove('hidden');
+                text.textContent = 'Memproses...';
+            });
         });
     </script>
 </body>

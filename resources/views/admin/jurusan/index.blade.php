@@ -15,7 +15,7 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-transform duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-transform duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-transform duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="bg-white rounded-xl p-6 card-shadow card-hover transition-transform duration-200">
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
                             <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -328,17 +328,16 @@
                 const dropdown = document.createElement('div');
                 dropdown.className = 'autosuggest-dropdown';
                 dropdown.style.cssText = `
-        position: absolute;
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000;
-        display: none;
-        min-width: 300px;
-    `;
+                position: absolute;
+                background: white;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                max-height: 200px;
+                overflow-y: auto;
+                z-index: 1000;
+                display: none;
+                min-width: 300px;`;
                 document.body.appendChild(dropdown);
 
                 let currentRange = null;
@@ -355,16 +354,14 @@
                         const div = document.createElement('div');
                         div.className = 'suggestion-item';
                         div.style.cssText = `
-                padding: 8px 12px;
-                cursor: pointer;
-                border-bottom: 1px solid #f0f0f0;
-                transition: background-color 0.2s;
-            `;
+                        padding: 8px 12px;
+                        cursor: pointer;
+                        border-bottom: 1px solid #f0f0f0;
+                        transition: background-color 0.2s;`;
 
-                        div.innerHTML = `
-                <div style="font-family: monospace; color: #e74c3c; font-weight: bold;">${item.display}</div>
-                <div style="font-size: 12px; color: #666; margin-top: 2px;">${item.description}</div>
-            `;
+                                div.innerHTML = `
+                        <div style="font-family: monospace; color: #e74c3c; font-weight: bold;">${item.display}</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 2px;">${item.description}</div>`;
 
                         div.addEventListener('mouseenter', () => {
                             clearSelection();
@@ -612,30 +609,14 @@
             }
 
 
-            function duplicateTemplate(templateId, templateName) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = `/surat/${templateId}/duplicate`;
-
-                const csrfToken = document.createElement('input');
-                csrfToken.type = 'hidden';
-                csrfToken.name = '_token';
-                csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                form.appendChild(csrfToken);
-                document.body.appendChild(form);
-
-                if (confirm(`Apakah Anda yakin ingin menduplikasi template "${templateName}"?`)) {
-                    form.submit();
-                }
-            }
-
             document.getElementById('template-modal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeTemplateModal();
                 }
             });
         </script>
+
+        
     @endpush
 
 @endsection
