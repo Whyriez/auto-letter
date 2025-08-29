@@ -108,7 +108,7 @@
 
 <script>
     function duplicateTemplate(templateId, templateName) {
-        openDuplicateModal(`/template-surat/${templateId}/duplicate`, templateName);
+        openDuplicateModal(`/surat/${templateId}/duplicate`, templateName);
     }
 
     function openDuplicateModal(duplicateUrl, templateName) {

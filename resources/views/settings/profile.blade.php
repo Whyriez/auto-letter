@@ -204,9 +204,17 @@
                                 Batal
                             </a>
                             <button type="submit" id="submit-btn"
-                                class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all duration-200 transform focus:ring-2 focus:ring-red-200">
-                                Simpan Perubahan
+                                class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all duration-200 transform focus:ring-2 focus:ring-red-200 inline-flex items-center justify-center gap-2">
+                                <!-- spinner (hidden default) -->
+                                <svg class="w-4 h-4 hidden animate-spin" data-submit-spinner viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" stroke-width="2" class="opacity-25">
+                                    </circle>
+                                    <path d="M21 12a9 9 0 00-9-9" stroke-width="2" class="opacity-75"></path>
+                                </svg>
+                                <span id="submit-text">Simpan Perubahan</span>
                             </button>
+
                         </div>
                     </form>
                 </div>
@@ -369,4 +377,31 @@
         pwd?.addEventListener('input', validatePwd);
         conf?.addEventListener('input', validatePwd);
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // cari form update profile (pakai action route atau tambahkan id jika mau)
+            const form = document.querySelector('form[action="{{ route('dashboard.setting.update') }}"]');
+            if (!form) return;
+
+            form.addEventListener('submit', () => {
+                const submitBtn = document.getElementById('submit-btn');
+                const spinner = submitBtn?.querySelector('[data-submit-spinner]');
+                const submitText = submitBtn?.querySelector('#submit-text');
+
+                // kunci semua field agar tidak berubah saat submit (biarkan tombol submit sendiri)
+                form.querySelectorAll('input, select, textarea, button').forEach(el => {
+                    if (el !== submitBtn) el.setAttribute('readonly', 'readonly');
+                });
+
+                // aktifkan loading di tombol
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.setAttribute('aria-busy', 'true');
+                }
+                if (spinner) spinner.classList.remove('hidden');
+                if (submitText) submitText.textContent = 'Menyimpan…';
+            });
+        });
+    </script>
+
 @endsection

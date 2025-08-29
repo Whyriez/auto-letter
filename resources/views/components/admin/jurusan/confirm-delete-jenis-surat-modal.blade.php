@@ -1,9 +1,11 @@
-
+<!-- Modal: Konfirmasi Hapus Jenis Surat -->
 <div id="confirm-delete-jenis-surat" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4"
     role="dialog" aria-modal="true" aria-labelledby="confirm-delete-jenis-surat-title">
 
+    <!-- Overlay (untuk animasi) -->
     <div class="absolute inset-0" data-modal-overlay></div>
 
+    <!-- Panel -->
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" data-modal-panel>
         <div class="text-center">
             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -42,55 +44,154 @@
         </div>
     </div>
 </div>
+
+<!-- Animations -->
+<style>
+    @keyframes overlay-in {
+        from {
+            opacity: 0
+        }
+
+        to {
+            opacity: 1
+        }
+    }
+
+    @keyframes overlay-out {
+        from {
+            opacity: 1
+        }
+
+        to {
+            opacity: 0
+        }
+    }
+
+    @keyframes panel-in {
+        from {
+            opacity: 0;
+            transform: translateY(8px) scale(.98)
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1)
+        }
+    }
+
+    @keyframes panel-out {
+        from {
+            opacity: 1;
+            transform: translateY(0) scale(1)
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(8px) scale(.98)
+        }
+    }
+
+    .modal-overlay-in {
+        animation: overlay-in .18s ease-out forwards;
+    }
+
+    .modal-overlay-out {
+        animation: overlay-out .14s ease-in forwards;
+    }
+
+    .modal-panel-in {
+        animation: panel-in .22s cubic-bezier(.22, .61, .36, 1) forwards;
+    }
+
+    .modal-panel-out {
+        animation: panel-out .16s ease-in forwards;
+    }
+</style>
+
 <script>
     function openDeleteJenisSuratModal(deleteUrl) {
         const modal = document.getElementById('confirm-delete-jenis-surat');
         const form = document.getElementById('delete-jenis-surat-form');
+        const overlay = modal.querySelector('[data-modal-overlay]');
+        const panel = modal.querySelector('[data-modal-panel]');
+        const cancel = modal.querySelector('[data-cancel-btn]');
+        const btn = modal.querySelector('[data-delete-btn]');
+        const spin = btn.querySelector('svg');
 
+        // set form action
         form.action = deleteUrl;
 
+        // reset tombol
+        btn.disabled = false;
+        spin.classList.add('hidden');
+        btn.querySelector('span').textContent = 'Hapus';
+
+        // tampilkan modal
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+
+        // trigger animasi IN
+        overlay.classList.remove('modal-overlay-out');
+        panel.classList.remove('modal-panel-out');
+        void overlay.offsetWidth; // reflow untuk retrigger animasi
+        overlay.classList.add('modal-overlay-in');
+        panel.classList.add('modal-panel-in');
+
+        // fokus ke tombol batal
+        setTimeout(() => cancel?.focus(), 40);
     }
 
     function closeDeleteJenisSuratModal() {
         const modal = document.getElementById('confirm-delete-jenis-surat');
+        const overlay = modal.querySelector('[data-modal-overlay]');
+        const panel = modal.querySelector('[data-modal-panel]');
 
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+        // animasi OUT
+        overlay.classList.remove('modal-overlay-in');
+        panel.classList.remove('modal-panel-in');
+        overlay.classList.add('modal-overlay-out');
+        panel.classList.add('modal-panel-out');
+
+        // sembunyikan setelah animasi selesai
+        panel.addEventListener('animationend', () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, {
+            once: true
+        });
     }
-    
+
     document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('confirm-delete-jenis-surat');
-        
-        const cancelButton = modal.querySelector('[data-cancel-btn]');
-        if (cancelButton) {
-            cancelButton.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                closeDeleteJenisSuratModal();
-            });
-        }
-        modal.addEventListener('click', (e) => {
-            const panel = modal.querySelector('[data-modal-panel]');
-            if (!panel.contains(e.target)) {
-                closeDeleteJenisSuratModal();
-            }
+        const cancelBtn = modal.querySelector('[data-cancel-btn]');
+        const deleteForm = document.getElementById('delete-jenis-surat-form');
+
+        // Tombol batal
+        cancelBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeDeleteJenisSuratModal();
         });
 
+        // Klik area di luar panel => tutup
+        modal.addEventListener('click', (e) => {
+            const panel = modal.querySelector('[data-modal-panel]');
+            if (panel && !panel.contains(e.target)) closeDeleteJenisSuratModal();
+        });
+
+        // ESC => tutup
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
                 closeDeleteJenisSuratModal();
             }
         });
-        const deleteForm = document.getElementById('delete-jenis-surat-form');
-        if (deleteForm) {
-            deleteForm.addEventListener('submit', function() {
-                const deleteButton = this.querySelector('[data-delete-btn]');
-                const spinner = deleteButton.querySelector('svg');
-                deleteButton.disabled = true;
-                spinner.classList.remove('hidden');
-                deleteButton.querySelector('span').textContent = 'Menghapus...';
-            });
-        }
+
+        // Submit: proteksi double submit + spinner
+        deleteForm?.addEventListener('submit', function() {
+            const btn = this.querySelector('[data-delete-btn]');
+            const spin = btn.querySelector('svg');
+            btn.disabled = true;
+            spin.classList.remove('hidden');
+            btn.querySelector('span').textContent = 'Menghapus...';
+        });
     });
 </script>

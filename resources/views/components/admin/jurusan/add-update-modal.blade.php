@@ -28,7 +28,8 @@
         </div>
 
         <form id="template-form" method="POST" action="{{ route('template-surat.store') }}"
-            onsubmit="document.getElementById('isi_konten').value = quill.root.innerHTML;" class="flex-1 overflow-y-auto px-6 py-6 space-y-8">
+            onsubmit="document.getElementById('isi_konten').value = quill.root.innerHTML;"
+            class="flex-1 overflow-y-auto px-6 py-6 space-y-8">
             @csrf
 
             <section class="bg-white rounded-xl border border-gray-200 p-5">
@@ -328,11 +329,19 @@
                 class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200">
                 Batal
             </button>
+
+            {{-- Tombol submit: ada spinner tersembunyi agar layout stabil --}}
             <button type="submit" form="template-form"
-                class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-red-200">
+                class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-red-200 transition-all duration-200 inline-flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 hidden animate-spin" data-submit-spinner viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" stroke-width="2" class="opacity-25"></circle>
+                    <path d="M21 12a9 9 0 00-9-9" stroke-width="2" class="opacity-75"></path>
+                </svg>
                 <span id="submit-text">Buat Template</span>
             </button>
         </div>
+
 
     </div>
 </div>
