@@ -56,6 +56,32 @@ class KajurController extends Controller
         return view('ketua_staff.kajur.index', compact('pendingRequests', 'letterTemplates', 'pendingCount', 'approvedTodayCount', 'totalThisMonthCount'));
     }
 
+    public function riwayatPersetujuan(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $letterTemplateIds = LetterTemplate::where('forward_to', $userId)->pluck('id');
+        $letterTemplates = LetterTemplate::all();
+        $baseQuery = LetterRequests::whereIn('letter_template_id', $letterTemplateIds);
+
+        $historyQuery = (clone $baseQuery)->whereIn('status', ['completed', 'rejected'])
+            ->with('user', 'letterTemplate')
+            ->orderBy('updated_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $historyQuery->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        }
+        if ($request->filled('letter_template')) {
+            $historyQuery->where('letter_template_id', $request->input('letter_template'));
+        }
+
+        $historyRequests = $historyQuery->paginate(10)->withQueryString();
+
+        return view('ketua_staff.kajur.riwayat', compact('historyRequests', 'letterTemplates'));
+    }
+
     public function approveAndExportPdf($id)
     {
         $letterRequest = LetterRequests::with(['user', 'letterTemplate.letterType'])
@@ -236,9 +262,9 @@ class KajurController extends Controller
         $letterRequest = LetterRequests::with(['user', 'letterTemplate.letterType'])
             ->findOrFail($id);
 
-        if ($letterRequest->status !== 'pending') {
+        if ($letterRequest->status === 'rejected') {
             $notification = [
-                'message' => 'Surat ini sudah disetujui atau diproses.',
+                'message' => 'Surat ini ditolak tidak dapat menampilkan.',
                 'type' => 'error'
             ];
             return redirect()->back()->with('notification', $notification);

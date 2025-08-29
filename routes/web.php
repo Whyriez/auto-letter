@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/kaprodi/approveAndExportPdf/{id}', [KaprodiController::class, 'approveAndExportPdf'])->name('kaprodi.approveAndExportPdf');
         Route::get('/preview-surat/{id}/kaprodi', [KaprodiController::class, 'previewSurat'])->name('kaprodi.preview');
         Route::post('/kaprodi/rejected/{id}', [KaprodiController::class, 'rejected'])->name('kaprodi.rejected');
+        Route::get('/kaprodi/riwayat/persetujuan', [KaprodiController::class, 'riwayatPersetujuan'])->name('kaprodi.riwayat');
     });
 
     //? Kajur
@@ -39,6 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/kajur/approveAndExportPdf/{id}', [KajurController::class, 'approveAndExportPdf'])->name('kajur.approveAndExportPdf');
         Route::get('/preview-surat/{id}', [KajurController::class, 'previewSurat'])->name('kajur.preview');
         Route::post('/kajur/rejected/{id}', [KajurController::class, 'rejected'])->name('kajur.rejected');
+        Route::get('/kajur/riwayat/persetujuan', [KajurController::class, 'riwayatPersetujuan'])->name('kajur.riwayat');
     });
 
     //? Admin Jurusan
