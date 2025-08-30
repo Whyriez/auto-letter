@@ -15,12 +15,16 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Mahasiswa
             $table->foreignId('letter_template_id')->constrained('letter_templates')->onDelete('cascade');
-            $table->json('request_data')->nullable();
-            $table->enum('status', ['pending', 'processing', 'rejected', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'rejected', 'completed'])->default('pending');
+            $table->string('nomor_surat')->nullable();
             $table->string('unique_code')->unique();
+            $table->json('additional_students')->nullable();
+            $table->json('request_details')->nullable();
             $table->string('final_document_path')->nullable();
             $table->string('blockchain_hash')->nullable()->index();
             $table->string('blockchain_tx_id')->nullable();
+            $table->text('notes')->nullable();
+            $table->timestamp('needed_at');
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('letter_requests');
+        Schema::dropIfExists('letter_request');
     }
 };

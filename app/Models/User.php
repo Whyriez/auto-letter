@@ -21,6 +21,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'status',
+        'is_suspend',
+        'nim_nip',
+        'jurusan',
+        'prodi',
+        'signature_image_path',
+
     ];
 
     /**
