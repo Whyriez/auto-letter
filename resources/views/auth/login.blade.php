@@ -189,7 +189,7 @@
 
             <!-- Footer -->
             <div class="text-center mt-8">
-                <p class="text-xs text-gray-500">© 2024 AutoLetter. All rights reserved.</p>
+                <p class="text-xs text-gray-500">© 2025 AutoLetter. All rights reserved.</p>
             </div>
         </div>
     </div>
