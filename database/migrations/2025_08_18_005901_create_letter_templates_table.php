@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('kode_unit');
             $table->string('kode_arsip');
             $table->string('perihal');
-            $table->string('tujuan_nama');
+            $table->string('tujuan_nama')->nullable();
             $table->string('tujuan_lokasi');
             $table->text('konten');
             $table->unsignedBigInteger('forward_to');

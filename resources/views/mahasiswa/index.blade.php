@@ -292,6 +292,12 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                             placeholder="Masukkan Waktu (contoh: 1 bulan, 1 hari, dst.)">
                     </div>
+                    <div id="tujuan-nama-fields-container" class="hidden">
+                        <label for="tujuan_nama" class="block text-sm font-medium text-gray-700 mb-1">Tujuan Nama</label>
+                        <input type="text" id="tujuan_nama" name="tujuan_nama"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
+                            placeholder="Masukkan nama tujuan (contoh: Kepala Dinas Pendidikan)">
+                    </div>
                     <div id="course-fields-container" class="hidden">
                         <label for="course" class="block text-sm font-medium text-gray-700 mb-1">Mata Kuliah</label>
                         <input type="text" id="course" name="course"
@@ -304,7 +310,7 @@
                     <div class="flex items-center gap-2 mb-3">
                         <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2
-                                                               2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z" />
+                                                                   2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z" />
                         </svg>
 
                         <h3 class="text-sm font-semibold text-gray-900">Keperluan</h3>
@@ -442,12 +448,14 @@
                 const locationContainer = document.getElementById('location-fields-container');
                 const waktuContainer = document.getElementById('waktu-fields-container');
                 const courseContainer = document.getElementById('course-fields-container');
+                const tujuanNamaContainer = document.getElementById('tujuan-nama-fields-container');
 
                 container.innerHTML = '';
                 researchContainer.classList.add('hidden');
                 locationContainer.classList.add('hidden');
                 waktuContainer.classList.add('hidden');
                 courseContainer.classList.add('hidden');
+                tujuanNamaContainer.classList.add('hidden');
 
                 if (selectedLetterType === 'Surat Rekomendasi' || selectedLetterType === 'Surat Izin Penelitian' ||
                     selectedLetterType === 'Surat Akademik') {
@@ -472,6 +480,7 @@
                 if (selectedLetterType === 'Surat Izin Penelitian') {
                     researchContainer.classList.remove('hidden');
                     courseContainer.classList.remove('hidden');
+                    tujuanNamaContainer.classList.remove('hidden'); 
                 }
 
                 if (selectedLetterType === 'Surat Rekomendasi') {

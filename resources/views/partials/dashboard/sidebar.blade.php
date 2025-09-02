@@ -187,7 +187,7 @@
          <div class="flex items-center">
              <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
                  <span class="text-red-600 font-semibold text-sm">
-                     {{ collect(explode(' ', Auth::user()->name))->map(fn($word) => Str::upper(Str::substr($word, 0, 1)))->implode('') }}
+                     {{ collect(explode(' ', Auth::user()->name))->take(2)->map(fn($word) => Str::upper(Str::substr($word, 0, 1)))->implode('') }}
                  </span>
              </div>
              <div class="flex-1">
