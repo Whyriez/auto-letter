@@ -156,11 +156,11 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                     </div>
 
-                    <div class="flex flex-col">
+                    <div id="tujuan-nama-wrapper" class="flex flex-col">
                         <label for="tujuan_nama" class="block text-sm font-medium text-gray-700 mb-2">
                             Tujuan Nama <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="tujuan_nama" name="tujuan_nama" required
+                        <input type="text" id="tujuan_nama" name="tujuan_nama"
                             placeholder="Contoh: Koordinator Fakultas Teknik"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                     </div>
@@ -345,3 +345,21 @@
 
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('template-category');
+        const tujuanNamaWrapper = document.getElementById('tujuan-nama-wrapper');
+
+        function checkCategoryAndToggleVisibility() {
+            const selectedText = categorySelect.options[categorySelect.selectedIndex].text;
+            if (selectedText.trim() === 'Surat Izin Penelitian') {
+                tujuanNamaWrapper.classList.add('hidden');
+            } else {
+                tujuanNamaWrapper.classList.remove('hidden');
+            }
+        }
+        categorySelect.addEventListener('change', checkCategoryAndToggleVisibility);
+        checkCategoryAndToggleVisibility();
+    });
+</script>

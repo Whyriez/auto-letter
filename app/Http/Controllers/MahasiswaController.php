@@ -41,6 +41,7 @@ class MahasiswaController extends Controller
             'location' => ['nullable', 'string', 'max:255'],
             'waktu' => ['nullable', 'string', 'max:255'],
             'course' => ['nullable', 'string', 'max:255'],
+            'tujuan_nama' => ['nullable', 'string', 'max:255'],
         ]);
 
         try {
@@ -66,6 +67,9 @@ class MahasiswaController extends Controller
             }
             if ($request->filled('course')) {
                 $requestDetails['course'] = $validatedData['course'];
+            }
+            if ($request->filled('tujuan_nama')) {
+                $requestDetails['tujuan_nama'] = $validatedData['tujuan_nama'];
             }
 
             $letterTemplate = LetterTemplate::where('id', $validatedData['letter-type'])->first();
