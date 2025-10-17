@@ -223,7 +223,7 @@
                                     <div
                                         class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
                                         <span class="text-purple-600 font-semibold text-sm">
-                                            {{ collect(explode(' ', $u->name))->map(fn($word) => strtoupper(Str::substr($word, 0, 1)))->implode('') }}
+                                            {{ collect(explode(' ', $u->name))->take(2)->map(fn($word) => strtoupper(Str::substr($word, 0, 1)))->implode('') }}
                                         </span>
                                     </div>
                                     <div>
